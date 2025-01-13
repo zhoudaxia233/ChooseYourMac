@@ -4,6 +4,7 @@ import SoftwareList, { softwareData } from './SoftwareList'
 
 const HardDriveAnalysis = () => {
   const [selectedSoftware, setSelectedSoftware] = useState([])
+  const [selectedPresetId, setSelectedPresetId] = useState(null)
   const [usedSpace, setUsedSpace] = useState(0)
   const STORAGE_LIMIT = 128
 
@@ -20,10 +21,12 @@ const HardDriveAnalysis = () => {
   }, [selectedSoftware])
 
   const handlePresetSelect = preset => {
+    setSelectedPresetId(preset.id)
     setSelectedSoftware(preset.software)
   }
 
   const handleSoftwareUpdate = newSoftwareList => {
+    setSelectedPresetId(null) // Clear preset selection when software list is manually modified
     setSelectedSoftware(newSoftwareList)
   }
 
@@ -54,7 +57,10 @@ const HardDriveAnalysis = () => {
 
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-1">
-          <PresetSidebar onPresetSelect={handlePresetSelect} />
+          <PresetSidebar
+            onPresetSelect={handlePresetSelect}
+            selectedPresetId={selectedPresetId}
+          />
         </div>
         <div className="col-span-2">
           <SoftwareList
