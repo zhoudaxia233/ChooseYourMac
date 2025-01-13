@@ -26,7 +26,7 @@ const HardDriveAnalysis = () => {
   }
 
   const handleSoftwareUpdate = newSoftwareList => {
-    setSelectedPresetId(null) // Clear preset selection when software list is manually modified
+    setSelectedPresetId(null) // Clear preset selection when software list is modified
     setSelectedSoftware(newSoftwareList)
   }
 
