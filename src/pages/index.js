@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Geist, Geist_Mono } from 'next/font/google'
-import HardDriveAnalysis from '../components/HardDriveAnalysis'
-import MemoryAnalysis from '../components/MemoryAnalysis'
+import HardDriveAnalysis from '../components/HardDriveAnalysis/index'
+import MemoryAnalysis from '../components/MemoryAnalysis/index'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
