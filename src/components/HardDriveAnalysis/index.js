@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import PresetSidebar from './PresetSidebar'
-import SoftwareList, { softwareData } from './SoftwareList'
+import SoftwareList from './SoftwareList'
 
 const HardDriveAnalysis = () => {
   const [selectedSoftware, setSelectedSoftware] = useState([])
   const [selectedPresetId, setSelectedPresetId] = useState(null)
   const [usedSpace, setUsedSpace] = useState(0)
+  const [softwareData, setSoftwareData] = useState({})
   const STORAGE_LIMIT = 128
+
+  useEffect(() => {
+    fetch('/software-data.json')
+      .then(response => response.json())
+      .then(data => setSoftwareData(data))
+      .catch(error => console.error('Error loading software data:', error))
+  }, [])
 
   const calculateUsedSpace = software => {
     return software.reduce((total, app) => {
@@ -18,7 +26,7 @@ const HardDriveAnalysis = () => {
   useEffect(() => {
     const newUsedSpace = calculateUsedSpace(selectedSoftware)
     setUsedSpace(newUsedSpace)
-  }, [selectedSoftware])
+  }, [selectedSoftware, softwareData])
 
   const handlePresetSelect = preset => {
     setSelectedPresetId(preset.id)

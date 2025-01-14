@@ -1,19 +1,15 @@
-import React from 'react'
-
-export const softwareData = {
-  'VS Code': 0.5,
-  Docker: 3,
-  'Node.js': 0.2,
-  Chrome: 0.3,
-  'Final Cut Pro': 35,
-  'Adobe Premiere': 25,
-  'DaVinci Resolve': 25,
-  Figma: 0.5,
-  'Adobe Photoshop': 25,
-  'Adobe Illustrator': 25,
-}
+import React, { useState, useEffect } from 'react'
 
 const SoftwareList = ({ selectedSoftware, onSoftwareUpdate }) => {
+  const [softwareData, setSoftwareData] = useState({})
+
+  useEffect(() => {
+    fetch('/software-data.json')
+      .then(response => response.json())
+      .then(data => setSoftwareData(data))
+      .catch(error => console.error('Error loading software data:', error))
+  }, [])
+
   // List of all available software
   const availableSoftware = Object.keys(softwareData).filter(
     software => !selectedSoftware.includes(software)
