@@ -79,6 +79,21 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     setShowAddForm(false)
   }
 
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      if (!showAddForm) {
+        // Press Enter in search mode, if no matching results, show add form
+        if (availableSoftware.length === 0) {
+          setShowAddForm(true)
+          setNewSoftware({ ...newSoftware, name: localSearchQuery })
+        }
+      } else {
+        // Press Enter in add form mode, trigger add function
+        handleAddSoftware()
+      }
+    }
+  }
+
   return (
     <div className="space-y-6 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-xl p-4">
       {/* Selected Software Section */}
@@ -174,6 +189,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
             placeholder="Search software..."
             value={localSearchQuery}
             onChange={e => setLocalSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="w-full px-4 py-2 rounded-lg border border-gray-200 
               dark:border-gray-700 bg-white dark:bg-gray-800
               focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -219,6 +235,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                 onChange={e =>
                   setNewSoftware({ ...newSoftware, name: e.target.value })
                 }
+                onKeyPress={handleKeyPress}
                 className="w-full px-3 py-2 rounded-lg border border-gray-200 
                   dark:border-gray-700 bg-white dark:bg-gray-800
                   text-gray-900 dark:text-gray-100
@@ -232,6 +249,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                   onChange={e =>
                     setNewSoftware({ ...newSoftware, size: e.target.value })
                   }
+                  onKeyPress={handleKeyPress}
                   className="flex-1 px-3 py-2 rounded-lg border border-gray-200 
                     dark:border-gray-700 bg-white dark:bg-gray-800
                     text-gray-900 dark:text-gray-100
