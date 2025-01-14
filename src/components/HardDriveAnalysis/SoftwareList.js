@@ -244,11 +244,16 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
               <div className="flex gap-2">
                 <input
                   type="number"
+                  min="0"
                   placeholder="Size"
                   value={newSoftware.size}
-                  onChange={e =>
-                    setNewSoftware({ ...newSoftware, size: e.target.value })
-                  }
+                  onChange={e => {
+                    const value = e.target.value
+                    setNewSoftware({
+                      ...newSoftware,
+                      size: value === '' ? '' : Math.max(0, Number(value)),
+                    })
+                  }}
                   onKeyPress={handleKeyPress}
                   className="flex-1 px-3 py-2 rounded-lg border border-gray-200 
                     dark:border-gray-700 bg-white dark:bg-gray-800
