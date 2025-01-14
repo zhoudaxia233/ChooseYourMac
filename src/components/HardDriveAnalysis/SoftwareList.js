@@ -71,7 +71,11 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       [newSoftware.name]: size,
     }
     setSoftwareData(updatedSoftwareData)
+
+    onSoftwareUpdate([...selectedSoftware, newSoftware.name])
+
     setNewSoftware({ name: '', size: '', unit: 'GB' })
+    setLocalSearchQuery('')
     setShowAddForm(false)
   }
 
@@ -262,7 +266,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                   className="flex-1 py-2 bg-blue-500 hover:bg-blue-600 
                     text-white rounded-lg transition-colors"
                 >
-                  Add Software
+                  Add to Selection
                 </button>
                 <button
                   onClick={() => setShowAddForm(false)}
