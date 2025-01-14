@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const SoftwareList = ({ selectedSoftware, onSoftwareUpdate }) => {
+const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   const [softwareData, setSoftwareData] = useState({})
 
   useEffect(() => {
@@ -12,7 +12,9 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate }) => {
 
   // List of all available software
   const availableSoftware = Object.keys(softwareData).filter(
-    software => !selectedSoftware.includes(software)
+    software =>
+      !selectedSoftware.includes(software) &&
+      software.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const handleDragStart = (e, software) => {

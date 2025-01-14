@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PresetSidebar from './PresetSidebar'
 import SoftwareList from './SoftwareList'
 
-const HardDriveAnalysis = () => {
+const HardDriveAnalysis = ({ searchQuery }) => {
   const [selectedSoftware, setSelectedSoftware] = useState([])
   const [selectedPresetId, setSelectedPresetId] = useState(null)
   const [usedSpace, setUsedSpace] = useState(0)
@@ -74,6 +74,7 @@ const HardDriveAnalysis = () => {
           <SoftwareList
             selectedSoftware={selectedSoftware}
             onSoftwareUpdate={handleSoftwareUpdate}
+            searchQuery={searchQuery || ''}
           />
         </div>
       </div>
