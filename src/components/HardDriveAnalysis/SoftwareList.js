@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 const CATEGORIES = {
+  All: [], // Will be populated with all software
   Development: ['VS Code', 'Docker', 'Node.js', 'Git', 'Python'],
   Design: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'Sketch'],
   'Video & Audio': [
@@ -35,6 +36,8 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
         CATEGORIES.Others = Object.keys(data).filter(
           software => !categorizedSoftware.has(software)
         )
+        // Populate All category with all software
+        CATEGORIES.All = Object.keys(data)
       })
       .catch(error => console.error('Error loading software data:', error))
   }, [])
@@ -44,9 +47,8 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     const matchesSearch = software
       .toLowerCase()
       .includes(localSearchQuery.toLowerCase())
-    const matchesCategory = localSearchQuery
-      ? true // If searching, show all matches regardless of category
-      : CATEGORIES[activeCategory].includes(software)
+    const matchesCategory =
+      activeCategory === 'All' || CATEGORIES[activeCategory].includes(software)
     return (
       !selectedSoftware.includes(software) && matchesSearch && matchesCategory
     )
@@ -85,10 +87,14 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     onSoftwareUpdate(newList)
 
     // Check if the removed software was a custom addition
-    const isCustomSoftware = !Object.values(CATEGORIES)
+    // Exclude 'All' category from the check to avoid false negatives
+    const predefinedCategories = Object.entries(CATEGORIES)
+      .filter(([key]) => key !== 'All' && key !== 'Others')
+      .map(([_, value]) => value)
       .flat()
       .filter(s => s !== undefined)
-      .includes(softwareToRemove)
+
+    const isCustomSoftware = !predefinedCategories.includes(softwareToRemove)
 
     // If it was a custom addition, add it to Others category
     if (isCustomSoftware && !CATEGORIES.Others.includes(softwareToRemove)) {
@@ -110,8 +116,13 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     }
     setSoftwareData(updatedSoftwareData)
 
-    onSoftwareUpdate([...selectedSoftware, newSoftware.name])
+    // Add to All category
+    if (!CATEGORIES.All.includes(newSoftware.name)) {
+      CATEGORIES.All.push(newSoftware.name)
+    }
 
+    onSoftwareUpdate([...selectedSoftware, newSoftware.name])
+    setActiveCategory('All') // Switch to All category
     setNewSoftware({ name: '', size: '', unit: 'GB' })
     setLocalSearchQuery('')
     setShowAddForm(false)
@@ -129,6 +140,13 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
         // Press Enter in add form mode, trigger add function
         handleAddSoftware()
       }
+    }
+  }
+
+  const handleSearchChange = e => {
+    setLocalSearchQuery(e.target.value)
+    if (e.target.value) {
+      setActiveCategory('All') // Switch to All category when searching
     }
   }
 
@@ -226,7 +244,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
             type="text"
             placeholder="Search software..."
             value={localSearchQuery}
-            onChange={e => setLocalSearchQuery(e.target.value)}
+            onChange={handleSearchChange}
             onKeyPress={handleKeyPress}
             className="w-full px-4 py-2 rounded-lg border border-gray-200 
               dark:border-gray-700 bg-white dark:bg-gray-800
