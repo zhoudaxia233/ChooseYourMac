@@ -1,42 +1,116 @@
 {
-    "categories": {
-        "Development": [
-            "VS Code",
-            "Docker",
-            "Node.js",
-            "Git",
-            "Python"
-        ],
-        "Design": [
-            "Figma",
-            "Adobe Photoshop",
-            "Adobe Illustrator",
-            "Sketch"
-        ],
-        "Video & Audio": [
-            "Final Cut Pro",
-            "Adobe Premiere",
-            "Audacity",
-            "OBS Studio"
-        ],
-        "Utilities": [
-            "Chrome",
-            "Spotify",
-            "Slack",
-            "Discord",
-            "Zoom"
-        ]
-    },
-    "software": {
-        "VS Code": 0.5,
-        "Docker": 3,
-        "Node.js": 0.2,
-        "Chrome": 0.3,
-        "Final Cut Pro": 35,
-        "Adobe Premiere": 25,
-        "DaVinci Resolve": 25,
-        "Figma": 0.5,
-        "Adobe Photoshop": 25,
-        "Adobe Illustrator": 25
-    }
+    "software": [
+        {
+            "id": "vscode",
+            "name": "VS Code",
+            "category": "Development",
+            "size_in_GB": 0.5,
+            "icon": "",
+            "description": "Lightweight but powerful source code editor"
+        },
+        {
+            "id": "docker",
+            "name": "Docker",
+            "category": "Development",
+            "size_in_GB": 3,
+            "icon": "",
+            "description": "Containerization platform"
+        },
+        {
+            "id": "nodejs",
+            "name": "Node.js",
+            "category": "Development",
+            "size_in_GB": 0.2,
+            "icon": "",
+            "description": "JavaScript runtime environment"
+        },
+        {
+            "id": "chrome",
+            "name": "Chrome",
+            "category": "Utilities",
+            "size_in_GB": 0.3,
+            "icon": "",
+            "description": "Web browser by Google"
+        },
+        {
+            "id": "finalcutpro",
+            "name": "Final Cut Pro",
+            "category": "Video & Audio",
+            "size_in_GB": 35,
+            "icon": "",
+            "description": "Professional video editing software"
+        },
+        {
+            "id": "premiere",
+            "name": "Adobe Premiere",
+            "category": "Video & Audio",
+            "size_in_GB": 25,
+            "icon": "",
+            "description": "Professional video editing software"
+        },
+        {
+            "id": "davinci",
+            "name": "DaVinci Resolve",
+            "category": "Video & Audio",
+            "size_in_GB": 25,
+            "icon": "",
+            "description": "Professional video editing software"
+        },
+        {
+            "id": "figma",
+            "name": "Figma",
+            "category": "Design",
+            "size_in_GB": 0.5,
+            "icon": "",
+            "description": "Collaborative design tool"
+        },
+        {
+            "id": "photoshop",
+            "name": "Adobe Photoshop",
+            "category": "Design",
+            "size_in_GB": 25,
+            "icon": "",
+            "description": "Image editing software"
+        },
+        {
+            "id": "illustrator",
+            "name": "Adobe Illustrator",
+            "category": "Design",
+            "size_in_GB": 25,
+            "icon": "",
+            "description": "Vector graphics editor"
+        }
+    ],
+    "categories": [
+        {
+            "id": "development",
+            "name": "Development",
+            "icon": "",
+            "order": 1
+        },
+        {
+            "id": "design",
+            "name": "Design",
+            "icon": "",
+            "order": 2
+        },
+        {
+            "id": "video-audio",
+            "name": "Video & Audio",
+            "icon": "",
+            "order": 3
+        },
+        {
+            "id": "utilities",
+            "name": "Utilities",
+            "icon": "",
+            "order": 4
+        },
+        {
+            "id": "others",
+            "name": "Others",
+            "icon": "",
+            "order": 5
+        }
+    ]
 }

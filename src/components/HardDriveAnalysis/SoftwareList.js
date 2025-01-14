@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
 const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
-  const [softwareData, setSoftwareData] = useState({})
-  const [categories, setCategories] = useState({})
+  const [softwareList, setSoftwareList] = useState([])
+  const [categoryList, setCategoryList] = useState([])
   const [draggedSoftware, setDraggedSoftware] = useState(null)
   const [localSearchQuery, setLocalSearchQuery] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
-  const [activeCategory, setActiveCategory] = useState('Development')
+  const [activeCategory, setActiveCategory] = useState('All')
   const [newSoftware, setNewSoftware] = useState({
     name: '',
     size: '',
@@ -17,37 +17,26 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     fetch('/software-data.json')
       .then(response => response.json())
       .then(data => {
-        setSoftwareData(data.software)
-
-        // Initialize categories with data from JSON
-        const allCategories = {
-          All: Object.keys(data.software),
-          ...data.categories,
-          Others: [],
-        }
-
-        // Populate Others category with uncategorized software
-        const categorizedSoftware = new Set(
-          Object.values(data.categories).flat()
-        )
-        allCategories.Others = Object.keys(data.software).filter(
-          software => !categorizedSoftware.has(software)
-        )
-
-        setCategories(allCategories)
+        setSoftwareList(data.software)
+        setCategoryList([
+          { id: 'all', name: 'All', order: 0 },
+          ...data.categories.sort((a, b) => a.order - b.order),
+        ])
       })
       .catch(error => console.error('Error loading software data:', error))
   }, [])
 
-  // Filter available software based on local search and active category
-  const availableSoftware = Object.keys(softwareData).filter(software => {
-    const matchesSearch = software
+  // Filter available software based on search and category
+  const availableSoftware = softwareList.filter(software => {
+    const matchesSearch = software.name
       .toLowerCase()
       .includes(localSearchQuery.toLowerCase())
     const matchesCategory =
-      activeCategory === 'All' || categories[activeCategory]?.includes(software)
+      activeCategory === 'All' || software.category === activeCategory
     return (
-      !selectedSoftware.includes(software) && matchesSearch && matchesCategory
+      !selectedSoftware.includes(software.id) &&
+      matchesSearch &&
+      matchesCategory
     )
   })
 
@@ -84,21 +73,24 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     onSoftwareUpdate(newList)
 
     // Check if the removed software was a custom addition
-    const predefinedCategories = Object.entries(categories)
-      .filter(([key]) => key !== 'All' && key !== 'Others')
-      .map(([_, value]) => value)
-      .flat()
-      .filter(s => s !== undefined)
+    const predefinedCategories = categoryList
+      .filter(category => category.name !== 'All' && category.name !== 'Others')
+      .map(category => category.name)
 
-    const isCustomSoftware = !predefinedCategories.includes(softwareToRemove)
+    const removedSoftware = softwareList.find(s => s.id === softwareToRemove)
+    const isCustomSoftware =
+      removedSoftware &&
+      !predefinedCategories.includes(removedSoftware.category)
 
-    // If it was a custom addition, add it to Others category
-    if (isCustomSoftware && !categories.Others.includes(softwareToRemove)) {
-      setCategories(prev => ({
-        ...prev,
-        Others: [...prev.Others, softwareToRemove],
-        All: [...prev.All, softwareToRemove],
-      }))
+    // If it was a custom addition, update its category to Others
+    if (isCustomSoftware) {
+      setSoftwareList(prev =>
+        prev.map(software =>
+          software.id === softwareToRemove
+            ? { ...software, category: 'Others' }
+            : software
+        )
+      )
     }
   }
 
@@ -110,18 +102,17 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
         ? Number(newSoftware.size)
         : Number(newSoftware.size) / 1024
 
-    setSoftwareData(prev => ({
-      ...prev,
-      [newSoftware.name]: size,
-    }))
+    const newSoftwareItem = {
+      id: newSoftware.name.toLowerCase().replace(/\s+/g, '-'),
+      name: newSoftware.name,
+      category: 'Others',
+      size_in_GB: size,
+      icon: '',
+      description: '',
+    }
 
-    setCategories(prev => ({
-      ...prev,
-      All: [...prev.All, newSoftware.name],
-      Others: [...prev.Others, newSoftware.name],
-    }))
-
-    onSoftwareUpdate([...selectedSoftware, newSoftware.name])
+    setSoftwareList(prev => [...prev, newSoftwareItem])
+    onSoftwareUpdate([...selectedSoftware, newSoftwareItem.id])
     setActiveCategory('All')
     setNewSoftware({ name: '', size: '', unit: 'GB' })
     setLocalSearchQuery('')
@@ -148,6 +139,11 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     if (e.target.value) {
       setActiveCategory('All') // Switch to All category when searching
     }
+  }
+
+  // 获取软件详情的辅助函数
+  const getSoftwareDetails = softwareId => {
+    return softwareList.find(s => s.id === softwareId)
   }
 
   return (
@@ -183,48 +179,51 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                 Drag software here to add
               </div>
             ) : (
-              selectedSoftware.map(software => (
-                <div
-                  key={software}
-                  className="group flex items-center justify-between p-3 
+              selectedSoftware.map(softwareId => {
+                const software = getSoftwareDetails(softwareId)
+                return software ? (
+                  <div
+                    key={software.id}
+                    className="group flex items-center justify-between p-3 
                     bg-white dark:bg-gray-800/50 backdrop-blur-sm
                     rounded-lg border border-gray-200 dark:border-gray-700 
                     shadow-sm hover:shadow-md transition-all duration-300
                     hover:border-gray-300 dark:hover:border-gray-600"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {software}
-                    </span>
-                    <span
-                      className="px-2.5 py-1 text-xs font-medium rounded-full 
-                      bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                    >
-                      {softwareData[software]}GB
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => handleRemove(software)}
-                    className="p-2 rounded-full text-gray-400 hover:text-red-500 
-                      hover:bg-red-50 dark:hover:bg-red-900/30 transition-all
-                      opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    <div className="flex items-center space-x-3">
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                        {software.name}
+                      </span>
+                      <span
+                        className="px-2.5 py-1 text-xs font-medium rounded-full 
+                        bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                      >
+                        {software.size_in_GB}GB
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => handleRemove(software.id)}
+                      className="p-2 rounded-full text-gray-400 hover:text-red-500 
+                        hover:bg-red-50 dark:hover:bg-red-900/30 transition-all
+                        opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              ))
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                ) : null
+              })
             )}
           </div>
         </div>
@@ -255,24 +254,24 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
 
         {/* Category Tabs */}
         <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
-          {Object.keys(categories).map(category => (
+          {categoryList.map(category => (
             <button
-              key={category}
+              key={category.id}
               onClick={() => {
-                setActiveCategory(category)
+                setActiveCategory(category.name)
                 setLocalSearchQuery('')
               }}
               className={`
                 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
                 transition-colors
                 ${
-                  activeCategory === category && !localSearchQuery
+                  activeCategory === category.name && !localSearchQuery
                     ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }
               `}
             >
-              {category}
+              {category.name}
             </button>
           ))}
         </div>
@@ -281,10 +280,9 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
           {availableSoftware.length > 0 ? (
             availableSoftware.map(software => (
               <div
-                key={software}
+                key={software.id}
                 draggable
-                onDragStart={e => handleDragStart(e, software)}
-                onDragEnd={handleDragEnd}
+                onDragStart={e => handleDragStart(e, software.id)}
                 className="flex items-center justify-between p-3 
                   bg-gray-50/50 dark:bg-gray-800/30 backdrop-blur-sm
                   rounded-lg border border-gray-200 dark:border-gray-700
@@ -293,13 +291,13 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                   hover:border-gray-300 dark:hover:border-gray-600"
               >
                 <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {software}
+                  {software.name}
                 </span>
                 <span
                   className="px-2.5 py-1 text-xs font-medium rounded-full 
                   bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                 >
-                  {softwareData[software]}GB
+                  {software.size_in_GB}GB
                 </span>
               </div>
             ))
