@@ -1,10 +1,24 @@
 import React, { useState, useEffect } from 'react'
 
+const CATEGORIES = {
+  Development: ['VS Code', 'Docker', 'Node.js', 'Git', 'Python'],
+  Design: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'Sketch'],
+  'Video & Audio': [
+    'Final Cut Pro',
+    'Adobe Premiere',
+    'Audacity',
+    'OBS Studio',
+  ],
+  Utilities: ['Chrome', 'Spotify', 'Slack', 'Discord', 'Zoom'],
+  Others: [], // Will contain software not in other categories
+}
+
 const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   const [softwareData, setSoftwareData] = useState({})
   const [draggedSoftware, setDraggedSoftware] = useState(null)
   const [localSearchQuery, setLocalSearchQuery] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
+  const [activeCategory, setActiveCategory] = useState('Development')
   const [newSoftware, setNewSoftware] = useState({
     name: '',
     size: '',
@@ -14,16 +28,29 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   useEffect(() => {
     fetch('/software-data.json')
       .then(response => response.json())
-      .then(data => setSoftwareData(data))
+      .then(data => {
+        setSoftwareData(data)
+        // Populate Others category with uncategorized software
+        const categorizedSoftware = new Set(Object.values(CATEGORIES).flat())
+        CATEGORIES.Others = Object.keys(data).filter(
+          software => !categorizedSoftware.has(software)
+        )
+      })
       .catch(error => console.error('Error loading software data:', error))
   }, [])
 
-  // Filter available software based on local search
-  const availableSoftware = Object.keys(softwareData).filter(
-    software =>
-      !selectedSoftware.includes(software) &&
-      software.toLowerCase().includes(localSearchQuery.toLowerCase())
-  )
+  // Filter available software based on local search and active category
+  const availableSoftware = Object.keys(softwareData).filter(software => {
+    const matchesSearch = software
+      .toLowerCase()
+      .includes(localSearchQuery.toLowerCase())
+    const matchesCategory = localSearchQuery
+      ? true // If searching, show all matches regardless of category
+      : CATEGORIES[activeCategory].includes(software)
+    return (
+      !selectedSoftware.includes(software) && matchesSearch && matchesCategory
+    )
+  })
 
   const handleDragStart = (e, software) => {
     setDraggedSoftware(software)
@@ -56,6 +83,17 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       software => software !== softwareToRemove
     )
     onSoftwareUpdate(newList)
+
+    // Check if the removed software was a custom addition
+    const isCustomSoftware = !Object.values(CATEGORIES)
+      .flat()
+      .filter(s => s !== undefined)
+      .includes(softwareToRemove)
+
+    // If it was a custom addition, add it to Others category
+    if (isCustomSoftware && !CATEGORIES.Others.includes(softwareToRemove)) {
+      CATEGORIES.Others.push(softwareToRemove)
+    }
   }
 
   const handleAddSoftware = () => {
@@ -195,6 +233,30 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
               focus:outline-none focus:ring-2 focus:ring-blue-500
               text-gray-900 dark:text-gray-100"
           />
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
+          {Object.keys(CATEGORIES).map(category => (
+            <button
+              key={category}
+              onClick={() => {
+                setActiveCategory(category)
+                setLocalSearchQuery('')
+              }}
+              className={`
+                px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
+                transition-colors
+                ${
+                  activeCategory === category && !localSearchQuery
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }
+              `}
+            >
+              {category}
+            </button>
+          ))}
         </div>
 
         <div className="grid gap-2.5">
