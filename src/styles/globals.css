@@ -2,6 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Scrollbar Styles */
+@layer utilities {
+  .custom-scrollbar {
+    /* For Webkit browsers like Chrome/Safari */
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(203 213 225 / 0.5);
+      border-radius: 9999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgb(148 163 184 / 0.7);
+    }
+
+    /* For Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(203 213 225 / 0.5) transparent;
+  }
+
+  /* Dark mode styles */
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(51 65 85 / 0.5);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(71 85 105 / 0.7);
+  }
+
+  .dark .custom-scrollbar {
+    scrollbar-color: rgb(51 65 85 / 0.5) transparent;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

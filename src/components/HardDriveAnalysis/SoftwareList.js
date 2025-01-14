@@ -84,7 +84,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
 
         <div
           className={`
-            min-h-[100px] max-h-[300px] overflow-y-auto
+            min-h-[100px] max-h-[300px] overflow-y-auto custom-scrollbar
             border-2 rounded-xl transition-colors duration-200
             ${
               draggedSoftware
