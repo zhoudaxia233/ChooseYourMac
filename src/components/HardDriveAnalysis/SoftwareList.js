@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-const CATEGORIES = {
-  All: [], // Will be populated with all software
-  Development: ['VS Code', 'Docker', 'Node.js', 'Git', 'Python'],
-  Design: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'Sketch'],
-  'Video & Audio': [
-    'Final Cut Pro',
-    'Adobe Premiere',
-    'Audacity',
-    'OBS Studio',
-  ],
-  Utilities: ['Chrome', 'Spotify', 'Slack', 'Discord', 'Zoom'],
-  Others: [], // Will contain software not in other categories
-}
-
 const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   const [softwareData, setSoftwareData] = useState({})
+  const [categories, setCategories] = useState({})
   const [draggedSoftware, setDraggedSoftware] = useState(null)
   const [localSearchQuery, setLocalSearchQuery] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
@@ -30,14 +17,24 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     fetch('/software-data.json')
       .then(response => response.json())
       .then(data => {
-        setSoftwareData(data)
+        setSoftwareData(data.software)
+
+        // Initialize categories with data from JSON
+        const allCategories = {
+          All: Object.keys(data.software),
+          ...data.categories,
+          Others: [],
+        }
+
         // Populate Others category with uncategorized software
-        const categorizedSoftware = new Set(Object.values(CATEGORIES).flat())
-        CATEGORIES.Others = Object.keys(data).filter(
+        const categorizedSoftware = new Set(
+          Object.values(data.categories).flat()
+        )
+        allCategories.Others = Object.keys(data.software).filter(
           software => !categorizedSoftware.has(software)
         )
-        // Populate All category with all software
-        CATEGORIES.All = Object.keys(data)
+
+        setCategories(allCategories)
       })
       .catch(error => console.error('Error loading software data:', error))
   }, [])
@@ -48,7 +45,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       .toLowerCase()
       .includes(localSearchQuery.toLowerCase())
     const matchesCategory =
-      activeCategory === 'All' || CATEGORIES[activeCategory].includes(software)
+      activeCategory === 'All' || categories[activeCategory]?.includes(software)
     return (
       !selectedSoftware.includes(software) && matchesSearch && matchesCategory
     )
@@ -87,8 +84,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     onSoftwareUpdate(newList)
 
     // Check if the removed software was a custom addition
-    // Exclude 'All' category from the check to avoid false negatives
-    const predefinedCategories = Object.entries(CATEGORIES)
+    const predefinedCategories = Object.entries(categories)
       .filter(([key]) => key !== 'All' && key !== 'Others')
       .map(([_, value]) => value)
       .flat()
@@ -97,8 +93,12 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     const isCustomSoftware = !predefinedCategories.includes(softwareToRemove)
 
     // If it was a custom addition, add it to Others category
-    if (isCustomSoftware && !CATEGORIES.Others.includes(softwareToRemove)) {
-      CATEGORIES.Others.push(softwareToRemove)
+    if (isCustomSoftware && !categories.Others.includes(softwareToRemove)) {
+      setCategories(prev => ({
+        ...prev,
+        Others: [...prev.Others, softwareToRemove],
+        All: [...prev.All, softwareToRemove],
+      }))
     }
   }
 
@@ -110,19 +110,19 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
         ? Number(newSoftware.size)
         : Number(newSoftware.size) / 1024
 
-    const updatedSoftwareData = {
-      ...softwareData,
+    setSoftwareData(prev => ({
+      ...prev,
       [newSoftware.name]: size,
-    }
-    setSoftwareData(updatedSoftwareData)
+    }))
 
-    // Add to All category
-    if (!CATEGORIES.All.includes(newSoftware.name)) {
-      CATEGORIES.All.push(newSoftware.name)
-    }
+    setCategories(prev => ({
+      ...prev,
+      All: [...prev.All, newSoftware.name],
+      Others: [...prev.Others, newSoftware.name],
+    }))
 
     onSoftwareUpdate([...selectedSoftware, newSoftware.name])
-    setActiveCategory('All') // Switch to All category
+    setActiveCategory('All')
     setNewSoftware({ name: '', size: '', unit: 'GB' })
     setLocalSearchQuery('')
     setShowAddForm(false)
@@ -255,7 +255,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
 
         {/* Category Tabs */}
         <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
-          {Object.keys(CATEGORIES).map(category => (
+          {Object.keys(categories).map(category => (
             <button
               key={category}
               onClick={() => {
