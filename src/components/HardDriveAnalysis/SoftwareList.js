@@ -3,6 +3,13 @@ import React, { useState, useEffect } from 'react'
 const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   const [softwareData, setSoftwareData] = useState({})
   const [draggedSoftware, setDraggedSoftware] = useState(null)
+  const [localSearchQuery, setLocalSearchQuery] = useState('')
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [newSoftware, setNewSoftware] = useState({
+    name: '',
+    size: '',
+    unit: 'GB',
+  })
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -11,32 +18,16 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       .catch(error => console.error('Error loading software data:', error))
   }, [])
 
-  // List of all available software
+  // Filter available software based on local search
   const availableSoftware = Object.keys(softwareData).filter(
     software =>
       !selectedSoftware.includes(software) &&
-      software.toLowerCase().includes(searchQuery.toLowerCase())
+      software.toLowerCase().includes(localSearchQuery.toLowerCase())
   )
 
   const handleDragStart = (e, software) => {
     setDraggedSoftware(software)
     e.dataTransfer.setData('software', software)
-
-    // Create custom drag image
-    const dragImage = document.createElement('div')
-    dragImage.className =
-      'px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700'
-    dragImage.innerHTML = software
-    dragImage.style.position = 'absolute'
-    dragImage.style.top = '-1000px'
-    document.body.appendChild(dragImage)
-
-    e.dataTransfer.setDragImage(dragImage, 0, 0)
-
-    // Clean up function
-    setTimeout(() => {
-      document.body.removeChild(dragImage)
-    }, 0)
   }
 
   const handleDragEnd = () => {
@@ -51,12 +42,10 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     e.preventDefault()
     const software = e.dataTransfer.getData('software')
 
-    // Prevent duplicates
     if (selectedSoftware.includes(software)) {
       return
     }
 
-    // Add new software to the list
     const newList = [...selectedSoftware]
     newList.splice(targetIndex, 0, software)
     onSoftwareUpdate(newList)
@@ -67,6 +56,23 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       software => software !== softwareToRemove
     )
     onSoftwareUpdate(newList)
+  }
+
+  const handleAddSoftware = () => {
+    if (!newSoftware.name || !newSoftware.size) return
+
+    const size =
+      newSoftware.unit === 'GB'
+        ? Number(newSoftware.size)
+        : Number(newSoftware.size) / 1024
+
+    const updatedSoftwareData = {
+      ...softwareData,
+      [newSoftware.name]: size,
+    }
+    setSoftwareData(updatedSoftwareData)
+    setNewSoftware({ name: '', size: '', unit: 'GB' })
+    setShowAddForm(false)
   }
 
   return (
@@ -117,8 +123,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                     </span>
                     <span
                       className="px-2.5 py-1 text-xs font-medium rounded-full 
-                      bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400
-                      group-hover:bg-gray-200 dark:group-hover:bg-gray-700 transition-colors"
+                      bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                     >
                       {softwareData[software]}GB
                     </span>
@@ -151,44 +156,144 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       </div>
 
       {/* Available Software Section */}
-      <div className="space-y-4 mt-8">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-base text-gray-900 dark:text-gray-100">
             Available Software
           </h3>
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-            Drag to add
-          </span>
+        </div>
+
+        {/* Search Input */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search software..."
+            value={localSearchQuery}
+            onChange={e => setLocalSearchQuery(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border border-gray-200 
+              dark:border-gray-700 bg-white dark:bg-gray-800
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+              text-gray-900 dark:text-gray-100"
+          />
         </div>
 
         <div className="grid gap-2.5">
-          {availableSoftware.map(software => (
-            <div
-              key={software}
-              draggable
-              onDragStart={e => handleDragStart(e, software)}
-              onDragEnd={handleDragEnd}
-              className={`
-                flex items-center justify-between p-3 
-                bg-gray-50/50 dark:bg-gray-800/30 backdrop-blur-sm
-                rounded-lg border border-gray-200 dark:border-gray-700
-                cursor-move hover:bg-gray-100/50 dark:hover:bg-gray-700/50
-                transition-all duration-300 hover:shadow-sm
-                hover:border-gray-300 dark:hover:border-gray-600
-                ${draggedSoftware === software ? 'opacity-50' : ''}
-              `}
-            >
-              <span className="font-medium text-gray-900 dark:text-gray-100">
-                {software}
-              </span>
-              <span
-                className="px-2.5 py-1 text-xs font-medium rounded-full 
-                bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+          {availableSoftware.length > 0 ? (
+            availableSoftware.map(software => (
+              <div
+                key={software}
+                draggable
+                onDragStart={e => handleDragStart(e, software)}
+                onDragEnd={handleDragEnd}
+                className="flex items-center justify-between p-3 
+                  bg-gray-50/50 dark:bg-gray-800/30 backdrop-blur-sm
+                  rounded-lg border border-gray-200 dark:border-gray-700
+                  cursor-move hover:bg-gray-100/50 dark:hover:bg-gray-700/50
+                  transition-all duration-300 hover:shadow-sm
+                  hover:border-gray-300 dark:hover:border-gray-600"
               >
-                {softwareData[software]}GB
-              </span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">
+                  {software}
+                </span>
+                <span
+                  className="px-2.5 py-1 text-xs font-medium rounded-full 
+                  bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                >
+                  {softwareData[software]}GB
+                </span>
+              </div>
+            ))
+          ) : showAddForm ? (
+            <div
+              className="space-y-4 p-4 border-2 border-dashed border-gray-200 
+              dark:border-gray-700 rounded-xl"
+            >
+              <input
+                type="text"
+                placeholder="Software name"
+                value={newSoftware.name || localSearchQuery}
+                onChange={e =>
+                  setNewSoftware({ ...newSoftware, name: e.target.value })
+                }
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 
+                  dark:border-gray-700 bg-white dark:bg-gray-800
+                  text-gray-900 dark:text-gray-100
+                  placeholder-gray-500 dark:placeholder-gray-400"
+              />
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  placeholder="Size"
+                  value={newSoftware.size}
+                  onChange={e =>
+                    setNewSoftware({ ...newSoftware, size: e.target.value })
+                  }
+                  className="flex-1 px-3 py-2 rounded-lg border border-gray-200 
+                    dark:border-gray-700 bg-white dark:bg-gray-800
+                    text-gray-900 dark:text-gray-100
+                    placeholder-gray-500 dark:placeholder-gray-400"
+                />
+                <select
+                  value={newSoftware.unit}
+                  onChange={e =>
+                    setNewSoftware({ ...newSoftware, unit: e.target.value })
+                  }
+                  className="px-3 py-2 rounded-lg border border-gray-200 
+                    dark:border-gray-700 bg-white dark:bg-gray-800
+                    text-gray-900 dark:text-gray-100"
+                >
+                  <option
+                    value="GB"
+                    className="text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
+                  >
+                    GB
+                  </option>
+                  <option
+                    value="MB"
+                    className="text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
+                  >
+                    MB
+                  </option>
+                </select>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleAddSoftware}
+                  className="flex-1 py-2 bg-blue-500 hover:bg-blue-600 
+                    text-white rounded-lg transition-colors"
+                >
+                  Add Software
+                </button>
+                <button
+                  onClick={() => setShowAddForm(false)}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 
+                    dark:bg-gray-800 dark:hover:bg-gray-700
+                    text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
-          ))}
+          ) : (
+            <div
+              className="space-y-4 p-4 border-2 border-dashed border-gray-200 
+              dark:border-gray-700 rounded-xl"
+            >
+              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                No matching software found
+              </p>
+              <button
+                onClick={() => {
+                  setShowAddForm(true)
+                  setNewSoftware({ ...newSoftware, name: localSearchQuery })
+                }}
+                className="w-full py-2 bg-blue-500 hover:bg-blue-600 
+                  text-white rounded-lg transition-colors"
+              >
+                Add New Software
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
