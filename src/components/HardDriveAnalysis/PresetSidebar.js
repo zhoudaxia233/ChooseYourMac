@@ -1,26 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
-  const presets = [
-    {
-      id: 'web-dev',
-      name: 'Web Developer',
-      software: ['VS Code', 'Docker', 'Node.js', 'Chrome'],
-      totalSize: 45,
-    },
-    {
-      id: 'video-edit',
-      name: 'Video Editor',
-      software: ['Final Cut Pro', 'Adobe Premiere', 'DaVinci Resolve'],
-      totalSize: 85,
-    },
-    {
-      id: 'designer',
-      name: 'Designer',
-      software: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator'],
-      totalSize: 65,
-    },
-  ]
+  const [presets, setPresets] = useState([])
+
+  useEffect(() => {
+    fetch('/presets.json')
+      .then(response => response.json())
+      .then(data => setPresets(data.presets))
+      .catch(error => console.error('Error loading presets:', error))
+  }, [])
 
   return (
     <div className="space-y-2">
