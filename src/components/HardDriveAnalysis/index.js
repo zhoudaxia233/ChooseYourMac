@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import PresetSidebar from './PresetSidebar'
 import SoftwareList from './SoftwareList'
+import StorageSelector from '../StorageSelector'
 
 const HardDriveAnalysis = ({ searchQuery }) => {
   const [selectedSoftware, setSelectedSoftware] = useState([])
   const [selectedPresetId, setSelectedPresetId] = useState(null)
   const [usedSpace, setUsedSpace] = useState(0)
   const [softwareData, setSoftwareData] = useState({})
-  const STORAGE_LIMIT = 128
+  const [storageLimit, setStorageLimit] = useState(256) // 默认 256GB
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -38,7 +39,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     setSelectedSoftware(newSoftwareList)
   }
 
-  const usagePercentage = (usedSpace / STORAGE_LIMIT) * 100
+  const usagePercentage = (usedSpace / storageLimit) * 100
 
   return (
     <div
@@ -54,12 +55,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           >
             Storage Analysis
           </h2>
-          <div
-            className="text-sm font-medium px-3 py-1 rounded-full 
-            bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
-          >
-            {STORAGE_LIMIT}GB Total
-          </div>
+          <StorageSelector onStorageChange={setStorageLimit} />
         </div>
 
         {/* Progress Bar Section */}
@@ -71,7 +67,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
             </span>
             <span className="flex items-center text-gray-600 dark:text-gray-400">
               <div className="w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700 mr-2" />
-              Available: {(STORAGE_LIMIT - usedSpace).toFixed(1)}GB
+              Available: {(storageLimit - usedSpace).toFixed(1)}GB
             </span>
           </div>
 
@@ -87,11 +83,13 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   ? 'bg-gradient-to-r from-yellow-400 to-yellow-500'
                   : 'bg-gradient-to-r from-blue-500 to-blue-600'
               }`}
-              style={{ width: `${Math.min(usagePercentage, 100)}%` }}
+              style={{
+                width: `${Math.min((usedSpace / storageLimit) * 100, 100)}%`,
+              }}
             />
           </div>
 
-          {usagePercentage > 100 && (
+          {usedSpace > storageLimit && (
             <p className="flex items-center text-red-500 text-sm animate-pulse">
               <svg
                 className="w-4 h-4 mr-2"
@@ -106,7 +104,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                 />
               </svg>
-              Storage limit exceeded by {(usedSpace - STORAGE_LIMIT).toFixed(1)}
+              Storage limit exceeded by {(usedSpace - storageLimit).toFixed(1)}
               GB
             </p>
           )}
