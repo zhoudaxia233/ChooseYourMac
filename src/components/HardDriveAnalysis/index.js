@@ -14,6 +14,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     details: null,
   })
   const [isResetting, setIsResetting] = useState(false)
+  const [tooltipPosition, setTooltipPosition] = useState(50)
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -80,6 +81,14 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     }
   }
 
+  const handleMouseMove = e => {
+    const bar = e.currentTarget
+    const rect = bar.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const percentage = (x / rect.width) * 100
+    setTooltipPosition(percentage)
+  }
+
   return (
     <div
       className="rounded-2xl border border-black/[.08] dark:border-white/[.145] 
@@ -139,7 +148,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           </div>
 
           {/* Progress Bar with Tooltip */}
-          <div className="relative group">
+          <div className="relative group" onMouseMove={handleMouseMove}>
             <div
               className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden 
                 ring-1 ring-black/[.04] dark:ring-white/[.05]"
@@ -173,44 +182,50 @@ const HardDriveAnalysis = ({ searchQuery }) => {
 
             {/* Tooltip */}
             <div
-              className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
-              opacity-0 group-hover:opacity-100 transition-opacity
-              bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3
-              border border-gray-200 dark:border-gray-700
-              w-64 pointer-events-none"
+              className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 
+                transition-opacity pointer-events-none"
+              style={{
+                left: `${tooltipPosition}%`,
+                transform: `translateX(-${tooltipPosition > 50 ? 100 : 0}%)`,
+              }}
             >
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    System Files:
-                  </span>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {systemSpace.details?.os.size_in_GB}GB
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Pre-installed Apps:
-                  </span>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {systemSpace.details?.preinstalled.size_in_GB}GB
-                  </span>
-                </div>
-                <div className="flex justify-between pt-1 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    User Software:
-                  </span>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {usedSpace.toFixed(1)}GB
-                  </span>
-                </div>
-                <div className="flex justify-between font-medium pt-1 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-gray-900 dark:text-gray-100">
-                    Total Used:
-                  </span>
-                  <span className="text-gray-900 dark:text-gray-100">
-                    {totalUsedSpace.toFixed(1)}GB
-                  </span>
+              <div
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3
+                border border-gray-200 dark:border-gray-700 w-64"
+              >
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      System Files:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      {systemSpace.details?.os.size_in_GB}GB
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Pre-installed Apps:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      {systemSpace.details?.preinstalled.size_in_GB}GB
+                    </span>
+                  </div>
+                  <div className="flex justify-between pt-1 border-t border-gray-200 dark:border-gray-700">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      User Software:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      {usedSpace.toFixed(1)}GB
+                    </span>
+                  </div>
+                  <div className="flex justify-between font-medium pt-1 border-t border-gray-200 dark:border-gray-700">
+                    <span className="text-gray-900 dark:text-gray-100">
+                      Total Used:
+                    </span>
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {totalUsedSpace.toFixed(1)}GB
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
