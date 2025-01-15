@@ -79,6 +79,22 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     e.preventDefault()
   }
 
+  const scrollToBottom = () => {
+    // 等待 DOM 更新完成
+    requestAnimationFrame(() => {
+      const selectedContainer = document.querySelector(
+        '.selected-software-container'
+      )
+      if (selectedContainer) {
+        // 使用 scrollTo 带有平滑滚动效果
+        selectedContainer.scrollTo({
+          top: selectedContainer.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
+    })
+  }
+
   const handleDrop = (e, targetIndex) => {
     e.preventDefault()
     const software = e.dataTransfer.getData('software')
@@ -90,16 +106,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     const newList = [...selectedSoftware]
     newList.splice(targetIndex, 0, software)
     onSoftwareUpdate(newList)
-
-    // Scroll to bottom after drop
-    setTimeout(() => {
-      const selectedContainer = document.querySelector(
-        '.selected-software-container'
-      )
-      if (selectedContainer) {
-        selectedContainer.scrollTop = selectedContainer.scrollHeight
-      }
-    }, 0)
+    scrollToBottom()
   }
 
   const handleRemove = softwareToRemove => {
@@ -151,28 +158,27 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     setNewSoftware({ name: '', size: '', unit: 'GB' })
     setLocalSearchQuery('')
     setShowAddForm(false)
-
-    // Scroll to bottom after adding new software
-    setTimeout(() => {
-      const selectedContainer = document.querySelector(
-        '.selected-software-container'
-      )
-      if (selectedContainer) {
-        selectedContainer.scrollTop = selectedContainer.scrollHeight
-      }
-    }, 0)
+    scrollToBottom()
   }
 
   const handleKeyPress = e => {
     if (e.key === 'Enter') {
       if (!showAddForm) {
-        // Press Enter in search mode, if no matching results, show add form
+        // 如果搜索结果只有一个，直接添加到 Selected Software
+        if (availableSoftware.length === 1) {
+          onSoftwareUpdate([...selectedSoftware, availableSoftware[0].id])
+          setLocalSearchQuery('')
+          scrollToBottom()
+          return
+        }
+
+        // 如果没有匹配结果，显示添加表单
         if (availableSoftware.length === 0) {
           setShowAddForm(true)
           setNewSoftware({ ...newSoftware, name: localSearchQuery })
         }
       } else {
-        // Press Enter in add form mode, trigger add function
+        // 在表单模式下，触发添加功能
         handleAddSoftware()
       }
     }
