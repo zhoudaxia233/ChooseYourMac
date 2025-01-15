@@ -199,57 +199,72 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
           onDrop={e => handleDrop(e, selectedSoftware.length)}
           onDragEnter={e => e.preventDefault()}
         >
-          <div className="p-4 space-y-2.5">
+          <div className="p-4">
             {selectedSoftware.length === 0 ? (
               <div className="flex items-center justify-center h-20 text-sm text-gray-500 dark:text-gray-400">
                 Drag software here to add
               </div>
             ) : (
-              selectedSoftware.map(softwareId => {
-                const software = getSoftwareDetails(softwareId)
-                return software ? (
-                  <div
-                    key={software.id}
-                    className="group flex items-center justify-between p-3 
-                    bg-white dark:bg-gray-800/50 backdrop-blur-sm
-                    rounded-lg border border-gray-200 dark:border-gray-700 
-                    shadow-sm hover:shadow-md transition-all duration-300
-                    hover:border-gray-300 dark:hover:border-gray-600"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {software.name}
-                      </span>
-                      <span
-                        className="px-2.5 py-1 text-xs font-medium rounded-full 
-                        bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+                {selectedSoftware.map(softwareId => {
+                  const software = getSoftwareDetails(softwareId)
+                  return software ? (
+                    <div
+                      key={software.id}
+                      className="group relative bg-white dark:bg-gray-800/50 
+                        backdrop-blur-sm rounded-xl border border-gray-200 
+                        dark:border-gray-700 shadow-sm hover:shadow-md 
+                        transition-all duration-300 hover:border-gray-300 
+                        dark:hover:border-gray-600 p-4"
+                    >
+                      {/* Size Badge */}
+                      <div
+                        className="absolute top-3 right-3 px-2.5 py-1 text-xs 
+                          font-medium rounded-full bg-gray-100 text-gray-600 
+                          dark:bg-gray-800 dark:text-gray-400"
                       >
                         {software.size_in_GB}GB
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => handleRemove(software.id)}
-                      className="p-2 rounded-full text-gray-400 hover:text-red-500 
-                        hover:bg-red-50 dark:hover:bg-red-900/30 transition-all
-                        opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                      </div>
+
+                      {/* Software Name */}
+                      <div className="pr-16">
+                        {' '}
+                        {/* Add right padding to avoid overlap with size badge */}
+                        <h4
+                          className="font-medium text-gray-900 dark:text-gray-100 
+                            truncate group-hover:whitespace-normal group-hover:text-clip"
+                          title={software.name}
+                        >
+                          {software.name}
+                        </h4>
+                      </div>
+
+                      {/* Remove Button */}
+                      <button
+                        onClick={() => handleRemove(software.id)}
+                        className="absolute bottom-3 right-3 p-2 rounded-full 
+                          text-gray-400 hover:text-red-500 hover:bg-red-50 
+                          dark:hover:bg-red-900/30 transition-all opacity-0 
+                          group-hover:opacity-100 scale-90 group-hover:scale-100"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                ) : null
-              })
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : null
+                })}
+              </div>
             )}
           </div>
         </div>
