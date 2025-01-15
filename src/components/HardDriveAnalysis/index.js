@@ -13,6 +13,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     size: 0,
     details: null,
   })
+  const [isResetting, setIsResetting] = useState(false)
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -69,9 +70,13 @@ const HardDriveAnalysis = ({ searchQuery }) => {
       'This will reset all selections to default. Are you sure?'
     )
     if (confirmReset) {
+      setIsResetting(true)
       setSelectedSoftware([])
       setSelectedPresetId(null)
       setUsedSpace(0)
+      setTimeout(() => {
+        setIsResetting(false)
+      }, 0)
     }
   }
 
@@ -144,11 +149,13 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 className="h-full bg-gray-300 dark:bg-gray-600 absolute left-0"
                 style={{
                   width: `${(systemSpace.size / storageLimit) * 100}%`,
+                  borderRadius: usedSpace > 0 ? '9999px 0 0 9999px' : '9999px',
                 }}
               />
               {/* User Space */}
               <div
-                className={`h-full transition-all duration-500 ease-out relative
+                className={`h-full relative
+                  ${!isResetting ? 'transition-all duration-500 ease-out' : ''}
                   ${
                     usagePercentage > 90
                       ? 'bg-gradient-to-r from-red-500 to-red-600'
@@ -159,6 +166,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 style={{
                   width: `${(usedSpace / storageLimit) * 100}%`,
                   marginLeft: `${(systemSpace.size / storageLimit) * 100}%`,
+                  borderRadius: '0 9999px 9999px 0',
                 }}
               />
             </div>
