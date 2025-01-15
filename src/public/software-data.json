@@ -112,5 +112,17 @@
             "icon": "",
             "order": 5
         }
-    ]
+    ],
+    "system": {
+        "os": {
+            "name": "Operating System",
+            "size_in_GB": 25,
+            "description": "System files, drivers and basic utilities"
+        },
+        "preinstalled": {
+            "name": "Pre-installed Apps",
+            "size_in_GB": 10,
+            "description": "Default applications and system tools"
+        }
+    }
 }

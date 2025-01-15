@@ -9,6 +9,24 @@ const HardDriveAnalysis = ({ searchQuery }) => {
   const [usedSpace, setUsedSpace] = useState(0)
   const [softwareList, setSoftwareList] = useState([])
   const [storageLimit, setStorageLimit] = useState(256)
+  const [systemSpace, setSystemSpace] = useState({
+    size: 0,
+    details: null,
+  })
+
+  useEffect(() => {
+    fetch('/software-data.json')
+      .then(response => response.json())
+      .then(data => {
+        const totalSystemSpace =
+          data.system.os.size_in_GB + data.system.preinstalled.size_in_GB
+        setSystemSpace({
+          size: totalSystemSpace,
+          details: data.system,
+        })
+      })
+      .catch(error => console.error('Error loading system data:', error))
+  }, [])
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -39,7 +57,8 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     setSelectedSoftware(newSoftwareList)
   }
 
-  const usagePercentage = (usedSpace / storageLimit) * 100
+  const totalUsedSpace = usedSpace + systemSpace.size
+  const usagePercentage = (totalUsedSpace / storageLimit) * 100
 
   const handleReset = () => {
     const confirmReset = window.confirm(
@@ -97,56 +116,93 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           </div>
         </div>
 
-        {/* Progress Bar Section */}
+        {/* Progress Bar Section with Tooltip */}
         <div className="mt-6 space-y-4">
           <div className="flex justify-between text-sm font-medium">
             <span className="flex items-center text-gray-600 dark:text-gray-400">
               <div className="w-2 h-2 rounded-full bg-blue-500 mr-2" />
-              Used: {usedSpace.toFixed(1)}GB
+              Used: {totalUsedSpace.toFixed(1)}GB
             </span>
             <span className="flex items-center text-gray-600 dark:text-gray-400">
               <div className="w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700 mr-2" />
-              Available: {(storageLimit - usedSpace).toFixed(1)}GB
+              Available: {(storageLimit - totalUsedSpace).toFixed(1)}GB
             </span>
           </div>
 
-          <div
-            className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden 
-            ring-1 ring-black/[.04] dark:ring-white/[.05]"
-          >
+          {/* Progress Bar with Tooltip */}
+          <div className="relative group">
             <div
-              className={`h-full transition-all duration-500 ease-out ${
-                usagePercentage > 90
-                  ? 'bg-gradient-to-r from-red-500 to-red-600'
-                  : usagePercentage > 70
-                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500'
-                  : 'bg-gradient-to-r from-blue-500 to-blue-600'
-              }`}
-              style={{
-                width: `${Math.min((usedSpace / storageLimit) * 100, 100)}%`,
-              }}
-            />
-          </div>
+              className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden 
+                ring-1 ring-black/[.04] dark:ring-white/[.05]"
+            >
+              {/* System Space */}
+              <div
+                className="h-full bg-gray-300 dark:bg-gray-600 absolute left-0"
+                style={{
+                  width: `${(systemSpace.size / storageLimit) * 100}%`,
+                }}
+              />
+              {/* User Space */}
+              <div
+                className={`h-full transition-all duration-500 ease-out relative
+                  ${
+                    usagePercentage > 90
+                      ? 'bg-gradient-to-r from-red-500 to-red-600'
+                      : usagePercentage > 70
+                      ? 'bg-gradient-to-r from-yellow-400 to-yellow-500'
+                      : 'bg-gradient-to-r from-blue-500 to-blue-600'
+                  }`}
+                style={{
+                  width: `${(usedSpace / storageLimit) * 100}%`,
+                  marginLeft: `${(systemSpace.size / storageLimit) * 100}%`,
+                }}
+              />
+            </div>
 
-          {usedSpace > storageLimit && (
-            <p className="flex items-center text-red-500 text-sm animate-pulse">
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              Storage limit exceeded by {(usedSpace - storageLimit).toFixed(1)}
-              GB
-            </p>
-          )}
+            {/* Tooltip */}
+            <div
+              className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+              opacity-0 group-hover:opacity-100 transition-opacity
+              bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3
+              border border-gray-200 dark:border-gray-700
+              w-64 pointer-events-none"
+            >
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    System Files:
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {systemSpace.details?.os.size_in_GB}GB
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Pre-installed Apps:
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {systemSpace.details?.preinstalled.size_in_GB}GB
+                  </span>
+                </div>
+                <div className="flex justify-between pt-1 border-t border-gray-200 dark:border-gray-700">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    User Software:
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {usedSpace.toFixed(1)}GB
+                  </span>
+                </div>
+                <div className="flex justify-between font-medium pt-1 border-t border-gray-200 dark:border-gray-700">
+                  <span className="text-gray-900 dark:text-gray-100">
+                    Total Used:
+                  </span>
+                  <span className="text-gray-900 dark:text-gray-100">
+                    {totalUsedSpace.toFixed(1)}GB
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
