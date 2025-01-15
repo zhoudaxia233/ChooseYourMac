@@ -206,7 +206,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
         <div
           className={`
             selected-software-container
-            min-h-[100px] max-h-[200px] overflow-y-auto custom-scrollbar
+            min-h-[100px] max-h-[150px] overflow-y-auto custom-scrollbar
             border-2 rounded-xl transition-colors duration-200
             ${
               draggedSoftware

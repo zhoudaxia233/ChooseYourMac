@@ -41,6 +41,17 @@ const HardDriveAnalysis = ({ searchQuery }) => {
 
   const usagePercentage = (usedSpace / storageLimit) * 100
 
+  const handleReset = () => {
+    const confirmReset = window.confirm(
+      'This will reset all selections to default. Are you sure?'
+    )
+    if (confirmReset) {
+      setSelectedSoftware([])
+      setSelectedPresetId(null)
+      setUsedSpace(0)
+    }
+  }
+
   return (
     <div
       className="rounded-2xl border border-black/[.08] dark:border-white/[.145] 
@@ -55,7 +66,35 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           >
             Storage Analysis
           </h2>
-          <StorageSelector onStorageChange={setStorageLimit} />
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleReset}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg
+                border border-gray-200 dark:border-gray-700
+                text-gray-600 dark:text-gray-300
+                hover:bg-gray-50 dark:hover:bg-gray-800
+                transition-colors duration-200"
+              title="Reset to default presets"
+            >
+              <div className="flex items-center gap-1.5">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+                Reset
+              </div>
+            </button>
+            <StorageSelector onStorageChange={setStorageLimit} />
+          </div>
         </div>
 
         {/* Progress Bar Section */}
