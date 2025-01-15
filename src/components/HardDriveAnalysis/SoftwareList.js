@@ -359,7 +359,7 @@ const SoftwareList = ({
         <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
           {categoryList.map(category => (
             <button
-              key={category.id}
+              key={category.id || category}
               onClick={() => {
                 setActiveCategory(category.name)
                 setLocalSearchQuery('')
@@ -374,7 +374,7 @@ const SoftwareList = ({
                 }
               `}
             >
-              {category.name}
+              {category.name || category}
             </button>
           ))}
         </div>
