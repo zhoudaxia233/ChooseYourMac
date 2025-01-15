@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
-  const [softwareList, setSoftwareList] = useState([])
+const SoftwareList = ({
+  selectedSoftware,
+  onSoftwareUpdate,
+  onSoftwareListUpdate,
+  searchQuery,
+  softwareList,
+}) => {
   const [categoryList, setCategoryList] = useState([])
   const [draggedSoftware, setDraggedSoftware] = useState(null)
   const [localSearchQuery, setLocalSearchQuery] = useState('')
@@ -17,7 +22,6 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     fetch('/software-data.json')
       .then(response => response.json())
       .then(data => {
-        setSoftwareList(data.software)
         setCategoryList([
           { id: 'all', name: 'All', order: 0 },
           ...data.categories.sort((a, b) => a.order - b.order),
@@ -125,8 +129,8 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
 
     // If it was a custom addition, update its category to Others
     if (isCustomSoftware) {
-      setSoftwareList(prev =>
-        prev.map(software =>
+      onSoftwareListUpdate(
+        softwareList.map(software =>
           software.id === softwareToRemove
             ? { ...software, category: 'Others' }
             : software
@@ -152,7 +156,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
       description: '',
     }
 
-    setSoftwareList(prev => [...prev, newSoftwareItem])
+    onSoftwareListUpdate([...softwareList, newSoftwareItem])
     onSoftwareUpdate([...selectedSoftware, newSoftwareItem.id])
     setActiveCategory('All')
     setNewSoftware({ name: '', size: '', unit: 'GB' })
