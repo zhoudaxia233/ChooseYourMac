@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>MacBook Buying Guide - Storage & Memory Calculator</title>
+        <title>ChooseYourMac - Storage & Memory Calculator</title>
         <meta
           name="description"
           content="The easiest MacBook buying guide for budget-conscious users. Find your perfect MacBook without overspending with our intuitive tools for storage and memory performance."
@@ -32,10 +32,7 @@ export default function Home() {
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-white dark:bg-black border-b border-black/[.08] dark:border-white/[.145] p-4">
-          <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              Last updated: {daysSinceUpdate} days ago
-            </div>
+          <div className="max-w-5xl mx-auto flex justify-end">
             <ThemeToggle />
           </div>
         </div>
@@ -44,6 +41,14 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
           <HardDriveAnalysis searchQuery={searchQuery} />
           <MemoryAnalysis />
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-black/[.08] dark:border-white/[.145] bg-white dark:bg-black">
+          <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+            <span>Last updated: {daysSinceUpdate} days ago</span>
+            <span>© 2024 ChooseYourMac</span>
+          </div>
         </div>
       </main>
     </>
