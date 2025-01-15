@@ -230,7 +230,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                 Drag software here to add
               </div>
             ) : (
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2">
                 {selectedSoftware.map(softwareId => {
                   const software = getSoftwareDetails(softwareId)
                   return software ? (
@@ -240,13 +240,14 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                         backdrop-blur-sm rounded-lg border border-gray-200 
                         dark:border-gray-700 shadow-sm hover:shadow-md 
                         transition-all duration-300 hover:border-gray-300 
-                        dark:hover:border-gray-600 p-3"
+                        dark:hover:border-gray-600 p-2"
                     >
-                      {/* Size Badge */}
+                      {/* Size Badge - 只在悬停时显示 */}
                       <div
                         className="absolute top-2 right-2 px-2 py-0.5 text-xs 
                           font-medium rounded-full bg-gray-100 text-gray-600 
-                          dark:bg-gray-800 dark:text-gray-400"
+                          dark:bg-gray-800 dark:text-gray-400
+                          opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         {software.size_in_GB}GB
                       </div>
@@ -254,13 +255,20 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                       {/* Remove Button */}
                       <button
                         onClick={() => handleRemove(software.id)}
-                        className="absolute top-2 left-2 p-1 rounded-full 
-                          text-gray-400 hover:text-red-500 hover:bg-red-50 
-                          dark:hover:bg-red-900/30 transition-all
-                          opacity-50 hover:opacity-100"
+                        className="absolute top-1.5 left-1.5 
+                          w-6 h-6  // 固定宽高
+                          rounded-full 
+                          text-gray-400 hover:text-red-500
+                          bg-transparent hover:bg-red-50  // 添加背景色
+                          dark:hover:bg-red-900/30 
+                          transition-all
+                          opacity-0 group-hover:opacity-100
+                          flex items-center justify-center
+                          cursor-pointer  // 确保鼠标样式正确
+                          z-10" // 确保按钮在最上层
                       >
                         <svg
-                          className="w-3.5 h-3.5"
+                          className="w-3.5 h-3.5 pointer-events-none" // 防止 SVG 影响点击事件
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -275,10 +283,10 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                       </button>
 
                       {/* Software Name */}
-                      <div className="px-8">
+                      <div className="px-2">
                         <h4
                           className="font-medium text-sm text-gray-900 dark:text-gray-100 
-                            truncate group-hover:whitespace-normal group-hover:text-clip"
+                            truncate group-hover:opacity-0 transition-opacity"
                           title={software.name}
                         >
                           {software.name}
