@@ -90,6 +90,16 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     const newList = [...selectedSoftware]
     newList.splice(targetIndex, 0, software)
     onSoftwareUpdate(newList)
+
+    // Scroll to bottom after drop
+    setTimeout(() => {
+      const selectedContainer = document.querySelector(
+        '.selected-software-container'
+      )
+      if (selectedContainer) {
+        selectedContainer.scrollTop = selectedContainer.scrollHeight
+      }
+    }, 0)
   }
 
   const handleRemove = softwareToRemove => {
@@ -143,6 +153,16 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
     setNewSoftware({ name: '', size: '', unit: 'GB' })
     setLocalSearchQuery('')
     setShowAddForm(false)
+
+    // Scroll to bottom after adding new software
+    setTimeout(() => {
+      const selectedContainer = document.querySelector(
+        '.selected-software-container'
+      )
+      if (selectedContainer) {
+        selectedContainer.scrollTop = selectedContainer.scrollHeight
+      }
+    }, 0)
   }
 
   const handleKeyPress = e => {
@@ -187,6 +207,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
 
         <div
           className={`
+            selected-software-container
             min-h-[100px] max-h-[300px] overflow-y-auto custom-scrollbar
             border-2 rounded-xl transition-colors duration-200
             ${
