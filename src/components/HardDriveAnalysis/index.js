@@ -7,27 +7,27 @@ const HardDriveAnalysis = ({ searchQuery }) => {
   const [selectedSoftware, setSelectedSoftware] = useState([])
   const [selectedPresetId, setSelectedPresetId] = useState(null)
   const [usedSpace, setUsedSpace] = useState(0)
-  const [softwareData, setSoftwareData] = useState({})
-  const [storageLimit, setStorageLimit] = useState(256) // 默认 256GB
+  const [softwareList, setSoftwareList] = useState([])
+  const [storageLimit, setStorageLimit] = useState(256)
 
   useEffect(() => {
     fetch('/software-data.json')
       .then(response => response.json())
-      .then(data => setSoftwareData(data))
+      .then(data => setSoftwareList(data.software))
       .catch(error => console.error('Error loading software data:', error))
   }, [])
 
-  const calculateUsedSpace = software => {
-    return software.reduce((total, app) => {
-      const size = softwareData[app] || 0
-      return total + size
+  const calculateUsedSpace = softwareIds => {
+    return softwareIds.reduce((total, id) => {
+      const software = softwareList.find(s => s.id === id)
+      return total + (software?.size_in_GB || 0)
     }, 0)
   }
 
   useEffect(() => {
     const newUsedSpace = calculateUsedSpace(selectedSoftware)
     setUsedSpace(newUsedSpace)
-  }, [selectedSoftware, softwareData])
+  }, [selectedSoftware, softwareList])
 
   const handlePresetSelect = preset => {
     setSelectedPresetId(preset.id)
@@ -35,7 +35,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
   }
 
   const handleSoftwareUpdate = newSoftwareList => {
-    setSelectedPresetId(null) // Clear preset selection when software list is modified
+    setSelectedPresetId(null)
     setSelectedSoftware(newSoftwareList)
   }
 

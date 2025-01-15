@@ -276,129 +276,131 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
           ))}
         </div>
 
-        <div className="grid gap-2.5">
-          {availableSoftware.length > 0 ? (
-            availableSoftware.map(software => (
-              <div
-                key={software.id}
-                draggable
-                onDragStart={e => handleDragStart(e, software.id)}
-                className="flex items-center justify-between p-3 
-                  bg-gray-50/50 dark:bg-gray-800/30 backdrop-blur-sm
-                  rounded-lg border border-gray-200 dark:border-gray-700
-                  cursor-move hover:bg-gray-100/50 dark:hover:bg-gray-700/50
-                  transition-all duration-300 hover:shadow-sm
-                  hover:border-gray-300 dark:hover:border-gray-600"
-              >
-                <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {software.name}
-                </span>
-                <span
-                  className="px-2.5 py-1 text-xs font-medium rounded-full 
-                  bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+        <div className="min-h-[100px] max-h-[300px] overflow-y-auto custom-scrollbar">
+          <div className="grid gap-2.5 p-4">
+            {availableSoftware.length > 0 ? (
+              availableSoftware.map(software => (
+                <div
+                  key={software.id}
+                  draggable
+                  onDragStart={e => handleDragStart(e, software.id)}
+                  className="flex items-center justify-between p-3 
+                    bg-gray-50/50 dark:bg-gray-800/30 backdrop-blur-sm
+                    rounded-lg border border-gray-200 dark:border-gray-700
+                    cursor-move hover:bg-gray-100/50 dark:hover:bg-gray-700/50
+                    transition-all duration-300 hover:shadow-sm
+                    hover:border-gray-300 dark:hover:border-gray-600"
                 >
-                  {software.size_in_GB}GB
-                </span>
-              </div>
-            ))
-          ) : showAddForm ? (
-            <div
-              className="space-y-4 p-4 border-2 border-dashed border-gray-200 
-              dark:border-gray-700 rounded-xl"
-            >
-              <input
-                type="text"
-                placeholder="Software name"
-                value={newSoftware.name || localSearchQuery}
-                onChange={e =>
-                  setNewSoftware({ ...newSoftware, name: e.target.value })
-                }
-                onKeyPress={handleKeyPress}
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 
-                  dark:border-gray-700 bg-white dark:bg-gray-800
-                  text-gray-900 dark:text-gray-100
-                  placeholder-gray-500 dark:placeholder-gray-400"
-              />
-              <div className="flex gap-2">
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {software.name}
+                  </span>
+                  <span
+                    className="px-2.5 py-1 text-xs font-medium rounded-full 
+                    bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                  >
+                    {software.size_in_GB}GB
+                  </span>
+                </div>
+              ))
+            ) : showAddForm ? (
+              <div
+                className="space-y-4 p-4 border-2 border-dashed border-gray-200 
+                dark:border-gray-700 rounded-xl"
+              >
                 <input
-                  type="number"
-                  min="0"
-                  placeholder="Size"
-                  value={newSoftware.size}
-                  onChange={e => {
-                    const value = e.target.value
-                    setNewSoftware({
-                      ...newSoftware,
-                      size: value === '' ? '' : Math.max(0, Number(value)),
-                    })
-                  }}
+                  type="text"
+                  placeholder="Software name"
+                  value={newSoftware.name || localSearchQuery}
+                  onChange={e =>
+                    setNewSoftware({ ...newSoftware, name: e.target.value })
+                  }
                   onKeyPress={handleKeyPress}
-                  className="flex-1 px-3 py-2 rounded-lg border border-gray-200 
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 
                     dark:border-gray-700 bg-white dark:bg-gray-800
                     text-gray-900 dark:text-gray-100
                     placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <select
-                  value={newSoftware.unit}
-                  onChange={e =>
-                    setNewSoftware({ ...newSoftware, unit: e.target.value })
-                  }
-                  className="px-3 py-2 rounded-lg border border-gray-200 
-                    dark:border-gray-700 bg-white dark:bg-gray-800
-                    text-gray-900 dark:text-gray-100"
-                >
-                  <option
-                    value="GB"
-                    className="text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="Size"
+                    value={newSoftware.size}
+                    onChange={e => {
+                      const value = e.target.value
+                      setNewSoftware({
+                        ...newSoftware,
+                        size: value === '' ? '' : Math.max(0, Number(value)),
+                      })
+                    }}
+                    onKeyPress={handleKeyPress}
+                    className="flex-1 px-3 py-2 rounded-lg border border-gray-200 
+                      dark:border-gray-700 bg-white dark:bg-gray-800
+                      text-gray-900 dark:text-gray-100
+                      placeholder-gray-500 dark:placeholder-gray-400"
+                  />
+                  <select
+                    value={newSoftware.unit}
+                    onChange={e =>
+                      setNewSoftware({ ...newSoftware, unit: e.target.value })
+                    }
+                    className="px-3 py-2 rounded-lg border border-gray-200 
+                      dark:border-gray-700 bg-white dark:bg-gray-800
+                      text-gray-900 dark:text-gray-100"
                   >
-                    GB
-                  </option>
-                  <option
-                    value="MB"
-                    className="text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
+                    <option
+                      value="GB"
+                      className="text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
+                    >
+                      GB
+                    </option>
+                    <option
+                      value="MB"
+                      className="text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800"
+                    >
+                      MB
+                    </option>
+                  </select>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleAddSoftware}
+                    className="flex-1 py-2 bg-blue-500 hover:bg-blue-600 
+                      text-white rounded-lg transition-colors"
                   >
-                    MB
-                  </option>
-                </select>
+                    Add to Selection
+                  </button>
+                  <button
+                    onClick={() => setShowAddForm(false)}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 
+                      dark:bg-gray-800 dark:hover:bg-gray-700
+                      text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-2">
+            ) : (
+              <div
+                className="space-y-4 p-4 border-2 border-dashed border-gray-200 
+                dark:border-gray-700 rounded-xl"
+              >
+                <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                  No matching software found
+                </p>
                 <button
-                  onClick={handleAddSoftware}
-                  className="flex-1 py-2 bg-blue-500 hover:bg-blue-600 
+                  onClick={() => {
+                    setShowAddForm(true)
+                    setNewSoftware({ ...newSoftware, name: localSearchQuery })
+                  }}
+                  className="w-full py-2 bg-blue-500 hover:bg-blue-600 
                     text-white rounded-lg transition-colors"
                 >
-                  Add to Selection
-                </button>
-                <button
-                  onClick={() => setShowAddForm(false)}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 
-                    dark:bg-gray-800 dark:hover:bg-gray-700
-                    text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
-                >
-                  Cancel
+                  Add New Software
                 </button>
               </div>
-            </div>
-          ) : (
-            <div
-              className="space-y-4 p-4 border-2 border-dashed border-gray-200 
-              dark:border-gray-700 rounded-xl"
-            >
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                No matching software found
-              </p>
-              <button
-                onClick={() => {
-                  setShowAddForm(true)
-                  setNewSoftware({ ...newSoftware, name: localSearchQuery })
-                }}
-                className="w-full py-2 bg-blue-500 hover:bg-blue-600 
-                  text-white rounded-lg transition-colors"
-              >
-                Add New Software
-              </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

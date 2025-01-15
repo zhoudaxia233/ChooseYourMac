@@ -4,20 +4,20 @@
             "id": "web-dev",
             "name": "Web Developer",
             "software": [
-                "VS Code",
-                "Docker",
-                "Node.js",
-                "Chrome"
+                "vscode",
+                "docker",
+                "nodejs",
+                "chrome"
             ],
-            "totalSize": 45
+            "totalSize": 4
         },
         {
             "id": "video-edit",
             "name": "Video Editor",
             "software": [
-                "Final Cut Pro",
-                "Adobe Premiere",
-                "DaVinci Resolve"
+                "finalcutpro",
+                "premiere",
+                "davinci"
             ],
             "totalSize": 85
         },
@@ -25,11 +25,11 @@
             "id": "designer",
             "name": "Designer",
             "software": [
-                "Figma",
-                "Adobe Photoshop",
-                "Adobe Illustrator"
+                "figma",
+                "photoshop",
+                "illustrator"
             ],
-            "totalSize": 65
+            "totalSize": 50.5
         }
     ]
 }
