@@ -11,50 +11,41 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
   }, [])
 
   return (
-    <div className="w-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-xl p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-medium text-base text-gray-900 dark:text-gray-100">
+    <div>
+      {/* Title Section - Centered */}
+      <div className="flex flex-col items-center justify-center space-y-1 mb-6">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
           Recommended Presets
         </h3>
-        <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-          Quick Setup
-        </span>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Quick Setup</p>
       </div>
 
-      <div className="grid gap-3">
+      {/* Presets List */}
+      <div className="space-y-3">
         {presets.map(preset => (
           <button
             key={preset.id}
             onClick={() => onPresetSelect(preset)}
-            className={`
-              group relative w-full text-left p-4 rounded-xl 
-              transition-all duration-300 border
+            className={`w-full p-3 rounded-xl border transition-all duration-200
               ${
                 selectedPresetId === preset.id
-                  ? 'bg-blue-50/90 border-blue-200 dark:bg-blue-900/40 dark:border-blue-800 shadow-md shadow-blue-500/10'
-                  : 'border-transparent hover:bg-gray-50/90 hover:border-gray-200 dark:hover:bg-gray-800/50 dark:hover:border-gray-700 hover:shadow-md hover:shadow-gray-500/10'
+                  ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
               }
             `}
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className="font-semibold text-gray-900 dark:text-gray-100">
-                {preset.name}
+            <div className="flex flex-col space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-gray-900 dark:text-gray-100">
+                  {preset.name}
+                </span>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {preset.totalSize}GB
+                </span>
               </div>
-              <div
-                className={`
-                  px-2.5 py-1 rounded-full text-xs font-medium transition-colors
-                  ${
-                    selectedPresetId === preset.id
-                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                      : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-                  }
-                `}
-              >
-                {preset.totalSize}GB
-              </div>
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-              {preset.software.join(', ')}
+              <span className="text-sm text-gray-500 dark:text-gray-400 text-left">
+                {preset.software.join(', ')}
+              </span>
             </div>
           </button>
         ))}

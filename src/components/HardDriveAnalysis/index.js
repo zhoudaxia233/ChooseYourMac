@@ -154,7 +154,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <div className="w-full lg:w-72 flex-shrink-0 p-6 border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-gray-800">
-          <div className="lg:sticky lg:top-8">
+          <div className="lg:sticky lg:top-0">
             <PresetSidebar
               onPresetSelect={handlePresetSelect}
               selectedPresetId={selectedPresetId}
