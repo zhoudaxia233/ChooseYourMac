@@ -154,4 +154,52 @@ describe('SoftwareList Component', () => {
 
     expect(mockProps.onSoftwareUpdate).not.toHaveBeenCalled()
   })
+
+  // Search functionality test
+  test('filters software based on search and clears search correctly', async () => {
+    const user = userEvent.setup()
+
+    // Render with mock data
+    await act(async () => {
+      render(<SoftwareList {...mockProps} />)
+    })
+
+    // Verify all software is initially visible
+    expect(screen.getByText('VS Code')).toBeInTheDocument()
+    expect(screen.getByText('Chrome')).toBeInTheDocument()
+
+    // Get search input
+    const searchInput = screen.getByPlaceholderText('Search software...')
+
+    // Search for 'VS'
+    await act(async () => {
+      await user.type(searchInput, 'VS')
+    })
+
+    // Wait for the filtering to take effect
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    // Verify only VS Code is visible and Chrome is not
+    expect(screen.getByText('VS Code')).toBeInTheDocument()
+    expect(
+      screen.queryByText('Chrome', { selector: 'div[draggable="true"] span' })
+    ).not.toBeInTheDocument()
+
+    // Clear search using the clear button
+    const clearButton = searchInput.parentElement.querySelector('button')
+    await act(async () => {
+      await user.click(clearButton)
+    })
+
+    // Wait for the filtering to reset
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    // Verify all software is visible again
+    expect(screen.getByText('VS Code')).toBeInTheDocument()
+    expect(screen.getByText('Chrome')).toBeInTheDocument()
+  })
 })
