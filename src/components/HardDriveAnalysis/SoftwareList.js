@@ -43,6 +43,32 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   const handleDragStart = (e, software) => {
     setDraggedSoftware(software)
     e.dataTransfer.setData('software', software)
+
+    // Set drag effect
+    e.dataTransfer.effectAllowed = 'move'
+
+    // Create custom drag image
+    const dragPreview = document.createElement('div')
+    const softwareDetails = softwareList.find(s => s.id === software)
+    dragPreview.innerHTML = `
+      <div class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg 
+        border border-gray-200 dark:border-gray-700">
+        <span class="font-medium text-gray-900 dark:text-gray-100">
+          ${softwareDetails?.name || ''}
+        </span>
+      </div>
+    `
+    document.body.appendChild(dragPreview)
+    dragPreview.style.position = 'absolute'
+    dragPreview.style.top = '-1000px'
+
+    // Set the custom drag image
+    e.dataTransfer.setDragImage(dragPreview, 0, 0)
+
+    // Clean up the temporary element after drag starts
+    requestAnimationFrame(() => {
+      document.body.removeChild(dragPreview)
+    })
   }
 
   const handleDragEnd = () => {
