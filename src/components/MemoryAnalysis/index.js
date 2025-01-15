@@ -1,60 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const MemoryAnalysis = () => {
   const [currentMemory, setCurrentMemory] = useState(16)
   const [isOpen, setIsOpen] = useState(false)
-  const memoryOptions = [8, 16, 32]
+  const [scenarios, setScenarios] = useState([])
+  const [memoryOptions, setMemoryOptions] = useState([])
 
-  const scenarios = [
-    {
-      id: 'gaming',
-      name: 'Gaming',
-      icon: '🎮',
-      pressure: 85,
-      status: 'high',
-      apps: [
-        { name: 'Steam', icon: '🎮' },
-        { name: 'Discord', icon: '🗨️' },
-        { name: 'Spotify', icon: '🎵' },
-      ],
-      recommendation: {
-        text: 'Upgrade to 24GB for smoother gaming',
-        upgrade: currentMemory < 24,
-      },
-    },
-    {
-      id: 'video',
-      name: 'Video Editing',
-      icon: '🎥',
-      pressure: 60,
-      status: 'medium',
-      apps: [
-        { name: 'Chrome (10)', icon: '🖥️' },
-        { name: 'Photoshop', icon: '🖌️' },
-        { name: 'Spotify', icon: '🎵' },
-      ],
-      recommendation: {
-        text: '16GB sufficient for most 4K editing',
-        upgrade: currentMemory < 16,
-      },
-    },
-    {
-      id: 'data',
-      name: 'Data Analysis',
-      icon: '📊',
-      pressure: 35,
-      status: 'low',
-      apps: [
-        { name: 'Excel', icon: '📊' },
-        { name: 'Python', icon: '🐍' },
-        { name: 'Chrome (5)', icon: '🖥️' },
-      ],
-      recommendation: {
-        text: '8GB sufficient for simple analysis',
-        upgrade: currentMemory < 8,
-      },
-    },
-  ]
+  useEffect(() => {
+    fetch('/memory-data.json')
+      .then(response => response.json())
+      .then(data => {
+        setScenarios(data.scenarios)
+        setMemoryOptions(data.memoryOptions)
+      })
+      .catch(error => console.error('Error loading memory data:', error))
+  }, [])
 
   const getStatusColor = status => {
     switch (status) {
@@ -74,7 +34,7 @@ const MemoryAnalysis = () => {
       className="rounded-2xl border border-black/[.08] dark:border-white/[.145] 
       bg-white dark:bg-gray-900 shadow-lg w-full p-6 space-y-6"
     >
-      {/* Header */}
+      {/* Header with Memory Selector */}
       <div className="flex items-center justify-between">
         <h2
           className="text-2xl font-semibold 
@@ -165,30 +125,46 @@ const MemoryAnalysis = () => {
                   <div
                     className={`h-full rounded-full transition-all duration-300
                       ${
-                        scenario.pressure > 80
+                        scenario.pressureByMemory[String(currentMemory)] > 80
                           ? 'bg-red-500'
-                          : scenario.pressure > 50
+                          : scenario.pressureByMemory[String(currentMemory)] >
+                            50
                           ? 'bg-yellow-500'
                           : 'bg-green-500'
                       }`}
-                    style={{ width: `${scenario.pressure}%` }}
+                    style={{
+                      width: `${
+                        scenario.pressureByMemory[String(currentMemory)]
+                      }%`,
+                    }}
                   />
                 </div>
                 <span
                   className={`text-sm font-medium ${getStatusColor(
-                    scenario.status
+                    scenario.pressureByMemory[String(currentMemory)] > 80
+                      ? 'high'
+                      : scenario.pressureByMemory[String(currentMemory)] > 50
+                      ? 'medium'
+                      : 'low'
                   )}`}
                 >
-                  {scenario.pressure}%
+                  {scenario.pressureByMemory[String(currentMemory)]}%
                 </span>
               </div>
               <div
                 className={`text-sm font-medium ${getStatusColor(
-                  scenario.status
+                  scenario.pressureByMemory[String(currentMemory)] > 80
+                    ? 'high'
+                    : scenario.pressureByMemory[String(currentMemory)] > 50
+                    ? 'medium'
+                    : 'low'
                 )}`}
               >
-                {scenario.status.charAt(0).toUpperCase() +
-                  scenario.status.slice(1)}{' '}
+                {scenario.pressureByMemory[String(currentMemory)] > 80
+                  ? 'High'
+                  : scenario.pressureByMemory[String(currentMemory)] > 50
+                  ? 'Medium'
+                  : 'Low'}{' '}
                 Pressure
               </div>
             </div>
@@ -202,8 +178,7 @@ const MemoryAnalysis = () => {
                 {scenario.apps.map(app => (
                   <div
                     key={app.name}
-                    className="flex items-center gap-2 text-sm
-                      text-gray-700 dark:text-gray-300"
+                    className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300"
                   >
                     <span>{app.icon}</span>
                     <span>{app.name}</span>
@@ -219,12 +194,12 @@ const MemoryAnalysis = () => {
               </div>
               <p
                 className={`text-sm ${
-                  scenario.recommendation.upgrade
+                  scenario.recommendations[String(currentMemory)].upgrade
                     ? 'text-yellow-600 dark:text-yellow-400'
                     : 'text-green-600 dark:text-green-400'
                 }`}
               >
-                {scenario.recommendation.text}
+                {scenario.recommendations[String(currentMemory)].text}
               </p>
             </div>
           </div>

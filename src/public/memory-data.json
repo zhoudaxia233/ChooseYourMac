@@ -1,0 +1,193 @@
+{
+    "memoryOptions": [
+        8,
+        16,
+        24,
+        32,
+        48,
+        64,
+        128
+    ],
+    "scenarios": [
+        {
+            "id": "gaming",
+            "name": "Gaming",
+            "icon": "🎮",
+            "basePressure": 85,
+            "status": "high",
+            "apps": [
+                {
+                    "name": "Steam",
+                    "icon": "🎮"
+                },
+                {
+                    "name": "Discord",
+                    "icon": "🗨️"
+                },
+                {
+                    "name": "Spotify",
+                    "icon": "🎵"
+                }
+            ],
+            "pressureByMemory": {
+                "8": "95",
+                "16": "85",
+                "24": "70",
+                "32": "55",
+                "48": "40",
+                "64": "30",
+                "128": "20"
+            },
+            "recommendations": {
+                "8": {
+                    "text": "Upgrade to 16GB for smoother gaming",
+                    "upgrade": true
+                },
+                "16": {
+                    "text": "Upgrade to 24GB for optimal gaming",
+                    "upgrade": true
+                },
+                "24": {
+                    "text": "Good for most gaming scenarios",
+                    "upgrade": false
+                },
+                "32": {
+                    "text": "Perfect for high-end gaming",
+                    "upgrade": false
+                },
+                "48": {
+                    "text": "Excellent for gaming and streaming",
+                    "upgrade": false
+                },
+                "64": {
+                    "text": "Future-proof for gaming",
+                    "upgrade": false
+                },
+                "128": {
+                    "text": "Overkill for gaming alone",
+                    "upgrade": false
+                }
+            }
+        },
+        {
+            "id": "video",
+            "name": "Video Editing",
+            "icon": "🎥",
+            "basePressure": 60,
+            "status": "medium",
+            "apps": [
+                {
+                    "name": "Chrome (10)",
+                    "icon": "🖥️"
+                },
+                {
+                    "name": "Photoshop",
+                    "icon": "🖌️"
+                },
+                {
+                    "name": "Spotify",
+                    "icon": "🎵"
+                }
+            ],
+            "pressureByMemory": {
+                "8": "90",
+                "16": "75",
+                "24": "60",
+                "32": "45",
+                "48": "35",
+                "64": "25",
+                "128": "15"
+            },
+            "recommendations": {
+                "8": {
+                    "text": "Upgrade to 16GB for 4K editing",
+                    "upgrade": true
+                },
+                "16": {
+                    "text": "Sufficient for most 4K editing",
+                    "upgrade": false
+                },
+                "24": {
+                    "text": "Great for 4K editing",
+                    "upgrade": false
+                },
+                "32": {
+                    "text": "Perfect for 8K editing",
+                    "upgrade": false
+                },
+                "48": {
+                    "text": "Ideal for complex video projects",
+                    "upgrade": false
+                },
+                "64": {
+                    "text": "Professional-grade video editing",
+                    "upgrade": false
+                },
+                "128": {
+                    "text": "Studio-level video production",
+                    "upgrade": false
+                }
+            }
+        },
+        {
+            "id": "data",
+            "name": "Data Analysis",
+            "icon": "📊",
+            "basePressure": 35,
+            "status": "low",
+            "apps": [
+                {
+                    "name": "Excel",
+                    "icon": "📊"
+                },
+                {
+                    "name": "Python",
+                    "icon": "🐍"
+                },
+                {
+                    "name": "Chrome (5)",
+                    "icon": "🖥️"
+                }
+            ],
+            "pressureByMemory": {
+                "8": "80",
+                "16": "60",
+                "24": "45",
+                "32": "35",
+                "48": "25",
+                "64": "20",
+                "128": "10"
+            },
+            "recommendations": {
+                "8": {
+                    "text": "Sufficient for simple analysis",
+                    "upgrade": false
+                },
+                "16": {
+                    "text": "Perfect for medium datasets",
+                    "upgrade": false
+                },
+                "24": {
+                    "text": "Great for larger datasets",
+                    "upgrade": false
+                },
+                "32": {
+                    "text": "Ideal for data science",
+                    "upgrade": false
+                },
+                "48": {
+                    "text": "Perfect for machine learning",
+                    "upgrade": false
+                },
+                "64": {
+                    "text": "Advanced AI/ML workloads",
+                    "upgrade": false
+                },
+                "128": {
+                    "text": "Enterprise-level data processing",
+                    "upgrade": false
+                }
+            }
+        }
+    ]
+}
