@@ -24,8 +24,19 @@ export default function handler(req, res) {
       Math.max(...lastModifiedDates.map(date => date.getTime()))
     )
 
+    // Format UTC time to be more concise
+    const formattedTime = latestUpdate.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'UTC',
+    })
+
     res.status(200).json({
       lastUpdated: latestUpdate.toISOString(),
+      formattedUTC: `${formattedTime} UTC`,
       files: jsonFiles.map(file => path.basename(file)), // Optional: return list of tracked files
     })
   } catch (error) {

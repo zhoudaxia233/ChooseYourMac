@@ -8,12 +8,14 @@ import { getDaysSinceDate } from '../utils/dateUtils'
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [daysSinceUpdate, setDaysSinceUpdate] = useState(0)
+  const [lastUpdatedUTC, setLastUpdatedUTC] = useState('')
 
   useEffect(() => {
     fetch('/api/last-updated')
       .then(response => response.json())
       .then(data => {
         setDaysSinceUpdate(getDaysSinceDate(data.lastUpdated))
+        setLastUpdatedUTC(data.formattedUTC)
       })
       .catch(error => console.error('Error loading last update:', error))
   }, [])
@@ -46,7 +48,10 @@ export default function Home() {
         {/* Footer */}
         <div className="border-t border-black/[.08] dark:border-white/[.145] bg-white dark:bg-black">
           <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-            <span>Last updated: {daysSinceUpdate} days ago</span>
+            <div className="space-x-4">
+              <span>Last updated: {daysSinceUpdate} days ago</span>
+              <span>({lastUpdatedUTC})</span>
+            </div>
             <span>© 2024 ChooseYourMac</span>
           </div>
         </div>
