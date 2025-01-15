@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import HardDriveAnalysis from '../components/HardDriveAnalysis'
-import MemoryOptions from '../components/MemoryOptions'
 import ThemeToggle from '../components/ThemeToggle'
+import MemoryAnalysis from '../components/MemoryAnalysis'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -18,7 +18,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
         <HardDriveAnalysis searchQuery={searchQuery} />
-        <MemoryOptions />
+        <MemoryAnalysis />
       </div>
     </main>
   )
