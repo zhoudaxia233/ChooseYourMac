@@ -4,6 +4,7 @@ import HardDriveAnalysis from '../components/HardDriveAnalysis'
 import ThemeToggle from '../components/ThemeToggle'
 import MemoryAnalysis from '../components/MemoryAnalysis'
 import { getDaysSinceDate } from '../utils/dateUtils'
+import FeedbackButton from '../components/FeedbackButton'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -55,6 +56,8 @@ export default function Home() {
             <span>© 2024 ChooseYourMac</span>
           </div>
         </div>
+
+        <FeedbackButton />
       </main>
     </>
   )
