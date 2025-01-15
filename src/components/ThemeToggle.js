@@ -1,7 +1,21 @@
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <button className="p-2 rounded-lg text-gray-500 dark:text-gray-400">
+        <div className="w-5 h-5" />
+      </button>
+    )
+  }
 
   return (
     <button
