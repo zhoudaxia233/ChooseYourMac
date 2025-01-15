@@ -258,7 +258,6 @@ const SoftwareList = ({
 
                       {/* Remove Button */}
                       <button
-                        onClick={() => handleRemove(software.id)}
                         className="absolute top-1.5 left-1.5 
                           w-6 h-6  // 固定宽高
                           rounded-full 
@@ -270,6 +269,8 @@ const SoftwareList = ({
                           flex items-center justify-center
                           cursor-pointer  // 确保鼠标样式正确
                           z-10" // 确保按钮在最上层
+                        aria-label={`Remove ${software.name}`}
+                        onClick={() => handleRemove(software.id)}
                       >
                         <svg
                           className="w-3.5 h-3.5 pointer-events-none" // 防止 SVG 影响点击事件
