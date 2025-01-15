@@ -103,9 +103,7 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
   }
 
   const handleRemove = softwareToRemove => {
-    const newList = selectedSoftware.filter(
-      software => software !== softwareToRemove
-    )
+    const newList = selectedSoftware.filter(id => id !== softwareToRemove)
     onSoftwareUpdate(newList)
 
     // Check if the removed software was a custom addition
@@ -226,50 +224,37 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                 Drag software here to add
               </div>
             ) : (
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
                 {selectedSoftware.map(softwareId => {
                   const software = getSoftwareDetails(softwareId)
                   return software ? (
                     <div
                       key={software.id}
                       className="group relative bg-white dark:bg-gray-800/50 
-                        backdrop-blur-sm rounded-xl border border-gray-200 
+                        backdrop-blur-sm rounded-lg border border-gray-200 
                         dark:border-gray-700 shadow-sm hover:shadow-md 
                         transition-all duration-300 hover:border-gray-300 
-                        dark:hover:border-gray-600 p-4"
+                        dark:hover:border-gray-600 p-3"
                     >
                       {/* Size Badge */}
                       <div
-                        className="absolute top-3 right-3 px-2.5 py-1 text-xs 
+                        className="absolute top-2 right-2 px-2 py-0.5 text-xs 
                           font-medium rounded-full bg-gray-100 text-gray-600 
                           dark:bg-gray-800 dark:text-gray-400"
                       >
                         {software.size_in_GB}GB
                       </div>
 
-                      {/* Software Name */}
-                      <div className="pr-16">
-                        {' '}
-                        {/* Add right padding to avoid overlap with size badge */}
-                        <h4
-                          className="font-medium text-gray-900 dark:text-gray-100 
-                            truncate group-hover:whitespace-normal group-hover:text-clip"
-                          title={software.name}
-                        >
-                          {software.name}
-                        </h4>
-                      </div>
-
                       {/* Remove Button */}
                       <button
                         onClick={() => handleRemove(software.id)}
-                        className="absolute bottom-3 right-3 p-2 rounded-full 
+                        className="absolute top-2 left-2 p-1 rounded-full 
                           text-gray-400 hover:text-red-500 hover:bg-red-50 
-                          dark:hover:bg-red-900/30 transition-all opacity-0 
-                          group-hover:opacity-100 scale-90 group-hover:scale-100"
+                          dark:hover:bg-red-900/30 transition-all
+                          opacity-50 hover:opacity-100"
                       >
                         <svg
-                          className="w-4 h-4"
+                          className="w-3.5 h-3.5"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -282,6 +267,17 @@ const SoftwareList = ({ selectedSoftware, onSoftwareUpdate, searchQuery }) => {
                           />
                         </svg>
                       </button>
+
+                      {/* Software Name */}
+                      <div className="px-8">
+                        <h4
+                          className="font-medium text-sm text-gray-900 dark:text-gray-100 
+                            truncate group-hover:whitespace-normal group-hover:text-clip"
+                          title={software.name}
+                        >
+                          {software.name}
+                        </h4>
+                      </div>
                     </div>
                   ) : null
                 })}
