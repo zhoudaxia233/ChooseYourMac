@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import SoftwareList from '../SoftwareList'
 
@@ -85,54 +85,45 @@ describe('SoftwareList Component', () => {
 
   // Basic rendering test
   test('renders basic elements', async () => {
-    await act(async () => {
-      render(<SoftwareList {...mockProps} />)
-      await Promise.resolve()
-    })
+    render(<SoftwareList {...mockProps} />)
 
-    expect(screen.getByText('Selected Software')).toBeInTheDocument()
-    expect(screen.getByText('Available Software')).toBeInTheDocument()
-    expect(screen.getByText('0 items')).toBeInTheDocument()
+    expect(await screen.findByText('Selected Software')).toBeInTheDocument()
+    expect(await screen.findByText('Available Software')).toBeInTheDocument()
+    expect(await screen.findByText('0 items')).toBeInTheDocument()
   })
 
   // Software removal test
   test('removes software from selection', async () => {
-    await act(async () => {
-      render(<SoftwareList {...mockProps} selectedSoftware={['vscode']} />)
-    })
+    render(<SoftwareList {...mockProps} selectedSoftware={['vscode']} />)
 
-    const softwareItem = screen.getByTitle('VS Code').closest('.group')
+    const softwareItem = (await screen.findByTitle('VS Code')).closest('.group')
     expect(softwareItem).toBeInTheDocument()
 
-    const removeButton = screen.getByLabelText('Remove VS Code')
+    const removeButton = await screen.findByLabelText('Remove VS Code')
     expect(removeButton).toBeInTheDocument()
 
-    await act(async () => {
-      fireEvent.mouseEnter(softwareItem)
-      await Promise.resolve()
-      fireEvent.click(removeButton)
-    })
+    fireEvent.mouseEnter(softwareItem)
+    fireEvent.click(removeButton)
 
     expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith([])
   })
 
   // Empty state test
   test('shows empty state message', async () => {
-    await act(async () => {
-      render(<SoftwareList {...mockProps} softwareList={[]} />)
-    })
-    expect(screen.getByText('No matching software found')).toBeInTheDocument()
-    expect(screen.getByText('Add New Software')).toBeInTheDocument()
+    render(<SoftwareList {...mockProps} softwareList={[]} />)
+    expect(
+      await screen.findByText('No matching software found')
+    ).toBeInTheDocument()
+    expect(await screen.findByText('Add New Software')).toBeInTheDocument()
   })
 
   // Duplicate prevention test
   test('prevents duplicate software selection', async () => {
-    await act(async () => {
-      render(<SoftwareList {...mockProps} selectedSoftware={['vscode']} />)
-    })
+    render(<SoftwareList {...mockProps} selectedSoftware={['vscode']} />)
 
-    const draggableItem = screen.getByText('VS Code').closest('div')
-    const dropZone = screen.getByText('Selected Software').parentElement
+    const draggableItem = (await screen.findByText('VS Code')).closest('div')
+    const dropZone = (await screen.findByText('Selected Software'))
+      .parentElement
 
     const mockDataTransfer = {
       setData: jest.fn(),
@@ -141,13 +132,9 @@ describe('SoftwareList Component', () => {
       effectAllowed: null,
     }
 
-    await act(async () => {
-      fireEvent.dragStart(draggableItem, { dataTransfer: mockDataTransfer })
-      await Promise.resolve()
-      fireEvent.dragOver(dropZone, { dataTransfer: mockDataTransfer })
-      await Promise.resolve()
-      fireEvent.drop(dropZone, { dataTransfer: mockDataTransfer })
-    })
+    fireEvent.dragStart(draggableItem, { dataTransfer: mockDataTransfer })
+    fireEvent.dragOver(dropZone, { dataTransfer: mockDataTransfer })
+    fireEvent.drop(dropZone, { dataTransfer: mockDataTransfer })
 
     expect(mockProps.onSoftwareUpdate).not.toHaveBeenCalled()
   })
@@ -157,64 +144,42 @@ describe('SoftwareList Component', () => {
     const user = userEvent.setup()
 
     // Render with mock data
-    await act(async () => {
-      render(<SoftwareList {...mockProps} />)
-    })
+    render(<SoftwareList {...mockProps} />)
 
     // Verify all software is initially visible
-    expect(screen.getByText('VS Code')).toBeInTheDocument()
+    expect(await screen.findByText('VS Code')).toBeInTheDocument()
     expect(screen.getByText('Chrome')).toBeInTheDocument()
 
     // Get search input
     const searchInput = screen.getByPlaceholderText('Search software...')
 
     // Search for 'VS'
-    await act(async () => {
-      await user.type(searchInput, 'VS')
-    })
-
-    // Wait for the filtering to take effect
-    await act(async () => {
-      await Promise.resolve()
-    })
+    await user.type(searchInput, 'VS')
 
     // Verify only VS Code is visible and Chrome is not
-    expect(screen.getByText('VS Code')).toBeInTheDocument()
+    expect(await screen.findByText('VS Code')).toBeInTheDocument()
     expect(
       screen.queryByText('Chrome', { selector: 'div[draggable="true"] span' })
     ).not.toBeInTheDocument()
 
     // Clear search using the clear button
     const clearButton = searchInput.parentElement.querySelector('button')
-    await act(async () => {
-      await user.click(clearButton)
-    })
-
-    // Wait for the filtering to reset
-    await act(async () => {
-      await Promise.resolve()
-    })
+    await user.click(clearButton)
 
     // Verify all software is visible again
-    expect(screen.getByText('VS Code')).toBeInTheDocument()
+    expect(await screen.findByText('VS Code')).toBeInTheDocument()
     expect(screen.getByText('Chrome')).toBeInTheDocument()
   })
 
   describe('Enter key functionality', () => {
     test('adds single search result to selection when Enter is pressed', async () => {
       const user = userEvent.setup()
-
-      await act(async () => {
-        render(<SoftwareList {...mockProps} />)
-      })
+      render(<SoftwareList {...mockProps} />)
 
       const searchInput = screen.getByTestId('search-input')
-
       // Type 'VS' to get single result
-      await act(async () => {
-        await user.type(searchInput, 'VS')
-        await user.keyboard('{Enter}')
-      })
+      await user.type(searchInput, 'VS')
+      await user.keyboard('{Enter}')
 
       // Check if VS Code was added to selection
       expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['vscode'])
@@ -226,10 +191,8 @@ describe('SoftwareList Component', () => {
       render(<SoftwareList {...mockProps} />)
       const searchInput = screen.getByPlaceholderText('Search software...')
 
-      await act(async () => {
-        await user.type(searchInput, 'NonExistentSoftware')
-        await user.keyboard('{Enter}')
-      })
+      await user.type(searchInput, 'NonExistentSoftware')
+      await user.keyboard('{Enter}')
 
       await waitFor(() => {
         expect(screen.getByTestId('software-name-input')).toBeInTheDocument()
@@ -238,33 +201,21 @@ describe('SoftwareList Component', () => {
 
     test('submits new software when Enter is pressed in add form', async () => {
       const user = userEvent.setup()
-
-      await act(async () => {
-        render(<SoftwareList {...mockProps} />)
-      })
+      render(<SoftwareList {...mockProps} />)
 
       // First show the add form by searching non-existent software
       const searchInput = screen.getByTestId('search-input')
-      await act(async () => {
-        await user.type(searchInput, 'NewSoftware')
-        await user.keyboard('{Enter}')
-      })
-
-      // Wait for the form to appear
-      await act(async () => {
-        await Promise.resolve()
-      })
+      await user.type(searchInput, 'NewSoftware')
+      await user.keyboard('{Enter}')
 
       // Fill out the form
       const nameInput = await screen.findByTestId('software-name-input')
       const sizeInput = await screen.findByTestId('software-size-input')
 
-      await act(async () => {
-        await user.clear(nameInput)
-        await user.type(nameInput, 'NewSoftware')
-        await user.type(sizeInput, '1')
-        await user.keyboard('{Enter}')
-      })
+      await user.clear(nameInput)
+      await user.type(nameInput, 'NewSoftware')
+      await user.type(sizeInput, '1')
+      await user.keyboard('{Enter}')
 
       // Check if software was added
       expect(mockProps.onSoftwareListUpdate).toHaveBeenCalledWith([
@@ -278,36 +229,23 @@ describe('SoftwareList Component', () => {
           description: '',
         },
       ])
-
       expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['newsoftware'])
     })
 
     test('does not submit form when Enter is pressed with empty fields', async () => {
       const user = userEvent.setup()
-
-      await act(async () => {
-        render(<SoftwareList {...mockProps} />)
-      })
+      render(<SoftwareList {...mockProps} />)
 
       // Show the add form
       const searchInput = screen.getByTestId('search-input')
-      await act(async () => {
-        await user.type(searchInput, 'NewSoftware')
-        await user.keyboard('{Enter}')
-      })
-
-      // Wait for the form to appear
-      await act(async () => {
-        await Promise.resolve()
-      })
+      await user.type(searchInput, 'NewSoftware')
+      await user.keyboard('{Enter}')
 
       // Try to submit with empty size
       const nameInput = await screen.findByTestId('software-name-input')
-      await act(async () => {
-        await user.clear(nameInput)
-        await user.type(nameInput, 'NewSoftware')
-        await user.keyboard('{Enter}')
-      })
+      await user.clear(nameInput)
+      await user.type(nameInput, 'NewSoftware')
+      await user.keyboard('{Enter}')
 
       expect(mockProps.onSoftwareListUpdate).not.toHaveBeenCalled()
       expect(mockProps.onSoftwareUpdate).not.toHaveBeenCalled()
