@@ -165,10 +165,10 @@ const SoftwareList = ({
     scrollToBottom()
   }
 
-  const handleKeyPress = e => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter') {
       if (!showAddForm) {
-        // 如果搜索结果只有一个，直接添加到 Selected Software
+        // if there is only one result, add it to selected software
         if (availableSoftware.length === 1) {
           onSoftwareUpdate([...selectedSoftware, availableSoftware[0].id])
           setLocalSearchQuery('')
@@ -176,13 +176,13 @@ const SoftwareList = ({
           return
         }
 
-        // 如果没有匹配结果，显示添加表单
+        // if there is no matching result, show add form
         if (availableSoftware.length === 0) {
           setShowAddForm(true)
           setNewSoftware({ ...newSoftware, name: localSearchQuery })
         }
       } else {
-        // 在表单模式下，触发添加功能
+        // trigger add function in form mode
         handleAddSoftware()
       }
     }
@@ -195,7 +195,7 @@ const SoftwareList = ({
     }
   }
 
-  // 获取软件详情的辅助函数
+  // helper function to get software details
   const getSoftwareDetails = softwareId => {
     return softwareList.find(s => s.id === softwareId)
   }
@@ -246,7 +246,7 @@ const SoftwareList = ({
                         transition-all duration-300 hover:border-gray-300 
                         dark:hover:border-gray-600 p-2"
                     >
-                      {/* Size Badge - 只在悬停时显示 */}
+                      {/* Size Badge - only show when hovering */}
                       <div
                         className="absolute top-2 right-2 px-2 py-0.5 text-xs 
                           font-medium rounded-full bg-gray-100 text-gray-600 
@@ -259,21 +259,21 @@ const SoftwareList = ({
                       {/* Remove Button */}
                       <button
                         className="absolute top-1.5 left-1.5 
-                          w-6 h-6  // 固定宽高
+                          w-6 h-6  // fixed width and height
                           rounded-full 
                           text-gray-400 hover:text-red-500
-                          bg-transparent hover:bg-red-50  // 添加背景色
+                          bg-transparent hover:bg-red-50  // add background color
                           dark:hover:bg-red-900/30 
                           transition-all
                           opacity-0 group-hover:opacity-100
                           flex items-center justify-center
-                          cursor-pointer  // 确保鼠标样式正确
-                          z-10" // 确保按钮在最上层
+                          cursor-pointer  // ensure correct mouse style
+                          z-10" // ensure button is on top
                         aria-label={`Remove ${software.name}`}
                         onClick={() => handleRemove(software.id)}
                       >
                         <svg
-                          className="w-3.5 h-3.5 pointer-events-none" // 防止 SVG 影响点击事件
+                          className="w-3.5 h-3.5 pointer-events-none" // prevent SVG from affecting click events
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -321,7 +321,7 @@ const SoftwareList = ({
             placeholder="Search software..."
             value={localSearchQuery}
             onChange={handleSearchChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
             className="w-full px-4 py-2 rounded-lg border border-gray-200 
               dark:border-gray-700 bg-white dark:bg-gray-800
               focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -417,7 +417,7 @@ const SoftwareList = ({
                   onChange={e =>
                     setNewSoftware({ ...newSoftware, name: e.target.value })
                   }
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyDown}
                   className="w-full px-3 py-2 rounded-lg border border-gray-200 
                     dark:border-gray-700 bg-white dark:bg-gray-800
                     text-gray-900 dark:text-gray-100
@@ -436,7 +436,7 @@ const SoftwareList = ({
                         size: value === '' ? '' : Math.max(0, Number(value)),
                       })
                     }}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyDown}
                     className="flex-1 px-3 py-2 rounded-lg border border-gray-200 
                       dark:border-gray-700 bg-white dark:bg-gray-800
                       text-gray-900 dark:text-gray-100
