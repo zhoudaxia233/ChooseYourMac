@@ -313,4 +313,22 @@ describe('SoftwareList Component', () => {
       expect(screen.getByText('Chrome')).toBeInTheDocument()
     })
   })
+
+  test('adds software to selection when clicking the plus button', async () => {
+    const user = userEvent.setup()
+    render(<SoftwareList {...mockProps} />)
+
+    // Find the add button for Chrome
+    const addButton = await screen.findByTestId('add-software-chrome')
+    expect(addButton).toBeInTheDocument()
+
+    // Click the add button
+    await user.click(addButton)
+
+    // Verify the software was added
+    expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
+
+    // Verify scrollToBottom was triggered
+    expect(window.requestAnimationFrame).toHaveBeenCalled()
+  })
 })

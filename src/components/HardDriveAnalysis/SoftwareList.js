@@ -206,6 +206,11 @@ const SoftwareList = ({
     return softwareList.find(s => s.id === softwareId)
   }
 
+  const handleAdd = softwareId => {
+    onSoftwareUpdate([...selectedSoftware, softwareId])
+    scrollToBottom()
+  }
+
   return (
     <div className="space-y-6 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-xl p-4">
       {/* Selected Software Section */}
@@ -404,12 +409,39 @@ const SoftwareList = ({
                   <span className="font-medium text-gray-900 dark:text-gray-100">
                     {software.name}
                   </span>
-                  <span
-                    className="px-2.5 py-1 text-xs font-medium rounded-full 
-                    bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                  >
-                    {software.size_in_GB}GB
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="px-2.5 py-1 text-xs font-medium rounded-full 
+                      bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                    >
+                      {software.size_in_GB}GB
+                    </span>
+                    <button
+                      onClick={e => {
+                        e.preventDefault() // Prevent drag start
+                        handleAdd(software.id)
+                      }}
+                      className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700
+                        text-gray-500 hover:text-gray-700 dark:text-gray-400 
+                        dark:hover:text-gray-200 transition-colors"
+                      data-testid={`add-software-${software.id}`}
+                      aria-label={`Add ${software.name}`}
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               ))
             ) : showAddForm ? (
