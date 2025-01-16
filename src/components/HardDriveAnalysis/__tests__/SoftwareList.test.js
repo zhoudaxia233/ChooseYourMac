@@ -32,7 +32,10 @@ describe('SoftwareList Component', () => {
     // Mock fetch response
     fetch.mockResponseOnce(
       JSON.stringify({
-        categories: ['Development', 'Browser'],
+        categories: [
+          { id: 'development', name: 'Development', order: 1 },
+          { id: 'browser', name: 'Browser', order: 2 },
+        ],
         system: {
           os: { size_in_GB: 15 },
           preinstalled: { size_in_GB: 5 },
@@ -277,6 +280,37 @@ describe('SoftwareList Component', () => {
 
       // Verify "Chrome" was added to selected software
       expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
+    })
+    test('filters software when clicking category tabs', async () => {
+      // Render the component with the default mockProps
+      render(<SoftwareList {...mockProps} />)
+
+      // Wait for categories to load and get tab buttons
+      const devTab = await screen.findByRole('button', { name: 'Development' })
+      const browserTab = await screen.findByRole('button', { name: 'Browser' })
+      const allTab = await screen.findByRole('button', { name: 'All' })
+
+      // "All" is active by default, so both are visible
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.getByText('Chrome')).toBeInTheDocument()
+
+      // Click "Browser" tab
+      fireEvent.click(browserTab)
+      // Only "Chrome" should show
+      expect(screen.getByText('Chrome')).toBeInTheDocument()
+      expect(screen.queryByText('VS Code')).not.toBeInTheDocument()
+
+      // Click "Development" tab
+      fireEvent.click(devTab)
+      // Only "VS Code" should show
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.queryByText('Chrome')).not.toBeInTheDocument()
+
+      // Click "All" tab again
+      fireEvent.click(allTab)
+      // Both should be visible again
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.getByText('Chrome')).toBeInTheDocument()
     })
   })
 })

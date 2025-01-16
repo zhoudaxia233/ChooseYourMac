@@ -22,9 +22,15 @@ const SoftwareList = ({
     fetch('/software-data.json')
       .then(response => response.json())
       .then(data => {
+        const sortedCategories = data.categories.sort(
+          (a, b) => a.order - b.order
+        )
+        const hasAllAlready = sortedCategories.some(
+          category => category.id === 'all'
+        )
         setCategoryList([
-          { id: 'all', name: 'All', order: 0 },
-          ...data.categories.sort((a, b) => a.order - b.order),
+          ...(hasAllAlready ? [] : [{ id: 'all', name: 'All', order: 0 }]),
+          ...sortedCategories,
         ])
       })
       .catch(error => console.error('Error loading software data:', error))
@@ -360,7 +366,7 @@ const SoftwareList = ({
         <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
           {categoryList.map(category => (
             <button
-              key={category.id || category}
+              key={category.id}
               onClick={() => {
                 setActiveCategory(category.name)
                 setLocalSearchQuery('')
@@ -375,7 +381,7 @@ const SoftwareList = ({
                 }
               `}
             >
-              {category.name || category}
+              {category.name}
             </button>
           ))}
         </div>
