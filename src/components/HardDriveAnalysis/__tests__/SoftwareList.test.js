@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import SoftwareList from '../SoftwareList'
 
@@ -249,6 +249,34 @@ describe('SoftwareList Component', () => {
 
       expect(mockProps.onSoftwareListUpdate).not.toHaveBeenCalled()
       expect(mockProps.onSoftwareUpdate).not.toHaveBeenCalled()
+    })
+
+    test('adds software to selection via drag and drop', async () => {
+      // We use the same props as before, but ensure we re-render fresh
+      render(<SoftwareList {...mockProps} />)
+
+      // Grab the draggable element and the drop zone
+      // IMPORTANT: The drop zone is the ".selected-software-container" div
+      const draggableItem = (await screen.findByText('Chrome')).closest('div')
+      const dropZone = document.querySelector('.selected-software-container')
+
+      const mockDataTransfer = {
+        setData: jest.fn(),
+        getData: jest.fn(() => 'chrome'),
+        setDragImage: jest.fn(),
+        effectAllowed: null,
+      }
+
+      // Wrap the drag & drop sequence in act
+      await act(async () => {
+        fireEvent.dragStart(draggableItem, { dataTransfer: mockDataTransfer })
+        fireEvent.dragEnter(dropZone, { dataTransfer: mockDataTransfer })
+        fireEvent.dragOver(dropZone, { dataTransfer: mockDataTransfer })
+        fireEvent.drop(dropZone, { dataTransfer: mockDataTransfer })
+      })
+
+      // Verify "Chrome" was added to selected software
+      expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
     })
   })
 })
