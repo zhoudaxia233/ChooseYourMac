@@ -414,7 +414,7 @@ const SoftwareList = ({
                 <input
                   type="text"
                   placeholder="Software name"
-                  value={newSoftware.name || localSearchQuery}
+                  value={newSoftware.name}
                   onChange={e =>
                     setNewSoftware({ ...newSoftware, name: e.target.value })
                   }
