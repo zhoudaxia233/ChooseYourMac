@@ -1,13 +1,36 @@
 {
     "presets": [
         {
+            "id": "basic",
+            "name": "Basic",
+            "software": [
+                "chrome",
+                "word",
+                "excel",
+                "powerpoint",
+                "onenote",
+                "outlook",
+                "slack",
+                "discord",
+                "cleanmymac",
+                "notion",
+                "bitwarden"
+            ]
+        },
+        {
             "id": "web-dev",
             "name": "Web Developer",
             "software": [
                 "vscode",
                 "docker",
-                "nodejs",
-                "chrome"
+                "chrome",
+                "firefox",
+                "postman",
+                "pycharm",
+                "webstorm",
+                "githubdesktop",
+                "chatgpt",
+                "iterm2"
             ],
             "description": "Essential tools for web development"
         },
@@ -17,7 +40,9 @@
             "software": [
                 "finalcutpro",
                 "premiere",
-                "davinci"
+                "davinci",
+                "logicpro",
+                "obs"
             ],
             "description": "Professional video editing suite"
         },
@@ -27,9 +52,28 @@
             "software": [
                 "figma",
                 "photoshop",
-                "illustrator"
+                "illustrator",
+                "sketch",
+                "affinitydesigner",
+                "canva",
+                "blender",
+                "powerpoint"
             ],
             "description": "Complete design toolkit"
+        },
+        {
+            "id": "data-scientist",
+            "name": "Data Scientist",
+            "software": [
+                "tableau",
+                "matlab",
+                "jupyter",
+                "pycharm",
+                "rstudio",
+                "excel",
+                "powerpoint"
+            ],
+            "description": "Tools for data analysis and visualization"
         }
     ]
 }
