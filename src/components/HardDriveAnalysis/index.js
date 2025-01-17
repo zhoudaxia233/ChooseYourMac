@@ -18,6 +18,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
   })
   const [isResetting, setIsResetting] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState(50)
+  const [isInfoExpanded, setIsInfoExpanded] = useState(false)
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -148,6 +149,65 @@ const HardDriveAnalysis = ({ searchQuery }) => {
 
         {/* Progress Bar Section with Tooltip */}
         <div className="mt-6 space-y-4">
+          {/* Info Section */}
+          <div className="relative">
+            <button
+              onClick={() => setIsInfoExpanded(!isInfoExpanded)}
+              className="inline-flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 
+                hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>About Software Sizes</span>
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  isInfoExpanded ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Expandable Info Box */}
+            <div
+              className={`mt-2 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg text-sm 
+                text-gray-600 dark:text-gray-400 transition-all duration-200 overflow-hidden
+                ${
+                  isInfoExpanded ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+            >
+              <p className="leading-relaxed">
+                The listed sizes for all software are generally much higher than
+                their fresh installation sizes. This is because the estimates
+                take into account factors such as smooth operation, data
+                caching, and other usage-related storage needs. These specific
+                numbers are derived from various sources, including forum
+                discussions and the official system requirements provided by the
+                software developers.
+              </p>
+            </div>
+          </div>
+
+          {/* Storage Usage Info */}
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
             <div>
               {formatSize(totalUsedSpace)} of {storageLimit} GB used
