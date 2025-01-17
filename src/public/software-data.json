@@ -116,13 +116,18 @@
     "system": {
         "os": {
             "name": "Operating System",
-            "size": "25 GB",
-            "description": "System files, drivers and basic utilities"
+            "size": "15 GB",
+            "description": "System files, drivers, and basic utilities."
         },
         "preinstalled": {
             "name": "Pre-installed Apps",
             "size": "10 GB",
-            "description": "Default applications and system tools"
+            "description": "Default applications and system tools."
+        },
+        "upgrade_space": {
+            "name": "Reserved Space for macOS upgrades",
+            "size": "35.5 GB",
+            "description": "Temporary storage needed for macOS upgrades, including installer files, snapshots, and migration files."
         }
     }
 }

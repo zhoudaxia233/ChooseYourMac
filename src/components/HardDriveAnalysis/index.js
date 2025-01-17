@@ -25,7 +25,8 @@ const HardDriveAnalysis = ({ searchQuery }) => {
       .then(data => {
         const totalSystemSpace =
           convertToGB(data.system.os.size) +
-          convertToGB(data.system.preinstalled.size)
+          convertToGB(data.system.preinstalled.size) +
+          convertToGB(data.system.upgrade_space.size)
         setSystemSpace({
           size: totalSystemSpace,
           details: data.system,
@@ -160,20 +161,64 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           <div className="relative group" onMouseMove={handleMouseMove}>
             <div
               className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden 
-                ring-1 ring-black/[.04] dark:ring-white/[.05]"
+              ring-1 ring-black/[.04] dark:ring-white/[.05]"
             >
-              {/* System Space */}
+              {/* OS Space - Only left rounded */}
               <div
                 className="h-full bg-gray-300 dark:bg-gray-600 absolute left-0"
                 style={{
-                  width: `${(systemSpace.size / storageLimit) * 100}%`,
-                  borderRadius: usedSpace > 0 ? '9999px 0 0 9999px' : '9999px',
+                  width: `${
+                    (convertToGB(systemSpace.details?.os.size || '0 GB') /
+                      storageLimit) *
+                    100
+                  }%`,
+                  borderRadius: '9999px 0 0 9999px',
                 }}
               />
-              {/* User Space */}
+              {/* Pre-installed Apps - No rounded corners */}
               <div
-                className={`h-full relative
-                  ${!isResetting ? 'transition-all duration-500 ease-out' : ''}
+                className="h-full bg-gray-400 dark:bg-gray-500 absolute"
+                style={{
+                  width: `${
+                    (convertToGB(
+                      systemSpace.details?.preinstalled.size || '0 GB'
+                    ) /
+                      storageLimit) *
+                    100
+                  }%`,
+                  left: `${
+                    (convertToGB(systemSpace.details?.os.size || '0 GB') /
+                      storageLimit) *
+                    100
+                  }%`,
+                }}
+              />
+              {/* Upgrade Space - Rounded on right if no user space */}
+              <div
+                className="h-full bg-gray-500 dark:bg-gray-400 absolute"
+                style={{
+                  width: `${
+                    (convertToGB(
+                      systemSpace.details?.upgrade_space.size || '0 GB'
+                    ) /
+                      storageLimit) *
+                    100
+                  }%`,
+                  left: `${
+                    (convertToGB(systemSpace.details?.os.size || '0 GB') /
+                      storageLimit +
+                      convertToGB(
+                        systemSpace.details?.preinstalled.size || '0 GB'
+                      ) /
+                        storageLimit) *
+                    100
+                  }%`,
+                  borderRadius: usedSpace === 0 ? '0 9999px 9999px 0' : '0',
+                }}
+              />
+              {/* User Space - Only right rounded */}
+              <div
+                className={`h-full relative transition-all duration-500 ease-out
                   ${
                     usagePercentage > 90
                       ? 'bg-gradient-to-r from-red-500 to-red-600'
@@ -184,7 +229,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 style={{
                   width: `${(usedSpace / storageLimit) * 100}%`,
                   marginLeft: `${(systemSpace.size / storageLimit) * 100}%`,
-                  borderRadius: '0 9999px 9999px 0',
+                  borderRadius: usedSpace > 0 ? '0 9999px 9999px 0' : '0',
                 }}
               />
             </div>
@@ -200,38 +245,46 @@ const HardDriveAnalysis = ({ searchQuery }) => {
             >
               <div
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3
-                border border-gray-200 dark:border-gray-700 w-64"
+                border border-gray-200 dark:border-gray-700 w-80"
               >
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      System Files:
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-gray-600 dark:text-gray-400 min-w-[120px]">
+                      {systemSpace.details?.os.name}:
                     </span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {systemSpace.details?.os.size_in_GB}GB
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Pre-installed Apps:
-                    </span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {systemSpace.details?.preinstalled.size_in_GB}GB
+                    <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
+                      {systemSpace.details?.os.size}
                     </span>
                   </div>
-                  <div className="flex justify-between pt-1 border-t border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-400">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-gray-600 dark:text-gray-400 min-w-[120px]">
+                      {systemSpace.details?.preinstalled.name}:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
+                      {systemSpace.details?.preinstalled.size}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-gray-600 dark:text-gray-400 min-w-[120px] overflow-hidden text-ellipsis">
+                      {systemSpace.details?.upgrade_space.name}:
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
+                      {systemSpace.details?.upgrade_space.size}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-4 pt-1 border-t border-gray-200 dark:border-gray-700">
+                    <span className="text-gray-600 dark:text-gray-400 min-w-[120px]">
                       User Software:
                     </span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                    <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {formatSize(usedSpace)}
                     </span>
                   </div>
-                  <div className="flex justify-between font-medium pt-1 border-t border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-900 dark:text-gray-100">
+                  <div className="flex items-center justify-between gap-4 pt-1 border-t border-gray-200 dark:border-gray-700">
+                    <span className="text-gray-900 dark:text-gray-100 min-w-[120px]">
                       Total Used:
                     </span>
-                    <span className="text-gray-900 dark:text-gray-100">
+                    <span className="text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {formatSize(totalUsedSpace)}
                     </span>
                   </div>
