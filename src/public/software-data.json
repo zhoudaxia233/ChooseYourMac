@@ -308,7 +308,7 @@
             "id": "baldur",
             "name": "Baldur's Gate 3",
             "size": "150 GB",
-            "category": "Others",
+            "category": "Game",
             "icon": "",
             "description": "one of the best games"
         },
@@ -316,7 +316,7 @@
             "id": "deathstranding",
             "name": "Death Stranding Director's Cut",
             "size": "150 GB",
-            "category": "Others",
+            "category": "Game",
             "icon": "",
             "description": "the best game"
         },
@@ -324,7 +324,7 @@
             "id": "lostcrown",
             "name": "Prince of Persia: The Lost Crown",
             "size": "30 GB",
-            "category": "Others",
+            "category": "Game",
             "icon": "",
             "description": "a game"
         },
@@ -332,7 +332,7 @@
             "id": "civilizationvi",
             "name": "Sid Meier's Civilization VI",
             "size": "15 GB",
-            "category": "Others",
+            "category": "Game",
             "icon": "",
             "description": "a game"
         },
@@ -340,7 +340,7 @@
             "id": "residentevil2",
             "name": "Resident Evil 2",
             "size": "62 GB",
-            "category": "Others",
+            "category": "Game",
             "icon": "",
             "description": "a game"
         },
@@ -348,7 +348,7 @@
             "id": "cyberpunk2077",
             "name": "Cyberpunk 2077",
             "size": "140 GB",
-            "category": "Others",
+            "category": "Game",
             "icon": "",
             "description": "one of the best games"
         },
@@ -435,10 +435,16 @@
             "order": 4
         },
         {
+            "id": "game",
+            "name": "Game",
+            "icon": "",
+            "order": 5
+        },
+        {
             "id": "others",
             "name": "Others",
             "icon": "",
-            "order": 5
+            "order": 6
         }
     ],
     "system": {
