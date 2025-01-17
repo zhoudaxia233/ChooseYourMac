@@ -12,7 +12,20 @@ jest.mock('next-i18next', () => ({
 // Mock fetch responses
 const mockFetchResponses = {
   '/software-data.json': {
-    software: [],
+    software: [
+      {
+        id: 'vscode',
+        name: 'VS Code',
+        size: '500 MB',
+        category: 'Development',
+      },
+      {
+        id: 'chrome',
+        name: 'Chrome',
+        size: '537.5 MB',
+        category: 'Utilities',
+      },
+    ],
     system: {
       os: {
         name: 'Operating System',
@@ -27,9 +40,32 @@ const mockFetchResponses = {
         size: '35.5 GB',
       },
     },
+    categories: [
+      {
+        id: 'development',
+        name: 'Development',
+        order: 1,
+      },
+      {
+        id: 'utilities',
+        name: 'Utilities',
+        order: 2,
+      },
+    ],
   },
   '/presets.json': {
-    presets: [],
+    presets: [
+      {
+        id: 'basic',
+        name: 'Basic',
+        software: ['chrome'],
+      },
+      {
+        id: 'development',
+        name: 'Development',
+        software: ['vscode'],
+      },
+    ],
   },
 }
 
