@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'next-i18next'
 
 const SoftwareList = ({
   selectedSoftware,
@@ -7,6 +8,7 @@ const SoftwareList = ({
   searchQuery,
   softwareList,
 }) => {
+  const { t } = useTranslation('common')
   const [categoryList, setCategoryList] = useState([])
   const [draggedSoftware, setDraggedSoftware] = useState(null)
   const [localSearchQuery, setLocalSearchQuery] = useState('')
@@ -217,10 +219,10 @@ const SoftwareList = ({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-base text-gray-900 dark:text-gray-100">
-            Selected Software
+            {t('selected')}
           </h3>
           <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-            {selectedSoftware.length} items
+            {t('items', { count: selectedSoftware.length })}
           </span>
         </div>
 
@@ -321,7 +323,7 @@ const SoftwareList = ({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-base text-gray-900 dark:text-gray-100">
-            Available Software
+            {t('available')}
           </h3>
         </div>
 
@@ -329,7 +331,7 @@ const SoftwareList = ({
         <div className="relative">
           <input
             type="text"
-            placeholder="Search software..."
+            placeholder={t('search')}
             value={localSearchQuery}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
@@ -513,7 +515,7 @@ const SoftwareList = ({
                     className="flex-1 py-2 bg-blue-500 hover:bg-blue-600 
                       text-white rounded-lg transition-colors"
                   >
-                    Add to Selection
+                    {t('add')}
                   </button>
                   <button
                     onClick={() => setShowAddForm(false)}
@@ -541,7 +543,7 @@ const SoftwareList = ({
                   className="w-full py-2 bg-blue-500 hover:bg-blue-600 
                     text-white rounded-lg transition-colors"
                 >
-                  Add New Software
+                  {t('add')}
                 </button>
               </div>
             )}

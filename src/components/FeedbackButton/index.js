@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useTranslation } from 'next-i18next'
 
 export default function FeedbackButton() {
+  const { t } = useTranslation('common')
   const [isOpen, setIsOpen] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [status, setStatus] = useState('idle')
@@ -83,7 +85,7 @@ export default function FeedbackButton() {
               d="M5 13l4 4L19 7"
             />
           </svg>
-          <span>Thanks for your feedback!</span>
+          <span>{t('thanks')}</span>
         </div>
       )}
 
@@ -93,7 +95,7 @@ export default function FeedbackButton() {
             onClick={() => setIsOpen(true)}
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 shadow-lg transition-colors"
           >
-            <span className="sr-only">Open feedback form</span>
+            <span className="sr-only">{t('feedback')}</span>
             <svg
               className="w-6 h-6"
               fill="none"
@@ -112,7 +114,7 @@ export default function FeedbackButton() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 w-80">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Send Feedback
+                {t('feedback')}
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
@@ -136,7 +138,7 @@ export default function FeedbackButton() {
               <textarea
                 value={feedback}
                 onChange={e => setFeedback(e.target.value)}
-                placeholder="What could be improved?"
+                placeholder={t('placeholder')}
                 maxLength={1000}
                 className="w-full h-32 px-3 py-2 text-gray-700 dark:text-gray-300 
                   border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -150,7 +152,7 @@ export default function FeedbackButton() {
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 
                     rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {status === 'submitting' ? 'Sending...' : 'Send Feedback'}
+                  {status === 'submitting' ? t('sending') : t('submit')}
                 </button>
               </div>
             </form>

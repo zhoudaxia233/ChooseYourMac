@@ -2,6 +2,20 @@ import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import FeedbackButton from '../index'
 
+// Mock next-i18next
+jest.mock('next-i18next', () => ({
+  useTranslation: () => ({
+    t: key =>
+      ({
+        feedback: 'Send Feedback',
+        submit: 'Send Feedback',
+        placeholder: 'What could be improved?',
+        thanks: 'Thanks for your feedback!',
+        sending: 'Sending...',
+      }[key] || key),
+  }),
+}))
+
 describe('FeedbackButton Component', () => {
   let user
 
@@ -26,18 +40,15 @@ describe('FeedbackButton Component', () => {
   test('renders feedback button initially', () => {
     render(<FeedbackButton />)
     expect(
-      screen.getByRole('button', { name: /open feedback form/i })
+      screen.getByRole('button', { name: /send feedback/i })
     ).toBeInTheDocument()
   })
 
   test('opens feedback form when clicked', async () => {
     render(<FeedbackButton />)
 
-    await user.click(
-      screen.getByRole('button', { name: /open feedback form/i })
-    )
+    await user.click(screen.getByRole('button', { name: /send feedback/i }))
 
-    // Use role and name to be more specific
     expect(
       screen.getByRole('heading', { name: /send feedback/i })
     ).toBeInTheDocument()
@@ -50,9 +61,7 @@ describe('FeedbackButton Component', () => {
     render(<FeedbackButton />)
 
     // Open form
-    await user.click(
-      screen.getByRole('button', { name: /open feedback form/i })
-    )
+    await user.click(screen.getByRole('button', { name: /send feedback/i }))
     // Close form
     await user.click(screen.getByRole('button', { name: /close/i }))
 
@@ -72,9 +81,7 @@ describe('FeedbackButton Component', () => {
     render(<FeedbackButton />)
 
     // Open form
-    await user.click(
-      screen.getByRole('button', { name: /open feedback form/i })
-    )
+    await user.click(screen.getByRole('button', { name: /send feedback/i }))
 
     // Type feedback
     const textarea = screen.getByPlaceholderText('What could be improved?')
@@ -111,9 +118,7 @@ describe('FeedbackButton Component', () => {
 
     render(<FeedbackButton />)
 
-    await user.click(
-      screen.getByRole('button', { name: /open feedback form/i })
-    )
+    await user.click(screen.getByRole('button', { name: /send feedback/i }))
 
     const textarea = screen.getByPlaceholderText('What could be improved?')
     await user.type(textarea, 'Test feedback')
@@ -131,9 +136,7 @@ describe('FeedbackButton Component', () => {
 
     render(<FeedbackButton />)
 
-    await user.click(
-      screen.getByRole('button', { name: /open feedback form/i })
-    )
+    await user.click(screen.getByRole('button', { name: /send feedback/i }))
 
     const textarea = screen.getByPlaceholderText('What could be improved?')
     await user.type(textarea, '<script>alert("xss")</script> & test')
@@ -147,9 +150,7 @@ describe('FeedbackButton Component', () => {
   test('disables submit button when feedback is empty', async () => {
     render(<FeedbackButton />)
 
-    await user.click(
-      screen.getByRole('button', { name: /open feedback form/i })
-    )
+    await user.click(screen.getByRole('button', { name: /send feedback/i }))
 
     const submitButton = screen.getByRole('button', { name: /send feedback/i })
     expect(submitButton).toBeDisabled()

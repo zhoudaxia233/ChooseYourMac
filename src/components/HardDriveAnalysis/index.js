@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import PresetSidebar from './PresetSidebar'
 import SoftwareList from './SoftwareList'
 import StorageSelector from '../StorageSelector'
+import { useTranslation } from 'next-i18next'
 
 const HardDriveAnalysis = ({ searchQuery }) => {
+  const { t } = useTranslation('common')
   const [selectedSoftware, setSelectedSoftware] = useState([])
   const [selectedPresetId, setSelectedPresetId] = useState(null)
   const [usedSpace, setUsedSpace] = useState(0)
@@ -101,7 +103,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
             className="text-2xl font-semibold bg-gradient-to-r from-gray-900 to-gray-600 
             dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent"
           >
-            Storage Analysis
+            {t('title')}
           </h2>
           <div className="flex items-center gap-4">
             <button

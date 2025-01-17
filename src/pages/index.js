@@ -5,6 +5,7 @@ import ThemeToggle from '../components/ThemeToggle'
 import MemoryAnalysis from '../components/MemoryAnalysis'
 import { getDaysSinceDate } from '../utils/dateUtils'
 import FeedbackButton from '../components/FeedbackButton'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -61,4 +62,12 @@ export default function Home() {
       </main>
     </>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  }
 }

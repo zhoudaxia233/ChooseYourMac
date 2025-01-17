@@ -1,0 +1,13 @@
+{
+    "title": "Hard Drive Space Calculator",
+    "selected": "Selected Software",
+    "available": "Available Software",
+    "search": "Search software...",
+    "add": "Add New Software",
+    "feedback": "Send Feedback",
+    "items": "{{count}} items",
+    "thanks": "Thanks for your feedback!",
+    "placeholder": "What could be improved?",
+    "submit": "Send Feedback",
+    "sending": "Sending..."
+}

@@ -2,6 +2,25 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import SoftwareList from '../SoftwareList'
 
+// Mock next-i18next
+jest.mock('next-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, options) => {
+      if (key === 'items') {
+        return `${options.count} items`
+      }
+      return (
+        {
+          selected: 'Selected Software',
+          available: 'Available Software',
+          search: 'Search software...',
+          add: 'Add New Software',
+        }[key] || key
+      )
+    },
+  }),
+}))
+
 describe('SoftwareList Component', () => {
   const mockProps = {
     selectedSoftware: [],
