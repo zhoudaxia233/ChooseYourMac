@@ -54,7 +54,7 @@ export default function Home() {
               <span>Last updated: {daysSinceUpdate} days ago</span>
               <span>({lastUpdatedUTC})</span>
             </div>
-            <span>© 2024 ChooseYourMac</span>
+            <span>© 2025 ChooseYourMac</span>
           </div>
         </div>
 
