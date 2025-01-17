@@ -3,7 +3,7 @@
         {
             "id": "vscode",
             "name": "VS Code",
-            "size": "350 MB",
+            "size": "500 MB",
             "category": "Development",
             "icon": "",
             "description": "Lightweight but powerful source code editor"
@@ -11,23 +11,55 @@
         {
             "id": "docker",
             "name": "Docker",
-            "size": "3 GB",
+            "size": "8 GB",
             "category": "Development",
             "icon": "",
             "description": "Containerization platform"
         },
         {
-            "id": "nodejs",
-            "name": "Node.js",
-            "size": "200 MB",
+            "id": "xcode",
+            "name": "Xcode",
+            "size": "45 GB",
             "category": "Development",
             "icon": "",
-            "description": "JavaScript runtime environment"
+            "description": "Integrated development environment for macOS"
+        },
+        {
+            "id": "pycharm",
+            "name": "PyCharm",
+            "size": "5 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "Python IDE"
+        },
+        {
+            "id": "webstorm",
+            "name": "WebStorm",
+            "size": "5 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "JavaScript IDE"
+        },
+        {
+            "id": "clion",
+            "name": "CLion",
+            "size": "5 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "C/C++ IDE"
+        },
+        {
+            "id": "intellij",
+            "name": "IntelliJ IDEA",
+            "size": "5 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "Java IDE"
         },
         {
             "id": "chrome",
             "name": "Chrome",
-            "size": "300 MB",
+            "size": "537.5 MB",
             "category": "Utilities",
             "icon": "",
             "description": "Web browser by Google"
@@ -35,15 +67,15 @@
         {
             "id": "finalcutpro",
             "name": "Final Cut Pro",
-            "size": "35 GB",
+            "size": "50 GB",
             "category": "Video & Audio",
             "icon": "",
             "description": "Professional video editing software"
         },
         {
             "id": "premiere",
-            "name": "Adobe Premiere",
-            "size": "25 GB",
+            "name": "Adobe Premiere Pro",
+            "size": "20 GB",
             "category": "Video & Audio",
             "icon": "",
             "description": "Professional video editing software"
@@ -51,7 +83,7 @@
         {
             "id": "davinci",
             "name": "DaVinci Resolve",
-            "size": "25 GB",
+            "size": "20 GB",
             "category": "Video & Audio",
             "icon": "",
             "description": "Professional video editing software"
@@ -65,9 +97,25 @@
             "description": "Collaborative design tool"
         },
         {
+            "id": "sketch",
+            "name": "Sketch",
+            "size": "4 GB",
+            "category": "Design",
+            "icon": "",
+            "description": "Vector design tool"
+        },
+        {
+            "id": "affinitydesigner",
+            "name": "Affinity Designer",
+            "size": "20 GB",
+            "category": "Design",
+            "icon": "",
+            "description": "Vector design tool"
+        },
+        {
             "id": "photoshop",
             "name": "Adobe Photoshop",
-            "size": "25 GB",
+            "size": "50 GB",
             "category": "Design",
             "icon": "",
             "description": "Image editing software"
@@ -75,10 +123,234 @@
         {
             "id": "illustrator",
             "name": "Adobe Illustrator",
-            "size": "25 GB",
+            "size": "2 GB",
             "category": "Design",
             "icon": "",
             "description": "Vector graphics editor"
+        },
+        {
+            "id": "logicpro",
+            "name": "Logic Pro",
+            "size": "72 GB",
+            "category": "Video & Audio",
+            "icon": "",
+            "description": "Audio production software"
+        },
+        {
+            "id": "vlc",
+            "name": "VLC Media Player",
+            "size": "55 MB",
+            "category": "Video & Audio",
+            "icon": "",
+            "description": "Media player"
+        },
+        {
+            "id": "obs",
+            "name": "OBS Studio",
+            "size": "8 GB",
+            "category": "Video & Audio",
+            "icon": "",
+            "description": "Video recording and streaming software"
+        },
+        {
+            "id": "word",
+            "name": "Microsoft Word",
+            "size": "1.3 GB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Word processing software"
+        },
+        {
+            "id": "excel",
+            "name": "Microsoft Excel",
+            "size": "1 GB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Spreadsheet software"
+        },
+        {
+            "id": "powerpoint",
+            "name": "Microsoft PowerPoint",
+            "size": "910.6 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Presentation software"
+        },
+        {
+            "id": "onenote",
+            "name": "Microsoft OneNote",
+            "size": "569.4 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Note-taking software"
+        },
+        {
+            "id": "teams",
+            "name": "Microsoft Teams",
+            "size": "1.5 GB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Communication software"
+        },
+        {
+            "id": "outlook",
+            "name": "Microsoft Outlook",
+            "size": "1.3 GB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Email client"
+        },
+        {
+            "id": "onedrive",
+            "name": "Microsoft OneDrive",
+            "size": "160.6 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Cloud storage"
+        },
+        {
+            "id": "canva",
+            "name": "Canva",
+            "size": "1 GB",
+            "category": "Design",
+            "icon": "",
+            "description": "Design tool"
+        },
+        {
+            "id": "slack",
+            "name": "Slack",
+            "size": "196.7 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Communication software"
+        },
+        {
+            "id": "iterm2",
+            "name": "iTerm2",
+            "size": "29.9 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Terminal emulator"
+        },
+        {
+            "id": "magnet",
+            "name": "Magnet",
+            "size": "3 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Window manager"
+        },
+        {
+            "id": "cleanmymac",
+            "name": "CleanMyMac",
+            "size": "154.7 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "System cleaner"
+        },
+        {
+            "id": "postman",
+            "name": "Postman",
+            "size": "8 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "API client"
+        },
+        {
+            "id": "githubdesktop",
+            "name": "GitHub Desktop",
+            "size": "216.6 MB",
+            "category": "Development",
+            "icon": "",
+            "description": "Git client"
+        },
+        {
+            "id": "notion",
+            "name": "Notion",
+            "size": "1 GB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Note-taking software"
+        },
+        {
+            "id": "chatgpt",
+            "name": "ChatGPT",
+            "size": "500 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "AI chatbot"
+        },
+        {
+            "id": "discord",
+            "name": "Discord",
+            "size": "150 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Communication software"
+        },
+        {
+            "id": "baldur",
+            "name": "Baldur's Gate 3",
+            "size": "150 GB",
+            "category": "Others",
+            "icon": "",
+            "description": "one of the best games"
+        },
+        {
+            "id": "jupyter",
+            "name": "Jupyter Notebook",
+            "size": "1 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "Python IDE"
+        },
+        {
+            "id": "rstudio",
+            "name": "RStudio",
+            "size": "4 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "R IDE"
+        },
+        {
+            "id": "tableau",
+            "name": "Tableau",
+            "size": "15 GB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Data visualization tool"
+        },
+        {
+            "id": "matlab",
+            "name": "MATLAB",
+            "size": "16 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "Data visualization tool"
+        },
+        {
+            "id": "ollama",
+            "name": "Ollama",
+            "size": "50 GB",
+            "category": "Development",
+            "icon": "",
+            "description": "AI chatbot"
+        },
+        {
+            "id": "screenflow",
+            "name": "ScreenFlow",
+            "size": "20 GB",
+            "category": "Video & Audio",
+            "icon": "",
+            "description": "Video recording and streaming software"
+        },
+        {
+            "id": "bitwarden",
+            "name": "Bitwarden",
+            "size": "214.5 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Password manager"
         }
     ],
     "categories": [
