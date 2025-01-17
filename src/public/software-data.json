@@ -11,7 +11,7 @@
         {
             "id": "docker",
             "name": "Docker",
-            "size": "8 GB",
+            "size": "64 GB",
             "category": "Development",
             "icon": "",
             "description": "Containerization platform"
@@ -19,7 +19,7 @@
         {
             "id": "xcode",
             "name": "Xcode",
-            "size": "45 GB",
+            "size": "50 GB",
             "category": "Development",
             "icon": "",
             "description": "Integrated development environment for macOS"
@@ -63,6 +63,14 @@
             "category": "Utilities",
             "icon": "",
             "description": "Web browser by Google"
+        },
+        {
+            "id": "firefox",
+            "name": "Firefox",
+            "size": "500 MB",
+            "category": "Utilities",
+            "icon": "",
+            "description": "Web browser by Mozilla"
         },
         {
             "id": "finalcutpro",
@@ -127,6 +135,14 @@
             "category": "Design",
             "icon": "",
             "description": "Vector graphics editor"
+        },
+        {
+            "id": "blender",
+            "name": "Blender",
+            "size": "10 GB",
+            "category": "Design",
+            "icon": "",
+            "description": "3D modeling and animation software"
         },
         {
             "id": "logicpro",
@@ -292,6 +308,46 @@
             "id": "baldur",
             "name": "Baldur's Gate 3",
             "size": "150 GB",
+            "category": "Others",
+            "icon": "",
+            "description": "one of the best games"
+        },
+        {
+            "id": "deathstranding",
+            "name": "Death Stranding Director's Cut",
+            "size": "150 GB",
+            "category": "Others",
+            "icon": "",
+            "description": "the best game"
+        },
+        {
+            "id": "lostcrown",
+            "name": "Prince of Persia: The Lost Crown",
+            "size": "30 GB",
+            "category": "Others",
+            "icon": "",
+            "description": "a game"
+        },
+        {
+            "id": "civilizationvi",
+            "name": "Sid Meier's Civilization VI",
+            "size": "15 GB",
+            "category": "Others",
+            "icon": "",
+            "description": "a game"
+        },
+        {
+            "id": "residentevil2",
+            "name": "Resident Evil 2",
+            "size": "62 GB",
+            "category": "Others",
+            "icon": "",
+            "description": "a game"
+        },
+        {
+            "id": "cyberpunk2077",
+            "name": "Cyberpunk 2077",
+            "size": "140 GB",
             "category": "Others",
             "icon": "",
             "description": "one of the best games"
