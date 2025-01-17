@@ -89,12 +89,12 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
               ${isInfoExpanded ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}
           >
             <p className="leading-relaxed">
-              The performance estimates in this tool are based on Apple's
-              M-series unified memory architecture. These values are{' '}
-              <strong>subjective approximations</strong>, gathered from forums
-              and YouTube analyses, and are not standardized measurements. They
-              are for <strong>reference only</strong> and may vary depending on
-              individual workloads.
+              The performance estimates in this tool are based on Apple's{' '}
+              <strong>M-series</strong> unified memory architecture. These
+              values are <strong>subjective approximations</strong>, gathered
+              from forums and YouTube analyses, and are not standardized
+              measurements. They are for reference only and may vary depending
+              on individual workloads.
             </p>
           </div>
         </div>

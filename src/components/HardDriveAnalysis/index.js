@@ -196,13 +196,13 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 }`}
             >
               <p className="leading-relaxed">
-                The listed sizes for all software are generally much higher than
-                their fresh installation sizes. This is because the estimates
-                take into account factors such as smooth operation, data
-                caching, and other usage-related storage needs. These specific
-                numbers are derived from various sources, including forum
-                discussions and the official system requirements provided by the
-                software developers.
+                The listed sizes for all software are generally{' '}
+                <strong>much higher</strong> than their fresh installation
+                sizes. This is because the estimates take into account factors
+                such as smooth operation, data caching, and other usage-related
+                storage needs. These specific numbers are derived from various
+                sources, including forum discussions and the official system
+                requirements provided by the software developers.
               </p>
             </div>
           </div>
