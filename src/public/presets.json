@@ -9,7 +9,7 @@
                 "nodejs",
                 "chrome"
             ],
-            "totalSize": 4
+            "description": "Essential tools for web development"
         },
         {
             "id": "video-edit",
@@ -19,7 +19,7 @@
                 "premiere",
                 "davinci"
             ],
-            "totalSize": 85
+            "description": "Professional video editing suite"
         },
         {
             "id": "designer",
@@ -29,7 +29,7 @@
                 "photoshop",
                 "illustrator"
             ],
-            "totalSize": 50.5
+            "description": "Complete design toolkit"
         }
     ]
 }

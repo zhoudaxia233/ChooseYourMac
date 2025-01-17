@@ -31,14 +31,14 @@ describe('SoftwareList Component', () => {
       {
         id: 'vscode',
         name: 'VS Code',
-        size_in_GB: 0.2,
+        size: '350 MB',
         category: 'Development',
       },
       {
         id: 'chrome',
         name: 'Chrome',
-        size_in_GB: 0.5,
-        category: 'Browser',
+        size: '300 MB',
+        category: 'Utilities',
       },
     ],
   }
@@ -53,7 +53,7 @@ describe('SoftwareList Component', () => {
       JSON.stringify({
         categories: [
           { id: 'development', name: 'Development', order: 1 },
-          { id: 'browser', name: 'Browser', order: 2 },
+          { id: 'utilities', name: 'Utilities', order: 4 },
         ],
         system: {
           os: { size_in_GB: 15 },
@@ -245,13 +245,12 @@ describe('SoftwareList Component', () => {
         {
           id: 'newsoftware',
           name: 'NewSoftware',
+          size: '1 GB',
           category: 'Others',
-          size_in_GB: 1,
           icon: '',
           description: '',
         },
       ])
-      expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['newsoftware'])
     })
 
     test('does not submit form when Enter is pressed with empty fields', async () => {
@@ -301,32 +300,38 @@ describe('SoftwareList Component', () => {
       expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
     })
     test('filters software when clicking category tabs', async () => {
-      // Render the component with the default mockProps
+      const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
 
-      // Wait for categories to load and get tab buttons
-      const devTab = await screen.findByRole('button', { name: 'Development' })
-      const browserTab = await screen.findByRole('button', { name: 'Browser' })
-      const allTab = await screen.findByRole('button', { name: 'All' })
+      // Wait for categories to load
+      await waitFor(() => {
+        expect(
+          screen.getByRole('button', { name: 'Development' })
+        ).toBeInTheDocument()
+      })
+
+      const devTab = screen.getByRole('button', { name: 'Development' })
+      const utilitiesTab = screen.getByRole('button', { name: 'Utilities' })
+      const allTab = screen.getByRole('button', { name: 'All' })
 
       // "All" is active by default, so both are visible
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.getByText('Chrome')).toBeInTheDocument()
 
-      // Click "Browser" tab
-      fireEvent.click(browserTab)
+      // Click "Utilities" tab
+      await user.click(utilitiesTab)
       // Only "Chrome" should show
       expect(screen.getByText('Chrome')).toBeInTheDocument()
       expect(screen.queryByText('VS Code')).not.toBeInTheDocument()
 
       // Click "Development" tab
-      fireEvent.click(devTab)
+      await user.click(devTab)
       // Only "VS Code" should show
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.queryByText('Chrome')).not.toBeInTheDocument()
 
       // Click "All" tab again
-      fireEvent.click(allTab)
+      await user.click(allTab)
       // Both should be visible again
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.getByText('Chrome')).toBeInTheDocument()

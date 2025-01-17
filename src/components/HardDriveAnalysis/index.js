@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import PresetSidebar from './PresetSidebar'
 import SoftwareList from './SoftwareList'
 import StorageSelector from '../StorageSelector'
 import { useTranslation } from 'next-i18next'
+import { convertToGB, formatSize } from '../../utils/sizeUtils'
 
 const HardDriveAnalysis = ({ searchQuery }) => {
   const { t } = useTranslation('common')
@@ -23,7 +24,8 @@ const HardDriveAnalysis = ({ searchQuery }) => {
       .then(response => response.json())
       .then(data => {
         const totalSystemSpace =
-          data.system.os.size_in_GB + data.system.preinstalled.size_in_GB
+          convertToGB(data.system.os.size) +
+          convertToGB(data.system.preinstalled.size)
         setSystemSpace({
           size: totalSystemSpace,
           details: data.system,
@@ -42,7 +44,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
   const calculateUsedSpace = softwareIds => {
     return softwareIds.reduce((total, id) => {
       const software = softwareList.find(s => s.id === id)
-      return total + (software?.size_in_GB || 0)
+      return total + (software ? convertToGB(software.size) : 0)
     }, 0)
   }
 
@@ -91,6 +93,13 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     setTooltipPosition(percentage)
   }
 
+  const calculateTotalSize = useCallback(() => {
+    return selectedSoftware.reduce((total, id) => {
+      const software = softwareList.find(s => s.id === id)
+      return total + (software ? convertToGB(software.size) : 0)
+    }, 0)
+  }, [selectedSoftware, softwareList])
+
   return (
     <div
       className="rounded-2xl border border-black/[.08] dark:border-white/[.145] 
@@ -138,15 +147,13 @@ const HardDriveAnalysis = ({ searchQuery }) => {
 
         {/* Progress Bar Section with Tooltip */}
         <div className="mt-6 space-y-4">
-          <div className="flex justify-between text-sm font-medium">
-            <span className="flex items-center text-gray-600 dark:text-gray-400">
-              <div className="w-2 h-2 rounded-full bg-blue-500 mr-2" />
-              Used: {totalUsedSpace.toFixed(1)}GB
-            </span>
-            <span className="flex items-center text-gray-600 dark:text-gray-400">
-              <div className="w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700 mr-2" />
-              Available: {(storageLimit - totalUsedSpace).toFixed(1)}GB
-            </span>
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+            <div>
+              {formatSize(totalUsedSpace)} of {storageLimit} GB used
+            </div>
+            <div>
+              {formatSize(Math.max(0, storageLimit - totalUsedSpace))} available
+            </div>
           </div>
 
           {/* Progress Bar with Tooltip */}
@@ -217,7 +224,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                       User Software:
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {usedSpace.toFixed(1)}GB
+                      {formatSize(usedSpace)}
                     </span>
                   </div>
                   <div className="flex justify-between font-medium pt-1 border-t border-gray-200 dark:border-gray-700">
@@ -225,7 +232,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                       Total Used:
                     </span>
                     <span className="text-gray-900 dark:text-gray-100">
-                      {totalUsedSpace.toFixed(1)}GB
+                      {formatSize(totalUsedSpace)}
                     </span>
                   </div>
                 </div>
@@ -250,7 +257,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 />
               </svg>
               Storage limit exceeded by{' '}
-              {(totalUsedSpace - storageLimit).toFixed(1)}GB
+              {formatSize(totalUsedSpace - storageLimit)}
             </div>
           )}
         </div>

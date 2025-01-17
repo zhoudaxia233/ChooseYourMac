@@ -3,80 +3,80 @@
         {
             "id": "vscode",
             "name": "VS Code",
+            "size": "350 MB",
             "category": "Development",
-            "size_in_GB": 0.5,
             "icon": "",
             "description": "Lightweight but powerful source code editor"
         },
         {
             "id": "docker",
             "name": "Docker",
+            "size": "3 GB",
             "category": "Development",
-            "size_in_GB": 3,
             "icon": "",
             "description": "Containerization platform"
         },
         {
             "id": "nodejs",
             "name": "Node.js",
+            "size": "200 MB",
             "category": "Development",
-            "size_in_GB": 0.2,
             "icon": "",
             "description": "JavaScript runtime environment"
         },
         {
             "id": "chrome",
             "name": "Chrome",
+            "size": "300 MB",
             "category": "Utilities",
-            "size_in_GB": 0.3,
             "icon": "",
             "description": "Web browser by Google"
         },
         {
             "id": "finalcutpro",
             "name": "Final Cut Pro",
+            "size": "35 GB",
             "category": "Video & Audio",
-            "size_in_GB": 35,
             "icon": "",
             "description": "Professional video editing software"
         },
         {
             "id": "premiere",
             "name": "Adobe Premiere",
+            "size": "25 GB",
             "category": "Video & Audio",
-            "size_in_GB": 25,
             "icon": "",
             "description": "Professional video editing software"
         },
         {
             "id": "davinci",
             "name": "DaVinci Resolve",
+            "size": "25 GB",
             "category": "Video & Audio",
-            "size_in_GB": 25,
             "icon": "",
             "description": "Professional video editing software"
         },
         {
             "id": "figma",
             "name": "Figma",
+            "size": "500 MB",
             "category": "Design",
-            "size_in_GB": 0.5,
             "icon": "",
             "description": "Collaborative design tool"
         },
         {
             "id": "photoshop",
             "name": "Adobe Photoshop",
+            "size": "25 GB",
             "category": "Design",
-            "size_in_GB": 25,
             "icon": "",
             "description": "Image editing software"
         },
         {
             "id": "illustrator",
             "name": "Adobe Illustrator",
+            "size": "25 GB",
             "category": "Design",
-            "size_in_GB": 25,
             "icon": "",
             "description": "Vector graphics editor"
         }
@@ -116,12 +116,12 @@
     "system": {
         "os": {
             "name": "Operating System",
-            "size_in_GB": 25,
+            "size": "25 GB",
             "description": "System files, drivers and basic utilities"
         },
         "preinstalled": {
             "name": "Pre-installed Apps",
-            "size_in_GB": 10,
+            "size": "10 GB",
             "description": "Default applications and system tools"
         }
     }

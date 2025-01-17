@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
+import { formatSize } from '../../utils/sizeUtils'
 
 const SoftwareList = ({
   selectedSoftware,
@@ -150,16 +151,11 @@ const SoftwareList = ({
   const handleAddSoftware = () => {
     if (!newSoftware.name || !newSoftware.size) return
 
-    const size =
-      newSoftware.unit === 'GB'
-        ? Number(newSoftware.size)
-        : Number(newSoftware.size) / 1024
-
     const newSoftwareItem = {
       id: newSoftware.name.toLowerCase().replace(/\s+/g, '-'),
       name: newSoftware.name,
       category: 'Others',
-      size_in_GB: size,
+      size: `${newSoftware.size} ${newSoftware.unit}`,
       icon: '',
       description: '',
     }
@@ -266,7 +262,7 @@ const SoftwareList = ({
                           dark:bg-gray-800 dark:text-gray-400
                           opacity-0 group-hover:opacity-100 transition-opacity"
                       >
-                        {software.size_in_GB}GB
+                        {software.size}
                       </div>
 
                       {/* Remove Button */}
@@ -416,7 +412,7 @@ const SoftwareList = ({
                       className="px-2.5 py-1 text-xs font-medium rounded-full 
                       bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                     >
-                      {software.size_in_GB}GB
+                      {software.size}
                     </span>
                     <button
                       onClick={e => {
