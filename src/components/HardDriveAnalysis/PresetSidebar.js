@@ -28,6 +28,16 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
     }, 0)
   }
 
+  const getSoftwareNames = software => {
+    const names = software
+      .slice(0, 1)
+      .map(id => softwareData.find(s => s.id === id)?.name || id)
+
+    return software.length > 1
+      ? `${names.join(', ')} +${software.length - 1} more`
+      : names.join(', ')
+  }
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -39,7 +49,7 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
           <button
             key={preset.id}
             onClick={() => onPresetSelect(preset)}
-            className={`w-full p-4 rounded-xl text-left transition-all duration-200
+            className={`w-full p-3 rounded-xl text-left transition-all duration-200
               ${
                 selectedPresetId === preset.id
                   ? 'bg-blue-500 text-white shadow-md'
@@ -54,13 +64,13 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
                 </span>
               </div>
               <p
-                className={`text-sm ${
+                className={`text-sm truncate ${
                   selectedPresetId === preset.id
                     ? 'text-blue-100'
                     : 'text-gray-500 dark:text-gray-400'
                 }`}
               >
-                {preset.software.join(', ')}
+                {getSoftwareNames(preset.software)}
               </p>
             </div>
           </button>
