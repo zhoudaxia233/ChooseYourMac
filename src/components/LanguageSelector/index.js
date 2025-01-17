@@ -37,8 +37,10 @@ export default function LanguageSelector() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="px-3 py-1.5 text-sm font-medium rounded-lg
-          bg-gray-800 hover:bg-gray-700
-          text-gray-300 hover:text-gray-100
+          bg-white dark:bg-gray-800
+          text-gray-700 dark:text-gray-300
+          border border-gray-200 dark:border-gray-700
+          hover:bg-gray-50 dark:hover:bg-gray-700
           transition-colors duration-200
           flex items-center gap-2"
         aria-label="Select language"
@@ -65,7 +67,9 @@ export default function LanguageSelector() {
       {isOpen && (
         <div
           className="absolute right-0 mt-2 py-1 w-32 
-            bg-gray-800 rounded-lg shadow-xl border border-gray-700"
+            bg-white dark:bg-gray-800 
+            border border-gray-200 dark:border-gray-700
+            rounded-lg shadow-lg"
           data-testid="language-dropdown"
         >
           {languages.map(language => (
@@ -73,11 +77,11 @@ export default function LanguageSelector() {
               key={language.code}
               onClick={() => switchLanguage(language.code)}
               className={`w-full px-4 py-2 text-left text-sm
-                hover:bg-gray-700
+                hover:bg-gray-50 dark:hover:bg-gray-700
                 ${
                   language.code === currentLanguage.code
-                    ? 'text-blue-400 font-medium'
-                    : 'text-gray-300'
+                    ? 'text-blue-500 dark:text-blue-400 font-medium'
+                    : 'text-gray-700 dark:text-gray-300'
                 }
                 transition-colors duration-200`}
               data-testid={`language-option-${language.code}`}

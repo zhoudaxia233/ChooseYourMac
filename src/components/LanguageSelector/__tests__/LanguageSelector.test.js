@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { ThemeProvider } from 'next-themes'
 import LanguageSelector from '../index'
 
 // Mock next/router
@@ -14,6 +15,31 @@ jest.mock('next/router', () => ({
   }),
 }))
 
+// Mock matchMedia
+beforeAll(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // 废弃
+      removeListener: jest.fn(), // 废弃
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  })
+})
+
+const renderWithTheme = (component, { theme = 'light' } = {}) => {
+  return render(
+    <ThemeProvider attribute="class" defaultTheme={theme} enableSystem={false}>
+      {component}
+    </ThemeProvider>
+  )
+}
+
 describe('LanguageSelector Component', () => {
   let user
 
@@ -23,13 +49,13 @@ describe('LanguageSelector Component', () => {
   })
 
   test('renders language selector button', () => {
-    render(<LanguageSelector />)
+    renderWithTheme(<LanguageSelector />)
     expect(screen.getByTestId('language-selector')).toBeInTheDocument()
     expect(screen.getByText('English')).toBeInTheDocument()
   })
 
   test('shows dropdown when clicked', async () => {
-    render(<LanguageSelector />)
+    renderWithTheme(<LanguageSelector />)
 
     await user.click(screen.getByTestId('language-selector'))
 
@@ -40,7 +66,7 @@ describe('LanguageSelector Component', () => {
   })
 
   test('changes language when option is selected', async () => {
-    render(<LanguageSelector />)
+    renderWithTheme(<LanguageSelector />)
 
     await user.click(screen.getByTestId('language-selector'))
     await user.click(screen.getByTestId('language-option-zh'))
@@ -51,12 +77,36 @@ describe('LanguageSelector Component', () => {
   })
 
   test('closes dropdown when clicking outside', async () => {
-    render(<LanguageSelector />)
+    renderWithTheme(<LanguageSelector />)
 
     await user.click(screen.getByTestId('language-selector'))
     expect(screen.getByTestId('language-dropdown')).toBeInTheDocument()
 
     fireEvent.mouseDown(document.body)
     expect(screen.queryByTestId('language-dropdown')).not.toBeInTheDocument()
+  })
+
+  test('applies correct styles in light and dark modes', () => {
+    // Test light mode
+    const { rerender } = renderWithTheme(<LanguageSelector />, {
+      theme: 'light',
+    })
+    const buttonLight = screen.getByTestId('language-selector')
+
+    expect(buttonLight).toHaveClass('bg-white')
+    expect(buttonLight).toHaveClass('text-gray-700')
+    expect(buttonLight).toHaveClass('border-gray-200')
+
+    // Test dark mode
+    rerender(
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <LanguageSelector />
+      </ThemeProvider>
+    )
+    const buttonDark = screen.getByTestId('language-selector')
+
+    expect(buttonDark).toHaveClass('dark:bg-gray-800')
+    expect(buttonDark).toHaveClass('dark:text-gray-300')
+    expect(buttonDark).toHaveClass('dark:border-gray-700')
   })
 })
