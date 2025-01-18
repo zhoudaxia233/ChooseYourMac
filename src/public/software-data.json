@@ -17,6 +17,14 @@
             "description": "Containerization platform"
         },
         {
+            "id": "homebrew",
+            "name": "Homebrew",
+            "size": "100 MB",
+            "category": "Development",
+            "icon": "",
+            "description": "Package manager for macOS"
+        },
+        {
             "id": "xcode",
             "name": "Xcode",
             "size": "50 GB",

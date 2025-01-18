@@ -22,6 +22,7 @@
             "name": "Web Developer",
             "software": [
                 "vscode",
+                "homebrew",
                 "docker",
                 "chrome",
                 "firefox",
