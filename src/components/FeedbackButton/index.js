@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import { toast } from 'react-hot-toast'
 
 export default function FeedbackButton() {
-  const { t } = useTranslation('common')
+  const { t, i18n } = useTranslation('common')
   const [isOpen, setIsOpen] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [status, setStatus] = useState('idle')
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   const sanitizeFeedback = text => {
-    // Remove HTML tags and scripts
+    // First, remove any HTML tags and scripts
     return (
       text
         .replace(/<[^>]*>/g, '')
-        // Escape special characters
+        // Then escape special characters to prevent XSS
         .replace(
           /[&<>"'/]/g,
           char =>
@@ -31,64 +31,40 @@ export default function FeedbackButton() {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    const trimmedFeedback = feedback.trim()
-    if (!trimmedFeedback) return
-
     setStatus('submitting')
+
     try {
-      const sanitizedFeedback = sanitizeFeedback(trimmedFeedback)
       const response = await fetch('/api/feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          feedback: sanitizedFeedback,
-          locale: navigator.language || navigator.userLanguage || 'unknown',
+          text: feedback,
+          locale: i18n.language, // Current language from i18n
         }),
       })
 
-      if (!response.ok) throw new Error('Failed to submit feedback')
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to submit feedback')
+      }
 
-      // Immediately close the form
-      setIsOpen(false)
-      setStatus('success')
+      // Reset form and show success message
       setFeedback('')
-      setShowSuccessMessage(true)
-
-      // Hide success message after delay
-      setTimeout(() => {
-        setShowSuccessMessage(false)
-        setStatus('idle')
-      }, 3000)
+      setIsOpen(false)
+      setStatus('idle')
+      toast.success(t('feedback.success'))
     } catch (error) {
+      // Handle error state and show error message
       setStatus('error')
       console.error('Error submitting feedback:', error)
+      toast.error(t('feedback.error'))
     }
   }
 
   return (
     <>
-      {showSuccessMessage && (
-        <div
-          className="fixed bottom-20 right-4 bg-green-500/90 backdrop-blur-sm text-white 
-            px-4 py-2 rounded-full shadow-lg animate-fade-in flex items-center gap-2 text-sm"
-        >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-          <span>{t('thanks')}</span>
-        </div>
-      )}
-
       <div className="fixed bottom-4 right-4">
         {!isOpen ? (
           <button

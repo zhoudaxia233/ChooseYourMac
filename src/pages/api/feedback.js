@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import { MongoClient } from 'mongodb'
+import { sanitize } from 'isomorphic-dompurify'
 
 function parseUserAgent(userAgent) {
   const ua = userAgent?.toLowerCase() || ''
@@ -23,71 +23,45 @@ function parseUserAgent(userAgent) {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    return res.status(405).json({ message: 'Method not allowed' })
   }
 
   try {
-    const { feedback, locale } = req.body
-
-    // Validate feedback
-    if (!feedback || typeof feedback !== 'string' || feedback.length > 1000) {
-      return res.status(400).json({ error: 'Invalid feedback' })
+    // Validate input
+    const { text, locale } = req.body
+    if (!text || typeof text !== 'string' || text.length > 1000) {
+      return res.status(400).json({ message: 'Invalid feedback text' })
+    }
+    if (!locale || typeof locale !== 'string' || locale.length > 10) {
+      return res.status(400).json({ message: 'Invalid locale' })
     }
 
-    const feedbackDir = path.join(process.cwd(), 'feedback')
-    const feedbackFile = path.join(feedbackDir, 'feedback.json')
-
-    // Create feedback directory if it doesn't exist
-    if (!fs.existsSync(feedbackDir)) {
-      fs.mkdirSync(feedbackDir, { recursive: true })
+    if (!process.env.MONGODB_URI) {
+      throw new Error('Please add your MongoDB URI to .env.local')
     }
 
-    // Read existing feedback with error handling
-    let feedbackData = []
-    if (fs.existsSync(feedbackFile)) {
-      try {
-        const fileContent = fs.readFileSync(feedbackFile, 'utf8')
-        // Handle empty file case
-        if (fileContent.trim()) {
-          feedbackData = JSON.parse(fileContent)
-        }
-        // Ensure feedbackData is an array
-        if (!Array.isArray(feedbackData)) {
-          feedbackData = []
-        }
-      } catch (error) {
-        console.error('Error parsing feedback file:', error)
-        feedbackData = [] // Reset to empty array if parsing fails
-      }
-    }
+    const client = await MongoClient.connect(process.env.MONGODB_URI)
+    const db = client.db('chooseyourmac')
 
-    // Add new feedback with rate limiting check
-    const recentFeedback = feedbackData.filter(
-      f => Date.now() - new Date(f.date).getTime() < 60000 // 1 minute
-    )
+    // Sanitize input before storing
+    const sanitizedText = sanitize(text)
 
-    if (recentFeedback.length >= 5) {
-      return res.status(429).json({ error: 'Too many requests' })
-    }
-
-    // Add new feedback with simplified structure
-    feedbackData.push({
-      id: Date.now(),
-      text: feedback,
-      date: new Date().toISOString(),
+    const feedback = await db.collection('feedback').insertOne({
+      text: sanitizedText,
+      locale,
       client: parseUserAgent(req.headers['user-agent']),
-      locale: locale || 'unknown',
+      createdAt: new Date(),
     })
 
-    // Keep only last 1000 feedback entries
-    feedbackData = feedbackData.slice(-1000)
+    await client.close()
 
-    // Write updated feedback
-    fs.writeFileSync(feedbackFile, JSON.stringify(feedbackData, null, 2))
-
-    res.status(200).json({ message: 'Feedback submitted successfully' })
+    res
+      .status(201)
+      .json({ message: 'Feedback stored', id: feedback.insertedId })
   } catch (error) {
-    console.error('Error saving feedback:', error)
-    res.status(500).json({ error: 'Failed to save feedback' })
+    console.error('Database error:', error)
+    res
+      .status(500)
+      .json({ message: 'Error storing feedback', error: error.message })
   }
 }

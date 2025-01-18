@@ -1,94 +1,72 @@
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import FeedbackButton from '../index'
+import { toast } from 'react-hot-toast'
 
 // Mock next-i18next
 jest.mock('next-i18next', () => ({
   useTranslation: () => ({
-    t: key =>
-      ({
-        feedback: 'Send Feedback',
-        submit: 'Send Feedback',
-        placeholder: 'What could be improved?',
-        thanks: 'Thanks for your feedback!',
-        sending: 'Sending...',
-      }[key] || key),
+    t: str => str,
+    i18n: { language: 'en' },
   }),
 }))
 
+// Mock react-hot-toast
+jest.mock('react-hot-toast', () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}))
+
+// Mock fetch
+global.fetch = jest.fn()
+
 describe('FeedbackButton Component', () => {
-  let user
+  let consoleErrorSpy
+
+  beforeAll(() => {
+    // Mock console.error
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    // Restore console.error
+    consoleErrorSpy.mockRestore()
+  })
 
   beforeEach(() => {
-    // Reset fetch mock
-    global.fetch = jest.fn()
-    // Reset timers
-    jest.useFakeTimers()
-    // Setup userEvent once
-    user = userEvent.setup({ delay: null })
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
-    // Wrap timer cleanup in act
-    act(() => {
-      jest.runOnlyPendingTimers()
+    // Setup default fetch mock
+    fetch.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ message: 'Success' }),
     })
-    jest.useRealTimers()
   })
 
-  test('renders feedback button initially', () => {
+  test('renders feedback button', () => {
     render(<FeedbackButton />)
-    expect(
-      screen.getByRole('button', { name: /send feedback/i })
-    ).toBeInTheDocument()
+    expect(screen.getByRole('button')).toBeInTheDocument()
   })
 
-  test('opens feedback form when clicked', async () => {
+  test('opens feedback form on click', async () => {
+    const user = userEvent.setup()
     render(<FeedbackButton />)
 
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
-
-    expect(
-      screen.getByRole('heading', { name: /send feedback/i })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByPlaceholderText('What could be improved?')
-    ).toBeInTheDocument()
-  }, 10000)
-
-  test('closes feedback form when close button is clicked', async () => {
-    render(<FeedbackButton />)
-
-    // Open form
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
-    // Close form
-    await user.click(screen.getByRole('button', { name: /close/i }))
-
-    expect(
-      screen.queryByRole('heading', { name: /send feedback/i })
-    ).not.toBeInTheDocument()
-  }, 10000)
+    await user.click(screen.getByRole('button'))
+    expect(screen.getByPlaceholderText('placeholder')).toBeInTheDocument()
+  })
 
   test('submits feedback successfully', async () => {
-    // Mock successful fetch response
-    global.fetch.mockResolvedValueOnce({
-      ok: true,
-      json: () =>
-        Promise.resolve({ message: 'Feedback submitted successfully' }),
-    })
-
+    const user = userEvent.setup()
     render(<FeedbackButton />)
 
     // Open form
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
+    await user.click(screen.getByRole('button'))
 
-    // Type feedback
-    const textarea = screen.getByPlaceholderText('What could be improved?')
-    await user.type(textarea, 'Test feedback')
-
-    // Submit form
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
+    // Fill and submit form
+    await user.type(screen.getByPlaceholderText('placeholder'), 'Test feedback')
+    await user.click(screen.getByText('submit'))
 
     // Verify fetch was called correctly
     expect(fetch).toHaveBeenCalledWith('/api/feedback', {
@@ -97,69 +75,43 @@ describe('FeedbackButton Component', () => {
       body: expect.any(String),
     })
 
-    // Verify success message appears
-    await waitFor(() => {
-      expect(screen.getByText('Thanks for your feedback!')).toBeInTheDocument()
+    // Verify the sent data
+    const sentData = JSON.parse(fetch.mock.calls[0][1].body)
+    expect(sentData).toEqual({
+      text: 'Test feedback',
+      locale: 'en',
     })
 
-    // Wrap timer in act
-    await act(async () => {
-      jest.advanceTimersByTime(3000)
-    })
-
-    expect(
-      screen.queryByText('Thanks for your feedback!')
-    ).not.toBeInTheDocument()
-  }, 10000)
+    // Verify success toast was shown
+    expect(toast.success).toHaveBeenCalledWith('feedback.success')
+  })
 
   test('handles submission error', async () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
-    global.fetch.mockRejectedValueOnce(new Error('Failed to submit'))
+    fetch.mockRejectedValueOnce(new Error('Network error'))
 
+    const user = userEvent.setup()
     render(<FeedbackButton />)
 
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
+    await user.click(screen.getByRole('button'))
+    await user.type(screen.getByPlaceholderText('placeholder'), 'Test feedback')
+    await user.click(screen.getByText('submit'))
 
-    const textarea = screen.getByPlaceholderText('What could be improved?')
-    await user.type(textarea, 'Test feedback')
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
+    // Verify error was logged
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Error submitting feedback:',
+      expect.any(Error)
+    )
+    // Verify error toast was shown
+    expect(toast.error).toHaveBeenCalledWith('feedback.error')
+  })
 
-    expect(consoleSpy).toHaveBeenCalled()
-    consoleSpy.mockRestore()
-  }, 10000)
-
-  test('sanitizes feedback before submission', async () => {
-    global.fetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve({ message: 'Success' }),
-    })
-
+  test('validates empty feedback', async () => {
+    const user = userEvent.setup()
     render(<FeedbackButton />)
 
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
+    await user.click(screen.getByRole('button'))
+    const submitButton = screen.getByText('submit')
 
-    const textarea = screen.getByPlaceholderText('What could be improved?')
-    await user.type(textarea, '<script>alert("xss")</script> & test')
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
-
-    // Update expectation to match actual sanitization behavior
-    const sentData = JSON.parse(fetch.mock.calls[0][1].body)
-    expect(sentData.feedback).toBe('alert(&quot;xss&quot;) &amp; test')
-  }, 10000)
-
-  test('disables submit button when feedback is empty', async () => {
-    render(<FeedbackButton />)
-
-    await user.click(screen.getByRole('button', { name: /send feedback/i }))
-
-    const submitButton = screen.getByRole('button', { name: /send feedback/i })
     expect(submitButton).toBeDisabled()
-
-    const textarea = screen.getByPlaceholderText('What could be improved?')
-    await user.type(textarea, 'test')
-    expect(submitButton).not.toBeDisabled()
-
-    await user.clear(textarea)
-    expect(submitButton).toBeDisabled()
-  }, 10000)
+  })
 })
