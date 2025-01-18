@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'
-import MyApp from '../_app'
+import MyApp from '../pages/_app'
 
 // Mock next-i18next
 jest.mock('next-i18next', () => ({
