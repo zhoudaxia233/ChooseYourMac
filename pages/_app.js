@@ -3,6 +3,7 @@ import { ThemeProvider } from 'next-themes'
 import '../styles/globals.css'
 import LanguageSelector from '../components/LanguageSelector'
 import { Toaster } from 'react-hot-toast'
+import Head from 'next/head'
 
 function getInitialLocale() {
   if (typeof window !== 'undefined') {
@@ -15,13 +16,21 @@ function getInitialLocale() {
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <Toaster position="bottom-right" />
-      <div className="fixed top-4 right-4 flex items-center gap-2 z-50">
-        <LanguageSelector />
-      </div>
-      <Component {...pageProps} defaultLocale={getInitialLocale()} />
-    </ThemeProvider>
+    <>
+      <Head>
+        <meta
+          name="google-site-verification"
+          content="SxusvZ7BGYRi-rn1CqZyVEouwZ9hUkjxfPa2K_u8gx0"
+        />
+      </Head>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <Toaster position="bottom-right" />
+        <div className="fixed top-4 right-4 flex items-center gap-2 z-50">
+          <LanguageSelector />
+        </div>
+        <Component {...pageProps} defaultLocale={getInitialLocale()} />
+      </ThemeProvider>
+    </>
   )
 }
 
