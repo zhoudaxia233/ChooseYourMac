@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
     name: 'Choose Your Mac',
     url: 'https://chooseyourmac.info',
     description:
-      'The easiest MacBook buying guide for budget-conscious users. Find your perfect MacBook without overspending with our intuitive tools for storage and memory performance analysis.',
+      'The easiest Mac buying guide for budget-conscious users. Find your perfect Mac without overspending with our intuitive tools for storage and memory performance analysis.',
   }
 
   return (

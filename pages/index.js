@@ -28,7 +28,7 @@ export default function Home() {
         <title>ChooseYourMac - Storage & Memory Calculator</title>
         <meta
           name="description"
-          content="The easiest MacBook buying guide for budget-conscious users. Find your perfect MacBook without overspending with our intuitive tools for storage and memory performance analysis."
+          content="The easiest Mac buying guide for budget-conscious users. Find your perfect Mac without overspending with our intuitive tools for storage and memory performance analysis."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
