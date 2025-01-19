@@ -36,17 +36,13 @@ export default function LanguageSelector() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-3 py-1.5 text-sm font-medium rounded-lg
-          bg-white dark:bg-gray-800
-          text-gray-700 dark:text-gray-300
-          border border-gray-200 dark:border-gray-700
-          hover:bg-gray-50 dark:hover:bg-gray-700
-          transition-colors duration-200
-          flex items-center gap-2"
+        className="p-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 
+          dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors
+          flex items-center gap-1"
         aria-label="Select language"
         data-testid="language-selector"
       >
-        <span>{currentLanguage.name}</span>
+        <span className="text-sm font-medium">{currentLanguage.name}</span>
         <svg
           className={`w-4 h-4 transition-transform ${
             isOpen ? 'rotate-180' : ''
