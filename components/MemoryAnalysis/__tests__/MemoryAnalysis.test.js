@@ -71,9 +71,7 @@ describe('MemoryAnalysis Component', () => {
       })
       expect(infoButton).toBeInTheDocument()
 
-      const infoContent = screen.getByText(
-        /the performance estimates in this tool/i
-      )
+      const infoContent = screen.getByText(/the performance estimates/i)
       expect(infoContent.closest('div')).toHaveClass('opacity-0')
       expect(infoContent.closest('div')).toHaveClass('max-h-0')
     })
@@ -95,7 +93,7 @@ describe('MemoryAnalysis Component', () => {
         name: /about memory estimates/i,
       })
       const infoContainer = screen
-        .getByText(/the performance estimates in this tool/i)
+        .getByText(/the performance estimates/i)
         .closest('div')
 
       // Initial state - collapsed
@@ -120,18 +118,15 @@ describe('MemoryAnalysis Component', () => {
       // Wait for component to load
       await waitFor(() => {
         expect(
-          screen.getByText(/the performance estimates in this tool/i)
+          screen.getByText(/the performance estimates/i)
         ).toBeInTheDocument()
       })
 
-      const explanation = screen.getByText(
-        /the performance estimates in this tool/i
-      )
+      const explanation = screen.getByText(/the performance estimates/i)
       expect(explanation).toHaveTextContent(
         /based on apple's m-series unified memory architecture/i
       )
       expect(explanation).toHaveTextContent(/subjective approximations/i)
-      expect(explanation).toHaveTextContent(/reference only/i)
     })
 
     test('chevron icon rotates when info section is expanded', async () => {

@@ -152,7 +152,7 @@ describe('HardDriveAnalysis Component', () => {
 
       const explanation = screen.getByText(/the listed sizes for all software/i)
       expect(explanation).toHaveTextContent(
-        /the listed sizes for all software are generally much higher than their fresh installation sizes/i
+        /the listed sizes for all software are generally much higher than the initial installation sizes/i
       )
       expect(explanation).toHaveTextContent(
         /these specific numbers are derived from various sources/i
