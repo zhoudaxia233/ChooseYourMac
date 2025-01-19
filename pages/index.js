@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Layout from '../components/Layout'
 import HardDriveAnalysis from '../components/HardDriveAnalysis'
-import ThemeToggle from '../components/ThemeToggle'
 import MemoryAnalysis from '../components/MemoryAnalysis'
 import { getDaysSinceDate } from '../utils/dateUtils'
-import FeedbackButton from '../components/FeedbackButton'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function Home() {
@@ -33,33 +32,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Header */}
-        <div className="bg-white dark:bg-black border-b border-black/[.08] dark:border-white/[.145] p-4">
-          <div className="max-w-5xl mx-auto flex justify-end">
-            <ThemeToggle />
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-          <HardDriveAnalysis searchQuery={searchQuery} />
-          <MemoryAnalysis />
-        </div>
-
-        {/* Footer */}
-        <div className="border-t border-black/[.08] dark:border-white/[.145] bg-white dark:bg-black">
-          <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-            <div className="space-x-4">
-              <span>Last updated: {daysSinceUpdate} days ago</span>
-              <span>({lastUpdatedUTC})</span>
-            </div>
-            <span>© 2025 ChooseYourMac</span>
-          </div>
-        </div>
-
-        <FeedbackButton />
-      </main>
+      <Layout daysSinceUpdate={daysSinceUpdate} lastUpdatedUTC={lastUpdatedUTC}>
+        <HardDriveAnalysis searchQuery={searchQuery} />
+        <MemoryAnalysis />
+      </Layout>
     </>
   )
 }

@@ -93,9 +93,9 @@ describe('LanguageSelector Component', () => {
     })
     const buttonLight = screen.getByTestId('language-selector')
 
-    expect(buttonLight).toHaveClass('text-gray-500')
-    expect(buttonLight).toHaveClass('hover:text-gray-700')
-    expect(buttonLight).toHaveClass('hover:bg-gray-100')
+    expect(buttonLight).toHaveClass('bg-white')
+    expect(buttonLight).toHaveClass('text-gray-700')
+    expect(buttonLight).toHaveClass('border-gray-200')
 
     // Test dark mode
     rerender(
@@ -105,8 +105,8 @@ describe('LanguageSelector Component', () => {
     )
     const buttonDark = screen.getByTestId('language-selector')
 
-    expect(buttonDark).toHaveClass('dark:text-gray-400')
-    expect(buttonDark).toHaveClass('dark:hover:text-gray-200')
-    expect(buttonDark).toHaveClass('dark:hover:bg-gray-800')
+    expect(buttonDark).toHaveClass('dark:bg-gray-800')
+    expect(buttonDark).toHaveClass('dark:text-gray-300')
+    expect(buttonDark).toHaveClass('dark:border-gray-700')
   })
 })
