@@ -170,14 +170,60 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 </div>
               </div>
               <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative">
-                {/* OS Space */}
+                {/* OS Space - Only left rounded */}
                 <div
                   className="h-full bg-gray-300 dark:bg-gray-600 absolute left-0"
                   style={{
-                    width: `${(systemSpace.size / storageLimit) * 100}%`,
+                    width: `${
+                      (convertToGB(systemSpace.details?.os.size || '0 GB') /
+                        storageLimit) *
+                      100
+                    }%`,
+                    borderRadius: '9999px 0 0 9999px',
                   }}
                 />
-                {/* User Space */}
+                {/* Pre-installed Apps - No rounded corners */}
+                <div
+                  className="h-full bg-gray-400 dark:bg-gray-500 absolute"
+                  style={{
+                    width: `${
+                      (convertToGB(
+                        systemSpace.details?.preinstalled.size || '0 GB'
+                      ) /
+                        storageLimit) *
+                      100
+                    }%`,
+                    left: `${
+                      (convertToGB(systemSpace.details?.os.size || '0 GB') /
+                        storageLimit) *
+                      100
+                    }%`,
+                  }}
+                />
+                {/* Upgrade Space - Rounded on right if no user space */}
+                <div
+                  className="h-full bg-gray-500 dark:bg-gray-400 absolute"
+                  style={{
+                    width: `${
+                      (convertToGB(
+                        systemSpace.details?.upgrade_space.size || '0 GB'
+                      ) /
+                        storageLimit) *
+                      100
+                    }%`,
+                    left: `${
+                      (convertToGB(systemSpace.details?.os.size || '0 GB') /
+                        storageLimit +
+                        convertToGB(
+                          systemSpace.details?.preinstalled.size || '0 GB'
+                        ) /
+                          storageLimit) *
+                      100
+                    }%`,
+                    borderRadius: usedSpace === 0 ? '0 9999px 9999px 0' : '0',
+                  }}
+                />
+                {/* User Space - Only right rounded */}
                 <div
                   className={`h-full relative transition-all duration-500 ease-out ${
                     usagePercentage > 90
@@ -189,6 +235,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   style={{
                     width: `${(usedSpace / storageLimit) * 100}%`,
                     marginLeft: `${(systemSpace.size / storageLimit) * 100}%`,
+                    borderRadius: usedSpace > 0 ? '0 9999px 9999px 0' : '0',
                   }}
                 />
               </div>

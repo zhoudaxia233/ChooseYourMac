@@ -291,12 +291,54 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
       const usageText = screen.getAllByText(/GB used/)[1]
       expect(usageText).toBeInTheDocument()
 
-      // Verify progress bars are present
+      // Verify progress bars container
       const progressBarContainer =
         stickyContainer.querySelector('.rounded-full')
       expect(progressBarContainer).toBeInTheDocument()
       expect(progressBarContainer).toHaveClass('bg-gray-100')
       expect(progressBarContainer).toHaveClass('dark:bg-gray-800')
+
+      // Verify system space segments
+      const progressBars = progressBarContainer.children
+      expect(progressBars).toHaveLength(4) // OS, Pre-installed, Upgrade Space, User Space
+
+      // OS Space
+      const osSpace = progressBars[0]
+      expect(osSpace).toHaveClass('bg-gray-300')
+      expect(osSpace).toHaveClass('dark:bg-gray-600')
+      expect(osSpace).toHaveStyle({
+        width: '5.859375%', // 15GB / 256GB * 100
+        borderRadius: '9999px 0 0 9999px',
+      })
+
+      // Pre-installed Apps
+      const preinstalledSpace = progressBars[1]
+      expect(preinstalledSpace).toHaveClass('bg-gray-400')
+      expect(preinstalledSpace).toHaveClass('dark:bg-gray-500')
+      expect(preinstalledSpace).toHaveStyle({
+        width: '3.90625%', // 10GB / 256GB * 100
+        left: '5.859375%',
+      })
+
+      // Upgrade Space
+      const upgradeSpace = progressBars[2]
+      expect(upgradeSpace).toHaveClass('bg-gray-500')
+      expect(upgradeSpace).toHaveClass('dark:bg-gray-400')
+      expect(upgradeSpace).toHaveStyle({
+        width: '13.8671875%', // 35.5GB / 256GB * 100
+        left: '9.765625%', // (15GB + 10GB) / 256GB * 100
+      })
+
+      // User Space (initially empty)
+      const userSpace = progressBars[3]
+      expect(userSpace).toHaveClass('relative')
+      expect(userSpace).toHaveClass('bg-gradient-to-r')
+      expect(userSpace).toHaveClass('from-blue-500')
+      expect(userSpace).toHaveClass('to-blue-600')
+      expect(userSpace).toHaveStyle({
+        width: '0%',
+        marginLeft: '23.6328125%', // (15GB + 10GB + 35.5GB) / 256GB * 100
+      })
     })
 
     mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
