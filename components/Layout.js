@@ -16,6 +16,9 @@ export default function Layout({ children, daysSinceUpdate, lastUpdatedUTC }) {
       {/* Main Content */}
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">{children}</div>
 
+      {/* Feedback Button */}
+      <FeedbackButton />
+
       {/* Footer */}
       <div className="border-t border-black/[.08] dark:border-white/[.145] bg-white dark:bg-black">
         <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
