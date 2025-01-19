@@ -5,7 +5,7 @@ The easiest Mac buying guide for budget-conscious users. Find your perfect Mac w
 
 ## 🚀 Live Demo
 
-Visit [ChooseYourMac](http://localhost:3000) to start exploring
+Visit [ChooseYourMac](https://chooseyourmac.info/) to start exploring
 
 ## ⚠️ Disclaimer
 
