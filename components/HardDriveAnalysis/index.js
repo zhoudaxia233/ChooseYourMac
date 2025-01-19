@@ -32,40 +32,34 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           size: totalSystemSpace,
           details: data.system,
         })
+        setSoftwareList(data.software)
       })
-      .catch(error => console.error('Error loading system data:', error))
+      .catch(error => console.error('Error loading data:', error))
   }, [])
 
-  useEffect(() => {
-    fetch('/software-data.json')
-      .then(response => response.json())
-      .then(data => setSoftwareList(data.software))
-      .catch(error => console.error('Error loading software data:', error))
-  }, [])
-
-  const calculateUsedSpace = softwareIds => {
-    return softwareIds.reduce((total, id) => {
+  const calculateTotalSize = useCallback(() => {
+    return selectedSoftware.reduce((total, id) => {
       const software = softwareList.find(s => s.id === id)
       return total + (software ? convertToGB(software.size) : 0)
     }, 0)
-  }
+  }, [selectedSoftware, softwareList])
 
   useEffect(() => {
-    const newUsedSpace = calculateUsedSpace(selectedSoftware)
+    const newUsedSpace = calculateTotalSize()
     setUsedSpace(newUsedSpace)
-  }, [selectedSoftware, softwareList])
+  }, [selectedSoftware, softwareList, calculateTotalSize])
 
   const handlePresetSelect = preset => {
     setSelectedPresetId(preset.id)
     setSelectedSoftware(preset.software)
   }
 
-  const handleSoftwareUpdate = newSoftwareList => {
+  const handleSelectedSoftwareChange = newSelection => {
     setSelectedPresetId(null)
-    setSelectedSoftware(newSoftwareList)
+    setSelectedSoftware(newSelection)
   }
 
-  const handleSoftwareListUpdate = newSoftwareList => {
+  const handleAvailableSoftwareUpdate = newSoftwareList => {
     setSoftwareList(newSoftwareList)
   }
 
@@ -94,13 +88,6 @@ const HardDriveAnalysis = ({ searchQuery }) => {
     const percentage = (x / rect.width) * 100
     setTooltipPosition(percentage)
   }
-
-  const calculateTotalSize = useCallback(() => {
-    return selectedSoftware.reduce((total, id) => {
-      const software = softwareList.find(s => s.id === id)
-      return total + (software ? convertToGB(software.size) : 0)
-    }, 0)
-  }, [selectedSoftware, softwareList])
 
   return (
     <div
@@ -392,8 +379,8 @@ const HardDriveAnalysis = ({ searchQuery }) => {
         <div className="flex-grow p-6">
           <SoftwareList
             selectedSoftware={selectedSoftware}
-            onSoftwareUpdate={handleSoftwareUpdate}
-            onSoftwareListUpdate={handleSoftwareListUpdate}
+            onSoftwareUpdate={handleSelectedSoftwareChange}
+            onSoftwareListUpdate={handleAvailableSoftwareUpdate}
             searchQuery={searchQuery || ''}
             softwareList={softwareList}
           />
