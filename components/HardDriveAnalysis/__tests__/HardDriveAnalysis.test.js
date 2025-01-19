@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import HardDriveAnalysis from '../index'
 
@@ -193,4 +193,155 @@ describe('HardDriveAnalysis Component', () => {
       })
     })
   })
+})
+
+describe('HardDriveAnalysis - Sticky Progress Bar', () => {
+  beforeEach(() => {
+    fetch.mockClear()
+    Object.defineProperty(window, 'scrollY', {
+      value: 0,
+      writable: true,
+    })
+  })
+
+  it('should show sticky progress bar when main progress bar is scrolled out of view', async () => {
+    render(<HardDriveAnalysis />)
+
+    // Wait for data to load
+    await waitFor(() => {
+      expect(screen.getByText(/GB used/)).toBeInTheDocument()
+    })
+
+    // Initially, sticky progress bar should not be visible
+    expect(screen.queryAllByText(/GB used/)).toHaveLength(1) // Changed to queryAllByText
+
+    // Mock the getBoundingClientRect for main progress bar
+    const mainProgressBar = document.getElementById('main-progress-bar')
+    const originalGetBoundingClientRect = mainProgressBar.getBoundingClientRect
+    mainProgressBar.getBoundingClientRect = jest.fn(() => ({
+      bottom: -10,
+      height: 100,
+      top: -110,
+    }))
+
+    // Trigger scroll event
+    act(() => {
+      fireEvent.scroll(window)
+    })
+
+    // Now we should see two progress bars (main + sticky)
+    await waitFor(() => {
+      expect(screen.queryAllByText(/GB used/)).toHaveLength(2)
+    })
+
+    // Simulate scrolling back up
+    mainProgressBar.getBoundingClientRect = jest.fn(() => ({
+      bottom: 100,
+      height: 100,
+      top: 0,
+    }))
+
+    // Trigger scroll event again
+    act(() => {
+      fireEvent.scroll(window)
+    })
+
+    // Should be back to only one progress bar
+    await waitFor(() => {
+      expect(screen.queryAllByText(/GB used/)).toHaveLength(1)
+    })
+
+    // Cleanup
+    mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
+  })
+
+  it('should show correct storage information in sticky progress bar', async () => {
+    render(<HardDriveAnalysis />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/GB used/)).toBeInTheDocument()
+    })
+
+    const mainProgressBar = document.getElementById('main-progress-bar')
+    const originalGetBoundingClientRect = mainProgressBar.getBoundingClientRect
+    mainProgressBar.getBoundingClientRect = jest.fn(() => ({
+      bottom: -10,
+      height: 100,
+      top: -110,
+    }))
+
+    // Trigger scroll event
+    act(() => {
+      fireEvent.scroll(window)
+    })
+
+    // Wait for sticky bar to appear and verify its properties
+    await waitFor(() => {
+      // Get the sticky container directly
+      const stickyContainer = screen.getByTestId('sticky-progress-bar')
+      expect(stickyContainer).toBeInTheDocument()
+      expect(stickyContainer).toHaveClass('fixed')
+      expect(stickyContainer).toHaveClass('top-0')
+      expect(stickyContainer).toHaveClass('left-0')
+      expect(stickyContainer).toHaveClass('w-full')
+      expect(stickyContainer).toHaveClass('z-50')
+      expect(stickyContainer).toHaveClass('shadow-md')
+
+      // Verify storage information is displayed correctly
+      const usageText = screen.getAllByText(/GB used/)[1]
+      expect(usageText).toBeInTheDocument()
+
+      // Verify progress bars are present
+      const progressBarContainer =
+        stickyContainer.querySelector('.rounded-full')
+      expect(progressBarContainer).toBeInTheDocument()
+      expect(progressBarContainer).toHaveClass('bg-gray-100')
+      expect(progressBarContainer).toHaveClass('dark:bg-gray-800')
+    })
+
+    mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
+  })
+
+  it('should throttle scroll event handler', async () => {
+    jest.useFakeTimers()
+
+    render(<HardDriveAnalysis />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/GB used/)).toBeInTheDocument()
+    })
+
+    const mainProgressBar = document.getElementById('main-progress-bar')
+    const originalGetBoundingClientRect = mainProgressBar.getBoundingClientRect
+
+    mainProgressBar.getBoundingClientRect = jest.fn(() => ({
+      bottom: -10,
+      height: 100,
+      top: -110,
+    }))
+
+    // Trigger multiple scroll events rapidly
+    for (let i = 0; i < 10; i++) {
+      act(() => {
+        fireEvent.scroll(window)
+        jest.advanceTimersByTime(50) // 每次滚动后前进50ms
+      })
+    }
+
+    // 等待节流时间结束
+    act(() => {
+      jest.advanceTimersByTime(100)
+    })
+
+    // 验证最终状态
+    await waitFor(
+      () => {
+        expect(screen.queryAllByText(/GB used/)).toHaveLength(2)
+      },
+      { timeout: 1000 }
+    )
+
+    mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
+    jest.useRealTimers()
+  }, 10000) // 增加测试超时时间
 })

@@ -155,7 +155,10 @@ const HardDriveAnalysis = ({ searchQuery }) => {
 
         {/* Sticky Progress Bar */}
         {isProgressBarSticky && (
-          <div className="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 shadow-md backdrop-blur-sm transition-all duration-300 transform translate-y-0">
+          <div
+            data-testid="sticky-progress-bar"
+            className="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 shadow-md backdrop-blur-sm transition-all duration-300 transform translate-y-0"
+          >
             <div className="max-w-screen-xl mx-auto px-6 py-3">
               <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                 <div>
