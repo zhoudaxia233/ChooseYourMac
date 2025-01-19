@@ -4,6 +4,7 @@ import SoftwareList from './SoftwareList'
 import StorageSelector from '../StorageSelector'
 import { useTranslation } from 'next-i18next'
 import { convertToGB, formatSize } from '../../utils/sizeUtils'
+import _ from 'lodash'
 
 const HardDriveAnalysis = ({ searchQuery }) => {
   const { t } = useTranslation('common')
@@ -19,6 +20,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
   const [isResetting, setIsResetting] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState(50)
   const [isInfoExpanded, setIsInfoExpanded] = useState(false)
+  const [isProgressBarSticky, setIsProgressBarSticky] = useState(false)
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -35,6 +37,23 @@ const HardDriveAnalysis = ({ searchQuery }) => {
         setSoftwareList(data.software)
       })
       .catch(error => console.error('Error loading data:', error))
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const progressBar = document.getElementById('main-progress-bar')
+      if (progressBar) {
+        const rect = progressBar.getBoundingClientRect()
+        setIsProgressBarSticky(rect.bottom < 0)
+      }
+    }
+
+    const throttledScroll = _.throttle(handleScroll, 100)
+    window.addEventListener('scroll', throttledScroll)
+    return () => {
+      window.removeEventListener('scroll', throttledScroll)
+      throttledScroll.cancel()
+    }
   }, [])
 
   const calculateTotalSize = useCallback(() => {
@@ -134,8 +153,48 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           </div>
         </div>
 
-        {/* Progress Bar Section with Tooltip */}
-        <div className="mt-6 space-y-4">
+        {/* Sticky Progress Bar */}
+        {isProgressBarSticky && (
+          <div className="fixed top-0 left-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 shadow-md backdrop-blur-sm transition-all duration-300 transform translate-y-0">
+            <div className="max-w-screen-xl mx-auto px-6 py-3">
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <div>
+                  {formatSize(totalUsedSpace)} of {storageLimit} GB used
+                </div>
+                <div>
+                  {formatSize(Math.max(0, storageLimit - totalUsedSpace))}{' '}
+                  available
+                </div>
+              </div>
+              <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative">
+                {/* OS Space */}
+                <div
+                  className="h-full bg-gray-300 dark:bg-gray-600 absolute left-0"
+                  style={{
+                    width: `${(systemSpace.size / storageLimit) * 100}%`,
+                  }}
+                />
+                {/* User Space */}
+                <div
+                  className={`h-full relative transition-all duration-500 ease-out ${
+                    usagePercentage > 90
+                      ? 'bg-gradient-to-r from-red-500 to-red-600'
+                      : usagePercentage > 70
+                      ? 'bg-gradient-to-r from-yellow-400 to-yellow-500'
+                      : 'bg-gradient-to-r from-blue-500 to-blue-600'
+                  }`}
+                  style={{
+                    width: `${(usedSpace / storageLimit) * 100}%`,
+                    marginLeft: `${(systemSpace.size / storageLimit) * 100}%`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Progress Bar */}
+        <div id="main-progress-bar" className="mt-6 space-y-4">
           {/* Info Section */}
           <div className="relative">
             <button
