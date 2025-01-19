@@ -20,6 +20,7 @@ const SoftwareList = ({
     size: '',
     unit: 'GB',
   })
+  const [activeItemId, setActiveItemId] = useState(null)
 
   useEffect(() => {
     fetch('/software-data.json')
@@ -209,6 +210,33 @@ const SoftwareList = ({
     scrollToBottom()
   }
 
+  // Add touch event handler and click outside handler
+  const handleItemTouch = (softwareId, e) => {
+    // Prevent this from affecting desktop behavior
+    if (window.matchMedia('(min-width: 1024px)').matches) {
+      return
+    }
+    e.preventDefault()
+    setActiveItemId(activeItemId === softwareId ? null : softwareId)
+  }
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = e => {
+      // Only handle on mobile
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        return
+      }
+      // If clicked outside of any software item
+      if (!e.target.closest('.software-item')) {
+        setActiveItemId(null)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [])
+
   return (
     <div className="space-y-6 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-xl p-4">
       {/* Selected Software Section */}
@@ -249,40 +277,50 @@ const SoftwareList = ({
                   return software ? (
                     <div
                       key={software.id}
-                      className="group relative bg-white dark:bg-gray-800/50 
+                      onTouchStart={e => handleItemTouch(software.id, e)}
+                      className={`software-item group relative bg-white dark:bg-gray-800/50 
                         backdrop-blur-sm rounded-lg border border-gray-200 
                         dark:border-gray-700 shadow-sm hover:shadow-md 
                         transition-all duration-300 hover:border-gray-300 
-                        dark:hover:border-gray-600 p-2"
+                        dark:hover:border-gray-600 p-2
+                        ${activeItemId === software.id ? 'touch-active' : ''}`}
                     >
-                      {/* Size Badge - only show when hovering */}
+                      {/* Size Badge */}
                       <div
-                        className="absolute top-2 right-2 px-2 py-0.5 text-xs 
+                        className={`absolute top-2 right-2 px-2 py-0.5 text-xs 
                           font-medium rounded-full bg-gray-100 text-gray-600 
                           dark:bg-gray-800 dark:text-gray-400
-                          opacity-0 group-hover:opacity-100 transition-opacity"
+                          lg:opacity-0 lg:group-hover:opacity-100 transition-opacity
+                          ${
+                            activeItemId === software.id
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          }`}
                       >
                         {software.size}
                       </div>
 
                       {/* Remove Button */}
                       <button
-                        className="absolute top-1.5 left-1.5 
-                          w-6 h-6  // fixed width and height
-                          rounded-full 
+                        className={`absolute top-1.5 left-1.5 
+                          w-6 h-6 rounded-full 
                           text-gray-400 hover:text-red-500
-                          bg-transparent hover:bg-red-50  // add background color
+                          bg-transparent hover:bg-red-50
                           dark:hover:bg-red-900/30 
                           transition-all
-                          opacity-0 group-hover:opacity-100
+                          lg:opacity-0 lg:group-hover:opacity-100
                           flex items-center justify-center
-                          cursor-pointer  // ensure correct mouse style
-                          z-10" // ensure button is on top
+                          cursor-pointer z-10
+                          ${
+                            activeItemId === software.id
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          }`}
                         aria-label={`Remove ${software.name}`}
                         onClick={() => handleRemove(software.id)}
                       >
                         <svg
-                          className="w-3.5 h-3.5 pointer-events-none" // prevent SVG from affecting click events
+                          className="w-3.5 h-3.5 pointer-events-none"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -299,8 +337,13 @@ const SoftwareList = ({
                       {/* Software Name */}
                       <div className="px-2">
                         <h4
-                          className="font-medium text-sm text-gray-900 dark:text-gray-100 
-                            truncate group-hover:opacity-0 transition-opacity"
+                          className={`font-medium text-sm text-gray-900 dark:text-gray-100 
+                            truncate lg:group-hover:opacity-0 transition-opacity
+                            ${
+                              activeItemId === software.id
+                                ? 'opacity-0'
+                                : 'opacity-100'
+                            }`}
                           title={software.name}
                         >
                           {software.name}

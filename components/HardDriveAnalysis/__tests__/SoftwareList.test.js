@@ -21,6 +21,25 @@ jest.mock('next-i18next', () => ({
   }),
 }))
 
+// Mock matchMedia
+beforeAll(() => {
+  window.matchMedia = jest.fn().mockImplementation(query => ({
+    matches: false, // 在测试环境中模拟桌面环境
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }))
+})
+
+// Clean up after tests
+afterAll(() => {
+  delete window.matchMedia
+})
+
 describe('SoftwareList Component', () => {
   const mockProps = {
     selectedSoftware: [],
@@ -354,5 +373,72 @@ describe('SoftwareList Component', () => {
 
     // Verify scrollToBottom was triggered
     expect(window.requestAnimationFrame).toHaveBeenCalled()
+  })
+
+  // Add new test for mobile behavior
+  describe('Mobile Touch Behavior', () => {
+    beforeEach(() => {
+      // Mock mobile environment for specific tests
+      window.matchMedia = jest.fn().mockImplementation(query => ({
+        matches: query.includes('min-width: 1024px') ? false : true,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      }))
+    })
+
+    afterEach(() => {
+      window.matchMedia.mockRestore()
+    })
+
+    test('toggles item visibility on touch in mobile view', async () => {
+      const user = userEvent.setup()
+      const { container } = render(
+        <SoftwareList {...mockProps} selectedSoftware={['vscode']} />
+      )
+
+      // Find the software item container and its elements
+      const softwareItem = screen
+        .getByTitle('VS Code')
+        .closest('.software-item')
+      const sizeBadgeContainer = screen.getByText('350 MB').closest('.absolute')
+      const removeButton = screen.getByLabelText('Remove VS Code')
+      const softwareName = screen.getByTitle('VS Code')
+
+      // Verify initial state
+      expect(sizeBadgeContainer).toHaveClass('opacity-0', { exact: false })
+      expect(removeButton).toHaveClass('opacity-0', { exact: false })
+      expect(softwareName).toHaveClass('opacity-100', { exact: false })
+
+      // Trigger touch event
+      fireEvent.touchStart(softwareItem)
+
+      // Wait for state update and check visibility
+      await waitFor(() => {
+        expect(container.querySelector('.software-item')).toHaveClass(
+          'touch-active'
+        )
+        expect(sizeBadgeContainer).toHaveClass('opacity-100', { exact: false })
+        expect(removeButton).toHaveClass('opacity-100', { exact: false })
+        expect(softwareName).toHaveClass('opacity-0', { exact: false })
+      })
+
+      // Trigger touch event again
+      fireEvent.touchStart(softwareItem)
+
+      // Wait for state update and check visibility
+      await waitFor(() => {
+        expect(container.querySelector('.software-item')).not.toHaveClass(
+          'touch-active'
+        )
+        expect(sizeBadgeContainer).toHaveClass('opacity-0', { exact: false })
+        expect(removeButton).toHaveClass('opacity-0', { exact: false })
+        expect(softwareName).toHaveClass('opacity-100', { exact: false })
+      })
+    })
   })
 })
