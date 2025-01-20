@@ -2,10 +2,19 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MemoryAnalysis from '../index'
 
-// Mock next-i18next
+// Mock the next-i18next module
 jest.mock('next-i18next', () => ({
   useTranslation: () => ({
-    t: str => str,
+    t: key => {
+      const translations = {
+        'memoryAnalysis.title': 'Memory Pressure Analysis',
+        'memoryAnalysis.aboutEstimates': 'About Memory Estimates',
+        'memoryAnalysis.performanceOverview': 'Memory Performance Overview',
+        'memoryAnalysis.estimatesDescription':
+          "The performance estimates are based on Apple's M-series unified memory architecture. These values are subjective approximations, gathered from forums and YouTube analyses, and are not standardized measurements.",
+      }
+      return translations[key] || key
+    },
   }),
 }))
 
@@ -25,10 +34,13 @@ const mockFetchResponses = {
           { name: 'Discord', icon: '🗨️' },
         ],
         pressureByMemory: {
-          8: '95',
-          16: '85',
-          24: '70',
-          32: '60',
+          8: 95,
+          16: 85,
+          24: 70,
+          32: 60,
+          48: 50,
+          64: 40,
+          128: 30,
         },
         recommendations: {
           16: {
@@ -124,9 +136,11 @@ describe('MemoryAnalysis Component', () => {
 
       const explanation = screen.getByText(/the performance estimates/i)
       expect(explanation).toHaveTextContent(
-        /based on apple's m-series unified memory architecture/i
+        /the performance estimates are based on apple's m-series unified memory architecture/i
       )
-      expect(explanation).toHaveTextContent(/subjective approximations/i)
+      expect(explanation).toHaveTextContent(
+        /these values are subjective approximations/i
+      )
     })
 
     test('chevron icon rotates when info section is expanded', async () => {
