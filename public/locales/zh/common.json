@@ -16,5 +16,11 @@
     "submit": "发送反馈",
     "thanks": "感谢您的反馈！",
     "title": "硬盘空间计算器",
-    "softwareSizesDescription": "列出的所有软件大小通常比初始安装大小要大得多，因为它们考虑了流畅运行、缓存和使用相关的存储需求。这些具体数据来自于论坛评论区及软件开发商提供的官方系统要求等等。"
+    "softwareSizesDescription": "列出的所有软件大小通常比初始安装大小要大得多，因为它们考虑了流畅运行、缓存和使用相关的存储需求。这些具体数据来自于论坛评论区及软件开发商提供的官方系统要求等等。",
+    "memoryAnalysis": {
+        "title": "内存压力分析",
+        "aboutEstimates": "关于内存估算",
+        "performanceOverview": "内存性能概览",
+        "estimatesDescription": "性能估算基于Apple M系列芯片的统一内存架构。这些数值是主观近似值，来自论坛和YouTube分析，并非标准化测量结果。"
+    }
 }

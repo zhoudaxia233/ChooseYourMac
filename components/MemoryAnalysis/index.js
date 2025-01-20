@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'next-i18next'
 
 const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
+  const { t } = useTranslation()
   const [currentMemory, setCurrentMemory] = useState(16)
   const [isOpen, setIsOpen] = useState(false)
   const [scenarios, setScenarios] = useState([])
@@ -41,7 +43,7 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
           bg-gradient-to-r from-gray-900 to-gray-600 
           dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent"
         >
-          Memory Pressure Analysis
+          {t('memoryAnalysis.title')}
         </h2>
 
         {/* Info Section */}
@@ -64,7 +66,7 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>About Memory Estimates</span>
+            <span>{t('memoryAnalysis.aboutEstimates')}</span>
             <svg
               className={`w-4 h-4 transition-transform duration-200 ${
                 isInfoExpanded ? 'rotate-180' : ''
@@ -89,11 +91,7 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
               ${isInfoExpanded ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}
           >
             <p className="leading-relaxed">
-              The performance estimates are based on Apple&apos;s{' '}
-              <strong>M-series</strong> unified memory architecture. These
-              values are <strong>subjective approximations</strong>, gathered
-              from forums and YouTube analyses, and are not standardized
-              measurements.
+              {t('memoryAnalysis.estimatesDescription')}
             </p>
           </div>
         </div>
@@ -106,7 +104,7 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
               bg-gradient-to-r from-gray-900 to-gray-600 
               dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent"
             >
-              Memory Performance Overview
+              {t('memoryAnalysis.performanceOverview')}
             </h2>
             <div className="relative">
               <button
