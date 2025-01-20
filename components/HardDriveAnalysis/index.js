@@ -265,7 +265,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>About Software Sizes</span>
+              <span>{t('aboutSoftwareSizes')}</span>
               <svg
                 className={`w-4 h-4 transition-transform duration-200 ${
                   isInfoExpanded ? 'rotate-180' : ''
@@ -291,15 +291,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   isInfoExpanded ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
                 }`}
             >
-              <p className="leading-relaxed">
-                The listed sizes for all software are generally{' '}
-                <strong>much higher</strong> than the initial installation
-                sizes, as they account for smooth operation, caching, and
-                usage-related storage needs. These specific numbers are derived
-                from various sources, including forum discussions and the
-                official system requirements provided by the software
-                developers.
-              </p>
+              <p className="leading-relaxed">{t('softwareSizesDescription')}</p>
             </div>
           </div>
 
