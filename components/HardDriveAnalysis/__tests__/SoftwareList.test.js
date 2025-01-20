@@ -6,17 +6,26 @@ import SoftwareList from '../SoftwareList'
 jest.mock('next-i18next', () => ({
   useTranslation: () => ({
     t: (key, options) => {
+      // Keep existing translations
       if (key === 'items') {
         return `${options.count} items`
       }
-      return (
-        {
-          selected: 'Selected Software',
-          available: 'Available Software',
-          search: 'Search software...',
-          add: 'Add New Software',
-        }[key] || key
-      )
+
+      // Add new category translations
+      const translations = {
+        selected: 'Selected Software',
+        available: 'Available Software',
+        search: 'Search software...',
+        add: 'Add New Software',
+        'categories.all': 'All',
+        'categories.development': 'Development',
+        'categories.design': 'Design',
+        'categories.video-audio': 'Video & Audio',
+        'categories.utilities': 'Utilities',
+        'categories.game': 'Game',
+        'categories.others': 'Others',
+      }
+      return translations[key] || key
     },
   }),
 }))
@@ -24,7 +33,7 @@ jest.mock('next-i18next', () => ({
 // Mock matchMedia
 beforeAll(() => {
   window.matchMedia = jest.fn().mockImplementation(query => ({
-    matches: false, // 在测试环境中模拟桌面环境
+    matches: false, // Mock desktop environment for tests
     media: query,
     onchange: null,
     addListener: jest.fn(),
@@ -51,13 +60,13 @@ describe('SoftwareList Component', () => {
         id: 'vscode',
         name: 'VS Code',
         size: '350 MB',
-        category: 'Development',
+        category: 'development',
       },
       {
         id: 'chrome',
         name: 'Chrome',
         size: '300 MB',
-        category: 'Utilities',
+        category: 'utilities',
       },
     ],
   }
@@ -67,21 +76,24 @@ describe('SoftwareList Component', () => {
   })
 
   beforeEach(async () => {
-    // Mock fetch response
-    fetch.mockResponseOnce(
-      JSON.stringify({
-        categories: [
-          { id: 'development', name: 'Development', order: 1 },
-          { id: 'utilities', name: 'Utilities', order: 4 },
-        ],
-        system: {
-          os: { size_in_GB: 15 },
-          preinstalled: { size_in_GB: 5 },
-        },
+    // Mock fetch response with valid categories data
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            categories: [
+              { id: 'development', order: 1 },
+              { id: 'utilities', order: 4 },
+            ],
+            system: {
+              os: { size_in_GB: 15 },
+              preinstalled: { size_in_GB: 5 },
+            },
+          }),
       })
     )
 
-    // Mock DOM methods that JSDOM doesn't support
+    // Mock DOM methods for testing
     Object.defineProperties(Element.prototype, {
       scrollTo: {
         value: jest.fn(),
@@ -128,22 +140,23 @@ describe('SoftwareList Component', () => {
   test('renders basic elements', async () => {
     render(<SoftwareList {...mockProps} />)
 
-    expect(await screen.findByText('Selected Software')).toBeInTheDocument()
-    expect(await screen.findByText('Available Software')).toBeInTheDocument()
-    expect(await screen.findByText('0 items')).toBeInTheDocument()
+    // Wait for any one of these elements to appear
+    await screen.findByText('Selected Software')
+
+    // Then check for the others
+    expect(screen.getByText('Available Software')).toBeInTheDocument()
+    expect(screen.getByText('0 items')).toBeInTheDocument()
   })
 
   // Software removal test
   test('removes software from selection', async () => {
     render(<SoftwareList {...mockProps} selectedSoftware={['vscode']} />)
 
-    const softwareItem = (await screen.findByTitle('VS Code')).closest('.group')
-    expect(softwareItem).toBeInTheDocument()
+    // Wait for the element to be available
+    const softwareItem = await screen.findByTitle('VS Code')
+    const removeButton = screen.getByLabelText('Remove VS Code')
 
-    const removeButton = await screen.findByLabelText('Remove VS Code')
-    expect(removeButton).toBeInTheDocument()
-
-    fireEvent.mouseEnter(softwareItem)
+    fireEvent.mouseEnter(softwareItem.closest('.group'))
     fireEvent.click(removeButton)
 
     expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith([])
@@ -292,12 +305,11 @@ describe('SoftwareList Component', () => {
     })
 
     test('adds software to selection via drag and drop', async () => {
-      // We use the same props as before, but ensure we re-render fresh
+      // Render and wait for initial data loading
       render(<SoftwareList {...mockProps} />)
 
-      // Grab the draggable element and the drop zone
-      // IMPORTANT: The drop zone is the ".selected-software-container" div
-      const draggableItem = (await screen.findByText('Chrome')).closest('div')
+      // Wait for Chrome to be in the document before proceeding
+      const draggableItem = await screen.findByText('Chrome')
       const dropZone = document.querySelector('.selected-software-container')
 
       const mockDataTransfer = {
@@ -307,17 +319,15 @@ describe('SoftwareList Component', () => {
         effectAllowed: null,
       }
 
-      // Wrap the drag & drop sequence in act
-      await act(async () => {
-        fireEvent.dragStart(draggableItem, { dataTransfer: mockDataTransfer })
-        fireEvent.dragEnter(dropZone, { dataTransfer: mockDataTransfer })
-        fireEvent.dragOver(dropZone, { dataTransfer: mockDataTransfer })
-        fireEvent.drop(dropZone, { dataTransfer: mockDataTransfer })
-      })
+      // Perform drag and drop
+      fireEvent.dragStart(draggableItem, { dataTransfer: mockDataTransfer })
+      fireEvent.dragOver(dropZone, { dataTransfer: mockDataTransfer })
+      fireEvent.drop(dropZone, { dataTransfer: mockDataTransfer })
 
-      // Verify "Chrome" was added to selected software
+      // Verify "Chrome" was added
       expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
     })
+
     test('filters software when clicking category tabs', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
