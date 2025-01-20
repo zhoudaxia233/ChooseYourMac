@@ -1,13 +1,19 @@
 {
-    "title": "Hard Drive Space Calculator",
-    "selected": "Selected Software",
-    "available": "Available Software",
-    "search": "Search software...",
     "add": "Add New Software",
+    "available": "Available Software",
     "feedback": "Send Feedback",
     "items": "{{count}} items",
-    "thanks": "Thanks for your feedback!",
+    "items_one": "items",
+    "items_other": "items",
     "placeholder": "What could be improved?",
+    "presets": {
+        "quickSetup": "Quick Setup",
+        "recommendedPresets": "Recommended Presets"
+    },
+    "search": "Search software...",
+    "selected": "Selected Software",
+    "sending": "Sending...",
     "submit": "Send Feedback",
-    "sending": "Sending..."
+    "thanks": "Thanks for your feedback!",
+    "title": "Hard Drive Space Calculator"
 }

@@ -1,9 +1,18 @@
 {
-    "title": "ハードドライブ容量計算機",
-    "selected": "選択済みソフトウェア",
-    "available": "利用可能なソフトウェア",
-    "search": "ソフトウェアを検索...",
     "add": "新規追加",
+    "available": "利用可能なソフトウェア",
     "feedback": "フィードバック",
-    "items": "{{count}}件"
+    "items": "{{count}}件",
+    "items_other": "",
+    "placeholder": "改善点を教えてください",
+    "presets": {
+        "quickSetup": "クイック構成",
+        "recommendedPresets": "ニーズテンプレート"
+    },
+    "search": "ソフトウェアを検索...",
+    "selected": "選択済みソフトウェア",
+    "sending": "送信中...",
+    "submit": "送信",
+    "thanks": "フィードバックありがとうございます！",
+    "title": "ハードドライブ容量計算機"
 }

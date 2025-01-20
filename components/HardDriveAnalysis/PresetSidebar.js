@@ -8,7 +8,7 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
   const [softwareData, setSoftwareData] = useState([])
 
   useEffect(() => {
-    // 加载预设和软件数据
+    // Load presets and software data
     Promise.all([
       fetch('/presets.json').then(res => res.json()),
       fetch('/software-data.json').then(res => res.json()),
@@ -20,7 +20,7 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
       .catch(error => console.error('Error loading data:', error))
   }, [])
 
-  // 计算预设的总大小
+  // Calculate total size for preset
   const calculatePresetSize = software => {
     return software.reduce((total, id) => {
       const softwareItem = softwareData.find(s => s.id === id)
@@ -41,9 +41,11 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-        Recommended Presets
+        {t('presets.recommendedPresets')}
       </h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400">Quick Setup</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        {t('presets.quickSetup')}
+      </p>
       <div className="space-y-3">
         {presets.map(preset => (
           <button

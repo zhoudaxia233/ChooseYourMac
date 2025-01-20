@@ -1,9 +1,18 @@
 {
-    "title": "硬盘空间计算器",
-    "selected": "已选软件",
-    "available": "可用软件",
-    "search": "搜索软件...",
     "add": "添加新软件",
+    "available": "可用软件",
     "feedback": "发送反馈",
-    "items": "{{count}} 个项目"
+    "items": "{{count}} 个项目",
+    "items_other": "",
+    "placeholder": "有什么可以改进的？",
+    "presets": {
+        "quickSetup": "快速配置",
+        "recommendedPresets": "常用模板"
+    },
+    "search": "搜索软件...",
+    "selected": "已选软件",
+    "sending": "发送中...",
+    "submit": "发送反馈",
+    "thanks": "感谢您的反馈！",
+    "title": "硬盘空间计算器"
 }
