@@ -394,16 +394,16 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
     for (let i = 0; i < 10; i++) {
       act(() => {
         fireEvent.scroll(window)
-        jest.advanceTimersByTime(50) // 每次滚动后前进50ms
+        jest.advanceTimersByTime(50) // Advance 50ms after each scroll
       })
     }
 
-    // 等待节流时间结束
+    // Wait for throttle time to end
     act(() => {
       jest.advanceTimersByTime(100)
     })
 
-    // 验证最终状态
+    // Verify final state
     await waitFor(
       () => {
         expect(screen.queryAllByText(/GB used/)).toHaveLength(2)
@@ -413,5 +413,5 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
 
     mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
     jest.useRealTimers()
-  }, 10000) // 增加测试超时时间
+  }, 10000) // Increased test timeout
 })
