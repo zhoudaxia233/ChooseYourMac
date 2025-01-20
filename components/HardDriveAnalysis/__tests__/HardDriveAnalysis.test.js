@@ -1,11 +1,21 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import HardDriveAnalysis from '../index'
+import { useTranslation } from 'next-i18next'
 
-// Mock next-i18next
+// Mock the next-i18next module
 jest.mock('next-i18next', () => ({
   useTranslation: () => ({
-    t: str => str,
+    t: key => {
+      const translations = {
+        aboutSoftwareSizes: 'About Software Sizes',
+        softwareSizesDescription:
+          'The listed sizes for all software are generally much higher than the initial installation sizes, as they account for smooth operation, caching, and usage-related storage needs. These specific numbers are derived from various sources, including forum discussions and the official system requirements provided by the software developers.',
+        title: 'Hard Drive Space Calculator',
+        // Add other translations as needed
+      }
+      return translations[key] || key
+    },
   }),
 }))
 
