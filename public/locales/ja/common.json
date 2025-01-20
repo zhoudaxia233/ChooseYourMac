@@ -22,5 +22,17 @@
         "aboutEstimates": "メモリ見積もりについて",
         "performanceOverview": "メモリパフォーマンス概要",
         "estimatesDescription": "パフォーマンスの見積もりは、AppleのM シリーズ統合メモリアーキテクチャに基づいています。これらの値は、フォーラムやYouTubeの分析から収集した主観的な近似値であり、標準化された測定値ではありません。"
+    },
+    "categories": {
+        "development": "開発",
+        "design": "デザイン",
+        "video-audio": "ビデオ＆オーディオ",
+        "utilities": "ユーティリティ",
+        "game": "ゲーム",
+        "others": "その他",
+        "operating-system": "オペレーティングシステム",
+        "preinstalled-apps": "プリインストールアプリ",
+        "upgrade-space": "macOSアップグレード用の予約領域",
+        "all": "すべて"
     }
 }

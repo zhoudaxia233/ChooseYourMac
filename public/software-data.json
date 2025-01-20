@@ -4,7 +4,7 @@
             "id": "vscode",
             "name": "VS Code",
             "size": "500 MB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Lightweight but powerful source code editor"
         },
@@ -12,7 +12,7 @@
             "id": "docker",
             "name": "Docker",
             "size": "64 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Containerization platform"
         },
@@ -20,7 +20,7 @@
             "id": "homebrew",
             "name": "Homebrew",
             "size": "100 MB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Package manager for macOS"
         },
@@ -28,7 +28,7 @@
             "id": "xcode",
             "name": "Xcode",
             "size": "50 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Integrated development environment for macOS"
         },
@@ -36,7 +36,7 @@
             "id": "pycharm",
             "name": "PyCharm",
             "size": "5 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Python IDE"
         },
@@ -44,7 +44,7 @@
             "id": "webstorm",
             "name": "WebStorm",
             "size": "5 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "JavaScript IDE"
         },
@@ -52,7 +52,7 @@
             "id": "clion",
             "name": "CLion",
             "size": "5 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "C/C++ IDE"
         },
@@ -60,7 +60,7 @@
             "id": "intellij",
             "name": "IntelliJ IDEA",
             "size": "5 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Java IDE"
         },
@@ -68,7 +68,7 @@
             "id": "chrome",
             "name": "Chrome",
             "size": "537.5 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Web browser by Google"
         },
@@ -76,7 +76,7 @@
             "id": "firefox",
             "name": "Firefox",
             "size": "500 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Web browser by Mozilla"
         },
@@ -84,7 +84,7 @@
             "id": "finalcutpro",
             "name": "Final Cut Pro",
             "size": "50 GB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Professional video editing software"
         },
@@ -92,7 +92,7 @@
             "id": "premiere",
             "name": "Adobe Premiere Pro",
             "size": "20 GB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Professional video editing software"
         },
@@ -100,7 +100,7 @@
             "id": "davinci",
             "name": "DaVinci Resolve",
             "size": "20 GB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Professional video editing software"
         },
@@ -108,7 +108,7 @@
             "id": "figma",
             "name": "Figma",
             "size": "500 MB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "Collaborative design tool"
         },
@@ -116,7 +116,7 @@
             "id": "sketch",
             "name": "Sketch",
             "size": "4 GB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "Vector design tool"
         },
@@ -124,7 +124,7 @@
             "id": "affinitydesigner",
             "name": "Affinity Designer",
             "size": "20 GB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "Vector design tool"
         },
@@ -132,7 +132,7 @@
             "id": "photoshop",
             "name": "Adobe Photoshop",
             "size": "50 GB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "Image editing software"
         },
@@ -140,7 +140,7 @@
             "id": "illustrator",
             "name": "Adobe Illustrator",
             "size": "2 GB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "Vector graphics editor"
         },
@@ -148,7 +148,7 @@
             "id": "blender",
             "name": "Blender",
             "size": "10 GB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "3D modeling and animation software"
         },
@@ -156,7 +156,7 @@
             "id": "logicpro",
             "name": "Logic Pro",
             "size": "72 GB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Audio production software"
         },
@@ -164,7 +164,7 @@
             "id": "vlc",
             "name": "VLC Media Player",
             "size": "55 MB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Media player"
         },
@@ -172,7 +172,7 @@
             "id": "obs",
             "name": "OBS Studio",
             "size": "8 GB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Video recording and streaming software"
         },
@@ -180,7 +180,7 @@
             "id": "word",
             "name": "Microsoft Word",
             "size": "1.3 GB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Word processing software"
         },
@@ -188,7 +188,7 @@
             "id": "excel",
             "name": "Microsoft Excel",
             "size": "1 GB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Spreadsheet software"
         },
@@ -196,7 +196,7 @@
             "id": "powerpoint",
             "name": "Microsoft PowerPoint",
             "size": "910.6 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Presentation software"
         },
@@ -204,7 +204,7 @@
             "id": "onenote",
             "name": "Microsoft OneNote",
             "size": "569.4 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Note-taking software"
         },
@@ -212,7 +212,7 @@
             "id": "teams",
             "name": "Microsoft Teams",
             "size": "1.5 GB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Communication software"
         },
@@ -220,7 +220,7 @@
             "id": "outlook",
             "name": "Microsoft Outlook",
             "size": "1.3 GB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Email client"
         },
@@ -228,7 +228,7 @@
             "id": "onedrive",
             "name": "Microsoft OneDrive",
             "size": "160.6 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Cloud storage"
         },
@@ -236,7 +236,7 @@
             "id": "canva",
             "name": "Canva",
             "size": "1 GB",
-            "category": "Design",
+            "category": "design",
             "icon": "",
             "description": "Design tool"
         },
@@ -244,7 +244,7 @@
             "id": "slack",
             "name": "Slack",
             "size": "196.7 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Communication software"
         },
@@ -252,7 +252,7 @@
             "id": "iterm2",
             "name": "iTerm2",
             "size": "29.9 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Terminal emulator"
         },
@@ -260,7 +260,7 @@
             "id": "magnet",
             "name": "Magnet",
             "size": "3 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Window manager"
         },
@@ -268,7 +268,7 @@
             "id": "cleanmymac",
             "name": "CleanMyMac",
             "size": "154.7 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "System cleaner"
         },
@@ -276,7 +276,7 @@
             "id": "postman",
             "name": "Postman",
             "size": "8 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "API client"
         },
@@ -284,7 +284,7 @@
             "id": "githubdesktop",
             "name": "GitHub Desktop",
             "size": "216.6 MB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Git client"
         },
@@ -292,7 +292,7 @@
             "id": "notion",
             "name": "Notion",
             "size": "1 GB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Note-taking software"
         },
@@ -300,7 +300,7 @@
             "id": "chatgpt",
             "name": "ChatGPT",
             "size": "500 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "AI chatbot"
         },
@@ -308,7 +308,7 @@
             "id": "discord",
             "name": "Discord",
             "size": "150 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Communication software"
         },
@@ -316,7 +316,7 @@
             "id": "baldur",
             "name": "Baldur's Gate 3",
             "size": "150 GB",
-            "category": "Game",
+            "category": "game",
             "icon": "",
             "description": "one of the best games"
         },
@@ -324,7 +324,7 @@
             "id": "deathstranding",
             "name": "Death Stranding Director's Cut",
             "size": "150 GB",
-            "category": "Game",
+            "category": "game",
             "icon": "",
             "description": "the best game"
         },
@@ -332,7 +332,7 @@
             "id": "lostcrown",
             "name": "Prince of Persia: The Lost Crown",
             "size": "30 GB",
-            "category": "Game",
+            "category": "game",
             "icon": "",
             "description": "a game"
         },
@@ -340,7 +340,7 @@
             "id": "civilizationvi",
             "name": "Sid Meier's Civilization VI",
             "size": "15 GB",
-            "category": "Game",
+            "category": "game",
             "icon": "",
             "description": "a game"
         },
@@ -348,7 +348,7 @@
             "id": "residentevil2",
             "name": "Resident Evil 2",
             "size": "62 GB",
-            "category": "Game",
+            "category": "game",
             "icon": "",
             "description": "a game"
         },
@@ -356,7 +356,7 @@
             "id": "cyberpunk2077",
             "name": "Cyberpunk 2077",
             "size": "140 GB",
-            "category": "Game",
+            "category": "game",
             "icon": "",
             "description": "one of the best games"
         },
@@ -364,7 +364,7 @@
             "id": "jupyter",
             "name": "Jupyter Notebook",
             "size": "1 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Python IDE"
         },
@@ -372,7 +372,7 @@
             "id": "rstudio",
             "name": "RStudio",
             "size": "4 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "R IDE"
         },
@@ -380,7 +380,7 @@
             "id": "tableau",
             "name": "Tableau",
             "size": "15 GB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Data visualization tool"
         },
@@ -388,7 +388,7 @@
             "id": "matlab",
             "name": "MATLAB",
             "size": "16 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "Data visualization tool"
         },
@@ -396,7 +396,7 @@
             "id": "ollama",
             "name": "Ollama",
             "size": "50 GB",
-            "category": "Development",
+            "category": "development",
             "icon": "",
             "description": "AI chatbot"
         },
@@ -404,7 +404,7 @@
             "id": "screenflow",
             "name": "ScreenFlow",
             "size": "20 GB",
-            "category": "Video & Audio",
+            "category": "video-audio",
             "icon": "",
             "description": "Video recording and streaming software"
         },
@@ -412,7 +412,7 @@
             "id": "bitwarden",
             "name": "Bitwarden",
             "size": "214.5 MB",
-            "category": "Utilities",
+            "category": "utilities",
             "icon": "",
             "description": "Password manager"
         }
@@ -420,53 +420,50 @@
     "categories": [
         {
             "id": "development",
-            "name": "Development",
             "icon": "",
             "order": 1
         },
         {
             "id": "design",
-            "name": "Design",
             "icon": "",
             "order": 2
         },
         {
             "id": "video-audio",
-            "name": "Video & Audio",
             "icon": "",
             "order": 3
         },
         {
             "id": "utilities",
-            "name": "Utilities",
             "icon": "",
             "order": 4
         },
         {
             "id": "game",
-            "name": "Game",
             "icon": "",
             "order": 5
         },
         {
             "id": "others",
-            "name": "Others",
             "icon": "",
             "order": 6
         }
     ],
     "system": {
         "os": {
+            "id": "operating-system",
             "name": "Operating System",
             "size": "15 GB",
             "description": "System files, drivers, and basic utilities."
         },
         "preinstalled": {
+            "id": "preinstalled-apps",
             "name": "Pre-installed Apps",
             "size": "10 GB",
             "description": "Default applications and system tools."
         },
         "upgrade_space": {
+            "id": "upgrade-space",
             "name": "Reserved Space for macOS upgrades",
             "size": "35.5 GB",
             "description": "Temporary storage needed for macOS upgrades, including installer files, snapshots, and migration files."

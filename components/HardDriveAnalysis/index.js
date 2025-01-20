@@ -398,7 +398,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-gray-600 dark:text-gray-400 min-w-[120px]">
-                      {systemSpace.details?.os.name}:
+                      {t(`categories.${systemSpace.details?.os.id}`)}:
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {systemSpace.details?.os.size}
@@ -406,7 +406,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-gray-600 dark:text-gray-400 min-w-[120px]">
-                      {systemSpace.details?.preinstalled.name}:
+                      {t(`categories.${systemSpace.details?.preinstalled.id}`)}:
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {systemSpace.details?.preinstalled.size}
@@ -414,7 +414,8 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-gray-600 dark:text-gray-400 min-w-[120px] overflow-hidden text-ellipsis">
-                      {systemSpace.details?.upgrade_space.name}:
+                      {t(`categories.${systemSpace.details?.upgrade_space.id}`)}
+                      :
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {systemSpace.details?.upgrade_space.size}

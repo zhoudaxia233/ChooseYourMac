@@ -22,5 +22,17 @@
         "aboutEstimates": "关于内存估算",
         "performanceOverview": "内存性能概览",
         "estimatesDescription": "性能估算基于Apple M系列芯片的统一内存架构。这些数值是主观近似值，来自论坛和YouTube分析，并非标准化测量结果。"
+    },
+    "categories": {
+        "development": "开发",
+        "design": "设计",
+        "video-audio": "视频和音频",
+        "utilities": "实用工具",
+        "game": "游戏",
+        "others": "其他",
+        "operating-system": "操作系统",
+        "preinstalled-apps": "预装应用",
+        "upgrade-space": "macOS升级预留空间",
+        "all": "全部"
     }
 }

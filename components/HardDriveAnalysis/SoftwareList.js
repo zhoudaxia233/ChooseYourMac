@@ -33,12 +33,17 @@ const SoftwareList = ({
           category => category.id === 'all'
         )
         setCategoryList([
-          ...(hasAllAlready ? [] : [{ id: 'all', name: 'All', order: 0 }]),
-          ...sortedCategories,
+          ...(hasAllAlready
+            ? []
+            : [{ id: 'all', name: t('categories.all'), order: 0 }]),
+          ...sortedCategories.map(category => ({
+            ...category,
+            name: t(`categories.${category.id}`),
+          })),
         ])
       })
       .catch(error => console.error('Error loading software data:', error))
-  }, [])
+  }, [t])
 
   // Filter available software based on search and category
   const availableSoftware = softwareList.filter(software => {
@@ -46,7 +51,8 @@ const SoftwareList = ({
       .toLowerCase()
       .includes(localSearchQuery.toLowerCase())
     const matchesCategory =
-      activeCategory === 'All' || software.category === activeCategory
+      activeCategory === 'All' ||
+      software.category === activeCategory.toLowerCase()
     return (
       !selectedSoftware.includes(software.id) &&
       matchesSearch &&

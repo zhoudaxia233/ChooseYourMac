@@ -23,5 +23,17 @@
         "aboutEstimates": "About Memory Estimates",
         "performanceOverview": "Memory Performance Overview",
         "estimatesDescription": "The performance estimates are based on Apple's M-series unified memory architecture. These values are subjective approximations, gathered from forums and YouTube analyses, and are not standardized measurements."
+    },
+    "categories": {
+        "development": "Development",
+        "design": "Design",
+        "video-audio": "Video & Audio",
+        "utilities": "Utilities",
+        "game": "Game",
+        "others": "Others",
+        "operating-system": "Operating System",
+        "preinstalled-apps": "Pre-installed Apps",
+        "upgrade-space": "Reserved Space for macOS upgrades",
+        "all": "All"
     }
 }
