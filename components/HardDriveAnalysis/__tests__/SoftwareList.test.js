@@ -317,33 +317,94 @@ describe('SoftwareList Component', () => {
     test('filters software when clicking category tabs', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
+
       // Wait for categories to load
       await waitFor(() => {
         expect(
           screen.getByRole('button', { name: 'Development' })
         ).toBeInTheDocument()
       })
+
       const devTab = screen.getByRole('button', { name: 'Development' })
       const utilitiesTab = screen.getByRole('button', { name: 'Utilities' })
       const allTab = screen.getByRole('button', { name: 'All' })
+
       // "All" is active by default, so both are visible
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.getByText('Chrome')).toBeInTheDocument()
+
       // Click "Utilities" tab
       await user.click(utilitiesTab)
       // Only "Chrome" should show
       expect(screen.getByText('Chrome')).toBeInTheDocument()
       expect(screen.queryByText('VS Code')).not.toBeInTheDocument()
+
       // Click "Development" tab
       await user.click(devTab)
       // Only "VS Code" should show
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.queryByText('Chrome')).not.toBeInTheDocument()
+
       // Click "All" tab again
       await user.click(allTab)
       // Both should be visible again
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.getByText('Chrome')).toBeInTheDocument()
+
+      // Verify "All" category works after search
+      await user.type(screen.getByTestId('search-input'), 'V')
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.queryByText('Chrome')).not.toBeInTheDocument()
+      await user.click(screen.getByRole('button', { name: 'All' }))
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.getByText('Chrome')).toBeInTheDocument()
+    })
+
+    test('category "all" works in different locales', async () => {
+      // Override the existing mock for this test only
+      const originalMock = jest.requireMock('next-i18next')
+      const prevTranslation = originalMock.useTranslation
+
+      originalMock.useTranslation = () => ({
+        t: key => {
+          const translations = {
+            'categories.all': '全部',
+            'categories.development': '开发',
+            'categories.utilities': '工具',
+            selected: 'Selected Software',
+            available: 'Available Software',
+            items: '0 items',
+            'hardDriveAnalysis.dragOrClickToAdd': 'Drag or click to add',
+            search: 'Search software...',
+          }
+          return translations[key] || key
+        },
+      })
+
+      const user = userEvent.setup()
+      render(<SoftwareList {...mockProps} />)
+
+      // Wait for categories to load
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: '全部' })).toBeInTheDocument()
+      })
+
+      // Verify initial state shows all software
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.getByText('Chrome')).toBeInTheDocument()
+
+      // Click "开发" (Development) tab
+      await user.click(screen.getByRole('button', { name: '开发' }))
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.queryByText('Chrome')).not.toBeInTheDocument()
+
+      // Click "全部" (All) tab
+      await user.click(screen.getByRole('button', { name: '全部' }))
+      expect(screen.getByText('VS Code')).toBeInTheDocument()
+      expect(screen.getByText('Chrome')).toBeInTheDocument()
+
+      // Restore the original mock
+      originalMock.useTranslation = prevTranslation
     })
   })
   test('adds software to selection when clicking the plus button', async () => {

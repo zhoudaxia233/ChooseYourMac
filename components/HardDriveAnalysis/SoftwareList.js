@@ -14,7 +14,7 @@ const SoftwareList = ({
   const [draggedSoftware, setDraggedSoftware] = useState(null)
   const [localSearchQuery, setLocalSearchQuery] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
-  const [activeCategory, setActiveCategory] = useState('All')
+  const [activeCategory, setActiveCategory] = useState('all')
   const [newSoftware, setNewSoftware] = useState({
     name: '',
     size: '',
@@ -51,8 +51,7 @@ const SoftwareList = ({
       .toLowerCase()
       .includes(localSearchQuery.toLowerCase())
     const matchesCategory =
-      activeCategory === 'All' ||
-      software.category === activeCategory.toLowerCase()
+      activeCategory === 'all' || software.category === activeCategory
     return (
       !selectedSoftware.includes(software.id) &&
       matchesSearch &&
@@ -169,7 +168,7 @@ const SoftwareList = ({
 
     onSoftwareListUpdate([...softwareList, newSoftwareItem])
     onSoftwareUpdate([...selectedSoftware, newSoftwareItem.id])
-    setActiveCategory('All')
+    setActiveCategory('all')
     setNewSoftware({ name: '', size: '', unit: 'GB' })
     setLocalSearchQuery('')
     setShowAddForm(false)
@@ -202,7 +201,7 @@ const SoftwareList = ({
   const handleSearchChange = e => {
     setLocalSearchQuery(e.target.value)
     if (e.target.value) {
-      setActiveCategory('All') // Switch to All category when searching
+      setActiveCategory('all') // Switch to All category when searching
     }
   }
 
@@ -390,7 +389,7 @@ const SoftwareList = ({
             <button
               onClick={() => {
                 setLocalSearchQuery('')
-                setActiveCategory('All')
+                setActiveCategory('all')
               }}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5
                 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300
@@ -420,20 +419,20 @@ const SoftwareList = ({
             <button
               key={category.id}
               onClick={() => {
-                setActiveCategory(category.name)
+                setActiveCategory(category.id)
                 setLocalSearchQuery('')
               }}
               className={`
                 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
                 transition-colors
                 ${
-                  activeCategory === category.name && !localSearchQuery
+                  activeCategory === category.id && !localSearchQuery
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                 }
               `}
             >
-              {category.name}
+              {t(`categories.${category.id}`)}
             </button>
           ))}
         </div>
