@@ -274,7 +274,7 @@ const SoftwareList = ({
           <div className="p-4">
             {selectedSoftware.length === 0 ? (
               <div className="flex items-center justify-center h-20 text-sm text-gray-500 dark:text-gray-400">
-                Drag software here to add
+                {t('hardDriveAnalysis.dragOrClickToAdd')}
               </div>
             ) : (
               <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2">

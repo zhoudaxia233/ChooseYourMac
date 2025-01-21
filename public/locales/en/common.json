@@ -35,5 +35,13 @@
         "preinstalled-apps": "Pre-installed Apps",
         "upgrade-space": "Reserved Space for macOS upgrades",
         "all": "All"
+    },
+    "hardDriveAnalysis": {
+        "userSoftware": "User Software",
+        "totalUsed": "Total Used",
+        "dragOrClickToAdd": "Drag software here or click + to add",
+        "storageUsage": "{{used}} of {{total}} GB used",
+        "storageAvailable": "{{available}} available",
+        "reset": "Reset"
     }
 }

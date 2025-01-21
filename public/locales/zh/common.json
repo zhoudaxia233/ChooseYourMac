@@ -34,5 +34,13 @@
         "preinstalled-apps": "预装应用",
         "upgrade-space": "macOS升级预留空间",
         "all": "全部"
+    },
+    "hardDriveAnalysis": {
+        "userSoftware": "用户软件",
+        "totalUsed": "总计使用",
+        "dragOrClickToAdd": "拖拽软件到此处或点击 + 添加",
+        "storageUsage": "已使用 {{used}}/{{total}} GB",
+        "storageAvailable": "可用空间 {{available}}",
+        "reset": "重置"
     }
 }

@@ -146,7 +146,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
-                Reset
+                {t('hardDriveAnalysis.reset')}
               </div>
             </button>
             <StorageSelector onStorageChange={setStorageLimit} />
@@ -162,11 +162,17 @@ const HardDriveAnalysis = ({ searchQuery }) => {
             <div className="max-w-screen-xl mx-auto px-6 py-3">
               <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                 <div>
-                  {formatSize(totalUsedSpace)} of {storageLimit} GB used
+                  {t('hardDriveAnalysis.storageUsage', {
+                    used: formatSize(totalUsedSpace),
+                    total: storageLimit,
+                  })}
                 </div>
                 <div>
-                  {formatSize(Math.max(0, storageLimit - totalUsedSpace))}{' '}
-                  available
+                  {t('hardDriveAnalysis.storageAvailable', {
+                    available: formatSize(
+                      Math.max(0, storageLimit - totalUsedSpace)
+                    ),
+                  })}
                 </div>
               </div>
               <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative">
@@ -298,10 +304,17 @@ const HardDriveAnalysis = ({ searchQuery }) => {
           {/* Storage Usage Info */}
           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
             <div>
-              {formatSize(totalUsedSpace)} of {storageLimit} GB used
+              {t('hardDriveAnalysis.storageUsage', {
+                used: formatSize(totalUsedSpace),
+                total: storageLimit,
+              })}
             </div>
             <div>
-              {formatSize(Math.max(0, storageLimit - totalUsedSpace))} available
+              {t('hardDriveAnalysis.storageAvailable', {
+                available: formatSize(
+                  Math.max(0, storageLimit - totalUsedSpace)
+                ),
+              })}
             </div>
           </div>
 
@@ -423,7 +436,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   </div>
                   <div className="flex items-center justify-between gap-4 pt-1 border-t border-gray-200 dark:border-gray-700">
                     <span className="text-gray-600 dark:text-gray-400 min-w-[120px]">
-                      User Software:
+                      {t('hardDriveAnalysis.userSoftware')}:
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {formatSize(usedSpace)}
@@ -431,7 +444,7 @@ const HardDriveAnalysis = ({ searchQuery }) => {
                   </div>
                   <div className="flex items-center justify-between gap-4 pt-1 border-t border-gray-200 dark:border-gray-700">
                     <span className="text-gray-900 dark:text-gray-100 min-w-[120px]">
-                      Total Used:
+                      {t('hardDriveAnalysis.totalUsed')}:
                     </span>
                     <span className="text-gray-900 dark:text-gray-100 whitespace-nowrap flex-shrink-0">
                       {formatSize(totalUsedSpace)}

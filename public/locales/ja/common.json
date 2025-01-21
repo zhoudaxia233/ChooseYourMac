@@ -34,5 +34,13 @@
         "preinstalled-apps": "プリインストールアプリ",
         "upgrade-space": "macOSアップグレード用の予約領域",
         "all": "すべて"
+    },
+    "hardDriveAnalysis": {
+        "userSoftware": "ユーザーソフトウェア",
+        "totalUsed": "合計使用量",
+        "dragOrClickToAdd": "ここにドラッグするか、+ をクリックして追加",
+        "storageUsage": "使用済み {{used}}/{{total}} GB",
+        "storageAvailable": "利用可能 {{available}}",
+        "reset": "リセット"
     }
 }
