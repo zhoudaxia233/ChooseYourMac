@@ -229,48 +229,38 @@ describe('SoftwareList Component', () => {
     test('adds single search result to selection when Enter is pressed', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
-
       const searchInput = screen.getByTestId('search-input')
       // Type 'VS' to get single result
       await user.type(searchInput, 'VS')
       await user.keyboard('{Enter}')
-
       // Check if VS Code was added to selection
       expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['vscode'])
       expect(searchInput).toHaveValue('') // Search should be cleared
     })
-
     test('shows add form when Enter is pressed with no results', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
       const searchInput = screen.getByPlaceholderText('Search software...')
-
       await user.type(searchInput, 'NonExistentSoftware')
       await user.keyboard('{Enter}')
-
       await waitFor(() => {
         expect(screen.getByTestId('software-name-input')).toBeInTheDocument()
       })
     })
-
     test('submits new software when Enter is pressed in add form', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
-
       // First show the add form by searching non-existent software
       const searchInput = screen.getByTestId('search-input')
       await user.type(searchInput, 'NewSoftware')
       await user.keyboard('{Enter}')
-
       // Fill out the form
       const nameInput = await screen.findByTestId('software-name-input')
       const sizeInput = await screen.findByTestId('software-size-input')
-
       await user.clear(nameInput)
       await user.type(nameInput, 'NewSoftware')
       await user.type(sizeInput, '1')
       await user.keyboard('{Enter}')
-
       // Check if software was added
       expect(mockProps.onSoftwareListUpdate).toHaveBeenCalledWith([
         ...mockProps.softwareList,
@@ -284,81 +274,71 @@ describe('SoftwareList Component', () => {
         },
       ])
     })
-
     test('does not submit form when Enter is pressed with empty fields', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
-
       // Show the add form
       const searchInput = screen.getByTestId('search-input')
       await user.type(searchInput, 'NewSoftware')
       await user.keyboard('{Enter}')
-
       // Try to submit with empty size
       const nameInput = await screen.findByTestId('software-name-input')
       await user.clear(nameInput)
       await user.type(nameInput, 'NewSoftware')
       await user.keyboard('{Enter}')
-
       expect(mockProps.onSoftwareListUpdate).not.toHaveBeenCalled()
       expect(mockProps.onSoftwareUpdate).not.toHaveBeenCalled()
     })
-
     test('adds software to selection via drag and drop', async () => {
       // Render and wait for initial data loading
       render(<SoftwareList {...mockProps} />)
 
+      // Wait for categories to load
+      await screen.findByRole('button', { name: 'All' })
+
       // Wait for Chrome to be in the document before proceeding
       const draggableItem = await screen.findByText('Chrome')
       const dropZone = document.querySelector('.selected-software-container')
-
       const mockDataTransfer = {
         setData: jest.fn(),
         getData: jest.fn(() => 'chrome'),
         setDragImage: jest.fn(),
         effectAllowed: null,
       }
-
       // Perform drag and drop
       fireEvent.dragStart(draggableItem, { dataTransfer: mockDataTransfer })
       fireEvent.dragOver(dropZone, { dataTransfer: mockDataTransfer })
       fireEvent.drop(dropZone, { dataTransfer: mockDataTransfer })
-
       // Verify "Chrome" was added
-      expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
+      await waitFor(() => {
+        expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
+      })
     })
-
     test('filters software when clicking category tabs', async () => {
       const user = userEvent.setup()
       render(<SoftwareList {...mockProps} />)
-
       // Wait for categories to load
       await waitFor(() => {
         expect(
           screen.getByRole('button', { name: 'Development' })
         ).toBeInTheDocument()
       })
-
       const devTab = screen.getByRole('button', { name: 'Development' })
       const utilitiesTab = screen.getByRole('button', { name: 'Utilities' })
       const allTab = screen.getByRole('button', { name: 'All' })
-
       // "All" is active by default, so both are visible
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.getByText('Chrome')).toBeInTheDocument()
-
       // Click "Utilities" tab
       await user.click(utilitiesTab)
       // Only "Chrome" should show
       expect(screen.getByText('Chrome')).toBeInTheDocument()
       expect(screen.queryByText('VS Code')).not.toBeInTheDocument()
-
       // Click "Development" tab
       await user.click(devTab)
       // Only "VS Code" should show
       expect(screen.getByText('VS Code')).toBeInTheDocument()
       expect(screen.queryByText('Chrome')).not.toBeInTheDocument()
-
       // Click "All" tab again
       await user.click(allTab)
       // Both should be visible again
@@ -366,21 +346,16 @@ describe('SoftwareList Component', () => {
       expect(screen.getByText('Chrome')).toBeInTheDocument()
     })
   })
-
   test('adds software to selection when clicking the plus button', async () => {
     const user = userEvent.setup()
     render(<SoftwareList {...mockProps} />)
-
     // Find the add button for Chrome
     const addButton = await screen.findByTestId('add-software-chrome')
     expect(addButton).toBeInTheDocument()
-
     // Click the add button
     await user.click(addButton)
-
     // Verify the software was added
     expect(mockProps.onSoftwareUpdate).toHaveBeenCalledWith(['chrome'])
-
     // Verify scrollToBottom was triggered
     expect(window.requestAnimationFrame).toHaveBeenCalled()
   })

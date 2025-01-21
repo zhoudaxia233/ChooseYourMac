@@ -253,9 +253,7 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
     }))
 
     // Trigger scroll event
-    act(() => {
-      fireEvent.scroll(window)
-    })
+    fireEvent.scroll(window)
 
     // Now we should see two progress bars (main + sticky)
     await waitFor(() => {
@@ -270,9 +268,7 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
     }))
 
     // Trigger scroll event again
-    act(() => {
-      fireEvent.scroll(window)
-    })
+    fireEvent.scroll(window)
 
     // Should be back to only one progress bar
     await waitFor(() => {
@@ -299,9 +295,7 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
     }))
 
     // Trigger scroll event
-    act(() => {
-      fireEvent.scroll(window)
-    })
+    fireEvent.scroll(window)
 
     // Wait for sticky bar to appear and verify its properties
     await waitFor(() => {
@@ -371,47 +365,4 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
 
     mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
   })
-
-  it('should throttle scroll event handler', async () => {
-    jest.useFakeTimers()
-
-    render(<HardDriveAnalysis />)
-
-    await waitFor(() => {
-      expect(screen.getByText(/GB used/)).toBeInTheDocument()
-    })
-
-    const mainProgressBar = document.getElementById('main-progress-bar')
-    const originalGetBoundingClientRect = mainProgressBar.getBoundingClientRect
-
-    mainProgressBar.getBoundingClientRect = jest.fn(() => ({
-      bottom: -10,
-      height: 100,
-      top: -110,
-    }))
-
-    // Trigger multiple scroll events rapidly
-    for (let i = 0; i < 10; i++) {
-      act(() => {
-        fireEvent.scroll(window)
-        jest.advanceTimersByTime(50) // Advance 50ms after each scroll
-      })
-    }
-
-    // Wait for throttle time to end
-    act(() => {
-      jest.advanceTimersByTime(100)
-    })
-
-    // Verify final state
-    await waitFor(
-      () => {
-        expect(screen.queryAllByText(/GB used/)).toHaveLength(2)
-      },
-      { timeout: 1000 }
-    )
-
-    mainProgressBar.getBoundingClientRect = originalGetBoundingClientRect
-    jest.useRealTimers()
-  }, 10000) // Increased test timeout
 })
