@@ -231,6 +231,14 @@ describe('HardDriveAnalysis Component', () => {
       })
     })
   })
+
+  test('items label shows correct count', async () => {
+    render(<HardDriveAnalysis selectedSoftware={[]} />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/0 items/i)).toBeInTheDocument()
+    })
+  })
 })
 
 describe('HardDriveAnalysis - Sticky Progress Bar', () => {
