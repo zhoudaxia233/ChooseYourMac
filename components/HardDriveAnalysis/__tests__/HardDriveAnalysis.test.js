@@ -12,6 +12,9 @@ jest.mock('next-i18next', () => ({
         softwareSizesDescription:
           'The listed sizes for all software are generally much higher than the initial installation sizes, as they account for smooth operation, caching, and usage-related storage needs. These specific numbers are derived from various sources, including forum discussions and the official system requirements provided by the software developers.',
         title: 'Hard Drive Space Calculator',
+        'hardDriveAnalysis.storageUsage': '60.5GB used of 256GB',
+        'hardDriveAnalysis.storageAvailable': '195.5GB available',
+        'hardDriveAnalysis.reset': 'Reset',
         // Add other translations as needed
       }
       return translations[key] || key
@@ -241,7 +244,7 @@ describe('HardDriveAnalysis - Sticky Progress Bar', () => {
     })
 
     // Initially, sticky progress bar should not be visible
-    expect(screen.queryAllByText(/GB used/)).toHaveLength(1) // Changed to queryAllByText
+    expect(screen.queryAllByText(/GB used/)).toHaveLength(1) // Main progress bar only
 
     // Mock the getBoundingClientRect for main progress bar
     const mainProgressBar = document.getElementById('main-progress-bar')
