@@ -3,8 +3,7 @@
     "add": "添加新软件",
     "available": "可用软件",
     "feedback": "发送反馈",
-    "items": "{{count}} 个项目",
-    "items_other": "",
+    "items": "{{count}}个项目",
     "placeholder": "有什么可以改进的？",
     "presets": {
         "quickSetup": "快速配置",

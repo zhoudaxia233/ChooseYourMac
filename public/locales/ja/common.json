@@ -3,8 +3,7 @@
     "add": "新規追加",
     "available": "利用可能なソフトウェア",
     "feedback": "フィードバック",
-    "items": "{{count}}件",
-    "items_other": "",
+    "items": "{{count}}個のアイテム",
     "placeholder": "改善点を教えてください",
     "presets": {
         "quickSetup": "クイック構成",

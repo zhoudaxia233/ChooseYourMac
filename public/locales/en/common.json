@@ -4,8 +4,6 @@
     "available": "Available Software",
     "feedback": "Send Feedback",
     "items": "{{count}} items",
-    "items_one": "items",
-    "items_other": "items",
     "placeholder": "What could be improved?",
     "presets": {
         "quickSetup": "Quick Setup",

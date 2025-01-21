@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 // Mock the next-i18next module
 jest.mock('next-i18next', () => ({
   useTranslation: () => ({
-    t: key => {
+    t: (key, options) => {
       const translations = {
         aboutSoftwareSizes: 'About Software Sizes',
         softwareSizesDescription:
@@ -15,8 +15,15 @@ jest.mock('next-i18next', () => ({
         'hardDriveAnalysis.storageUsage': '60.5GB used of 256GB',
         'hardDriveAnalysis.storageAvailable': '195.5GB available',
         'hardDriveAnalysis.reset': 'Reset',
+        items: '{{count}} items',
         // Add other translations as needed
       }
+
+      // Handle translations with parameters
+      if (key === 'items' && options?.count !== undefined) {
+        return `${options.count} items`
+      }
+
       return translations[key] || key
     },
   }),
