@@ -7,9 +7,14 @@ export default function Layout({ children, daysSinceUpdate, lastUpdatedUTC }) {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <div className="bg-white dark:bg-black border-b border-black/[.08] dark:border-white/[.145] p-4">
-        <div className="max-w-5xl mx-auto flex justify-end items-center gap-4">
-          <ThemeToggle />
-          <LanguageSelector />
+        <div className="max-w-5xl mx-auto flex justify-between items-center">
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+            ChooseYourMac
+          </h1>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <LanguageSelector />
+          </div>
         </div>
       </div>
 
