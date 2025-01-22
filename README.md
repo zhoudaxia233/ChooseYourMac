@@ -1,6 +1,6 @@
 # ChooseYourMac
 
-The easiest Mac buying guide for budget-conscious users. Find your perfect Mac without overspending with our intuitive tools for storage and memory performance analysis.
+An intuitive, interactive tool designed to help budget-conscious users find their ideal Mac by analyzing storage and memory needs based on software and usage. It’s the easiest Mac buying guide to avoid overspending while ensuring optimal performance.
 
 
 ## 🚀 Live Demo
