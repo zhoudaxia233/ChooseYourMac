@@ -6,8 +6,6 @@ export default function handler(req, res) {
     const metaPath = path.join(process.cwd(), 'public', 'meta.json')
     const metaData = JSON.parse(fs.readFileSync(metaPath, 'utf8'))
 
-    console.log('meta.json content:', JSON.stringify(metaData, null, 2))
-
     const { latestUpdate } = metaData
 
     const latestDate = new Date(latestUpdate)
@@ -20,9 +18,6 @@ export default function handler(req, res) {
         hour12: true,
         timeZone: 'UTC',
       }) + ' UTC'
-
-    console.log('Last updated:', latestUpdate)
-    console.log('Formatted UTC:', formattedUTC)
 
     res.status(200).json({
       lastUpdated: latestUpdate,
