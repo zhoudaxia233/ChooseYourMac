@@ -14,7 +14,3 @@ export function getDaysSinceDate(dateString) {
 
   return diffDays === 0 ? 0 : diffDays
 }
-
-git add .
-git commit -m "Add build logs for debugging"
-git push origin debug-build
