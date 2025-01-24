@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node utils/collectMtimes.js",
+    "prebuild": "node utils/collectMtimes.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
