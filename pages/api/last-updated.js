@@ -5,6 +5,9 @@ export default function handler(req, res) {
   try {
     const metaPath = path.join(process.cwd(), 'public', 'meta.json')
     const metaData = JSON.parse(fs.readFileSync(metaPath, 'utf8'))
+
+    console.log('meta.json content:', JSON.stringify(metaData, null, 2))
+
     const { latestUpdate } = metaData
 
     const latestDate = new Date(latestUpdate)
