@@ -53,3 +53,5 @@ next-env.d.ts
 requirements/
 
 .swc
+
+/public/meta.json

@@ -1,16 +1,18 @@
-export function getDaysSinceDate(dateString) {
-  const lastUpdate = new Date(dateString)
+export function getDaysSinceDate(buildTimestamp) {
+  const lastUpdate = new Date(buildTimestamp)
   const today = new Date()
 
-  console.log('Current Time (today):', today.toISOString())
-  console.log('Last Update Time (dateString):', lastUpdate.toISOString())
+  const utcLast = Date.UTC(
+    lastUpdate.getUTCFullYear(),
+    lastUpdate.getUTCMonth(),
+    lastUpdate.getUTCDate()
+  )
 
-  // Reset time part to compare dates only
-  lastUpdate.setHours(0, 0, 0, 0)
-  today.setHours(0, 0, 0, 0)
+  const utcToday = Date.UTC(
+    today.getUTCFullYear(),
+    today.getUTCMonth(),
+    today.getUTCDate()
+  )
 
-  const diffTime = Math.abs(today - lastUpdate)
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-
-  return diffDays === 0 ? 0 : diffDays
+  return Math.floor((utcToday - utcLast) / (1000 * 60 * 60 * 24))
 }
