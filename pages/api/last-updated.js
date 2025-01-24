@@ -16,6 +16,9 @@ export default function handler(req, res) {
     // Get last modified time for all JSON files
     const lastModifiedDates = jsonFiles.map(filePath => {
       const stats = fs.statSync(filePath)
+      console.log(
+        `File: ${filePath}, Last Modified: ${stats.mtime.toISOString()}`
+      )
       return stats.mtime
     })
 
