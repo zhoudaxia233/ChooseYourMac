@@ -18,6 +18,9 @@ export default function handler(req, res) {
         timeZone: 'UTC',
       }) + ' UTC'
 
+    console.log('Last updated:', latestUpdate)
+    console.log('Formatted UTC:', formattedUTC)
+
     res.status(200).json({
       lastUpdated: latestUpdate,
       formattedUTC,
