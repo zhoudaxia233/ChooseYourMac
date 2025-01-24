@@ -8,7 +8,7 @@ async function main() {
   const publicDir = path.join(process.cwd(), 'public')
   const jsonFiles = fs
     .readdirSync(publicDir)
-    .filter(file => file.endsWith('.json'))
+    .filter(file => file.endsWith('.json') && file !== 'meta.json')
     .map(file => path.join(publicDir, file))
 
   const mtimes = jsonFiles.reduce((acc, file) => {
