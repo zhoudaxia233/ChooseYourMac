@@ -25,7 +25,7 @@ const StorageSelector = ({ onStorageChange }) => {
           text-sm font-medium text-gray-600 dark:text-gray-400 
           transition-colors relative"
       >
-        <span>{formatStorage(selectedStorage)} Total</span>
+        <span>{formatStorage(selectedStorage)}</span>
         <svg
           className={`w-4 h-4 transition-transform ${
             isOpen ? 'rotate-180' : ''

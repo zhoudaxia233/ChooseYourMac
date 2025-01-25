@@ -71,7 +71,7 @@ export default function FeedbackButton() {
             onClick={() => setIsOpen(true)}
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 shadow-lg transition-colors"
           >
-            <span className="sr-only">{t('feedback')}</span>
+            <span className="sr-only">{t('feedback.title')}</span>
             <svg
               className="w-6 h-6"
               fill="none"
@@ -90,7 +90,7 @@ export default function FeedbackButton() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 w-80">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {t('feedback')}
+                {t('feedback.title')}
               </h3>
               <button
                 onClick={() => setIsOpen(false)}

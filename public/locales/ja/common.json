@@ -2,44 +2,91 @@
     "aboutSoftwareSizes": "ソフトウェアサイズについて",
     "add": "新規追加",
     "available": "利用可能なソフトウェア",
-    "feedback": "フィードバック",
+    "categories": {
+        "all": "すべて",
+        "design": "デザイン",
+        "development": "開発",
+        "game": "ゲーム",
+        "operating-system": "オペレーティングシステム",
+        "others": "その他",
+        "preinstalled-apps": "プリインストールアプリ",
+        "upgrade-space": "macOSアップグレード用の予約領域",
+        "utilities": "ユーティリティ",
+        "video-audio": "ビデオ＆オーディオ"
+    },
+    "feedback": {
+        "error": "エラーが発生しました。もう一度お試しください。",
+        "success": "フィードバックありがとうございます！",
+        "title": "フィードバック"
+    },
+    "hardDriveAnalysis": {
+        "dragOrClickToAdd": "ここにドラッグするか、+ をクリックして追加",
+        "reset": "リセット",
+        "storageAvailable": "利用可能 {{available}}",
+        "storageUsage": "使用済み {{used}}/{{total}} GB",
+        "totalUsed": "合計使用量",
+        "userSoftware": "ユーザーソフトウェア"
+    },
     "items": "{{count}}個のアイテム",
+    "memoryAnalysis": {
+        "aboutEstimates": "メモリ見積もりについて",
+        "estimatesDescription": "パフォーマンスの見積もりは、AppleのM シリーズ統合メモリアーキテクチャに基づいています。これらの値は、フォーラムやYouTubeの分析から収集した主観的な近似値であり、標準化された測定値ではありません。",
+        "highPressure": "高い",
+        "lowPressure": "低い",
+        "mediumPressure": "中",
+        "memoryPressure": "メモリ圧力",
+        "performanceOverview": "メモリパフォーマンス概要",
+        "recommendations": {
+            "contents": {
+                "data-128": "エンタープライズレベルのデータ処理能力",
+                "data-16": "中規模データセットに最適",
+                "data-24": "大規模データセットに非常に適している",
+                "data-32": "データサイエンスに理想的",
+                "data-48": "機械学習に最適",
+                "data-64": "高度なAI/MLワークロードに対応",
+                "data-8": "シンプルなデータ分析に十分",
+                "gaming-128": "ゲームだけには過剰なスペック",
+                "gaming-16": "24GBにアップグレードして、最適なゲームパフォーマンスを",
+                "gaming-24": "ほとんどのゲームシナリオに対応",
+                "gaming-32": "ハイエンドゲームに最適",
+                "gaming-48": "ゲームと配信に最適な選択",
+                "gaming-64": "将来のゲーム需要に備える",
+                "gaming-8": "16GBにアップグレードして、よりスムーズなゲーム体験を",
+                "video-128": "スタジオレベルの動画制作に対応",
+                "video-16": "ほとんどの4K動画編集ニーズを満たす",
+                "video-24": "4K動画編集に非常に適している",
+                "video-32": "8K動画編集を完全にサポート",
+                "video-48": "複雑な動画プロジェクトに理想的",
+                "video-64": "プロフェッショナルな動画編集向け",
+                "video-8": "16GBにアップグレードして、4K動画編集を可能に"
+            },
+            "title": "おすすめ"
+        },
+        "scenarios": {
+            "data": "データ分析",
+            "gaming": "ゲーム",
+            "video": "ビデオ編集"
+        },
+        "simultaneousApps": "同時実行可能",
+        "title": "どれくらいのメモリが本当に必要ですか？"
+    },
     "placeholder": "改善点を教えてください",
     "presets": {
+        "presets": {
+            "basic": "基本シナリオ",
+            "data-scientist": "データサイエンティスト",
+            "designer": "デザイナー",
+            "video-edit": "動画クリエイター",
+            "web-dev": "Web開発者"
+        },
         "quickSetup": "クイック構成",
         "recommendedPresets": "ニーズテンプレート"
     },
     "search": "ソフトウェアを検索...",
     "selected": "選択済みソフトウェア",
     "sending": "送信中...",
+    "softwareSizesDescription": "表示されているソフトウェアのサイズは、通常、初期インストールサイズよりもかなり大きくなっています。これは、円滑な操作、キャッシュ、使用に関連するストレージニーズを考慮しているためです。これらの具体的な数値は、フォーラムでの議論やソフトウェア開発者が提供する公式システム要件など、さまざまな情報源から導き出されています。",
     "submit": "送信",
     "thanks": "フィードバックありがとうございます！",
-    "title": "どれくらいのストレージ容量が本当に必要ですか？",
-    "softwareSizesDescription": "表示されているソフトウェアのサイズは、通常、初期インストールサイズよりもかなり大きくなっています。これは、円滑な操作、キャッシュ、使用に関連するストレージニーズを考慮しているためです。これらの具体的な数値は、フォーラムでの議論やソフトウェア開発者が提供する公式システム要件など、さまざまな情報源から導き出されています。",
-    "memoryAnalysis": {
-        "title": "どれくらいのメモリが本当に必要ですか？",
-        "aboutEstimates": "メモリ見積もりについて",
-        "performanceOverview": "メモリパフォーマンス概要",
-        "estimatesDescription": "パフォーマンスの見積もりは、AppleのM シリーズ統合メモリアーキテクチャに基づいています。これらの値は、フォーラムやYouTubeの分析から収集した主観的な近似値であり、標準化された測定値ではありません。"
-    },
-    "categories": {
-        "development": "開発",
-        "design": "デザイン",
-        "video-audio": "ビデオ＆オーディオ",
-        "utilities": "ユーティリティ",
-        "game": "ゲーム",
-        "others": "その他",
-        "operating-system": "オペレーティングシステム",
-        "preinstalled-apps": "プリインストールアプリ",
-        "upgrade-space": "macOSアップグレード用の予約領域",
-        "all": "すべて"
-    },
-    "hardDriveAnalysis": {
-        "userSoftware": "ユーザーソフトウェア",
-        "totalUsed": "合計使用量",
-        "dragOrClickToAdd": "ここにドラッグするか、+ をクリックして追加",
-        "storageUsage": "使用済み {{used}}/{{total}} GB",
-        "storageAvailable": "利用可能 {{available}}",
-        "reset": "リセット"
-    }
+    "title": "どれくらいのストレージ容量が本当に必要ですか？"
 }

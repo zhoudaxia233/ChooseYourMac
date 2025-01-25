@@ -11,7 +11,6 @@
     "scenarios": [
         {
             "id": "gaming",
-            "name": "Gaming",
             "icon": "🎮",
             "basePressure": 85,
             "status": "high",
@@ -40,38 +39,37 @@
             },
             "recommendations": {
                 "8": {
-                    "text": "Upgrade to 16GB for smoother gaming",
+                    "id": "gaming-8",
                     "upgrade": true
                 },
                 "16": {
-                    "text": "Upgrade to 24GB for optimal gaming",
+                    "id": "gaming-16",
                     "upgrade": true
                 },
                 "24": {
-                    "text": "Good for most gaming scenarios",
+                    "id": "gaming-24",
                     "upgrade": false
                 },
                 "32": {
-                    "text": "Perfect for high-end gaming",
+                    "id": "gaming-32",
                     "upgrade": false
                 },
                 "48": {
-                    "text": "Excellent for gaming and streaming",
+                    "id": "gaming-48",
                     "upgrade": false
                 },
                 "64": {
-                    "text": "Future-proof for gaming",
+                    "id": "gaming-64",
                     "upgrade": false
                 },
                 "128": {
-                    "text": "Overkill for gaming alone",
+                    "id": "gaming-128",
                     "upgrade": false
                 }
             }
         },
         {
             "id": "video",
-            "name": "Video Editing",
             "icon": "🎥",
             "basePressure": 60,
             "status": "medium",
@@ -100,38 +98,37 @@
             },
             "recommendations": {
                 "8": {
-                    "text": "Upgrade to 16GB for 4K editing",
+                    "id": "video-8",
                     "upgrade": true
                 },
                 "16": {
-                    "text": "Sufficient for most 4K editing",
+                    "id": "video-16",
                     "upgrade": false
                 },
                 "24": {
-                    "text": "Great for 4K editing",
+                    "id": "video-24",
                     "upgrade": false
                 },
                 "32": {
-                    "text": "Perfect for 8K editing",
+                    "id": "video-32",
                     "upgrade": false
                 },
                 "48": {
-                    "text": "Ideal for complex video projects",
+                    "id": "video-48",
                     "upgrade": false
                 },
                 "64": {
-                    "text": "Professional-grade video editing",
+                    "id": "video-64",
                     "upgrade": false
                 },
                 "128": {
-                    "text": "Studio-level video production",
+                    "id": "video-128",
                     "upgrade": false
                 }
             }
         },
         {
             "id": "data",
-            "name": "Data Analysis",
             "icon": "📊",
             "basePressure": 35,
             "status": "low",
@@ -160,31 +157,31 @@
             },
             "recommendations": {
                 "8": {
-                    "text": "Sufficient for simple analysis",
+                    "id": "data-8",
                     "upgrade": false
                 },
                 "16": {
-                    "text": "Perfect for medium datasets",
+                    "id": "data-16",
                     "upgrade": false
                 },
                 "24": {
-                    "text": "Great for larger datasets",
+                    "id": "data-24",
                     "upgrade": false
                 },
                 "32": {
-                    "text": "Ideal for data science",
+                    "id": "data-32",
                     "upgrade": false
                 },
                 "48": {
-                    "text": "Perfect for machine learning",
+                    "id": "data-48",
                     "upgrade": false
                 },
                 "64": {
-                    "text": "Advanced AI/ML workloads",
+                    "id": "data-64",
                     "upgrade": false
                 },
                 "128": {
-                    "text": "Enterprise-level data processing",
+                    "id": "data-128",
                     "upgrade": false
                 }
             }

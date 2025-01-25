@@ -2,7 +2,6 @@
     "presets": [
         {
             "id": "basic",
-            "name": "Basic",
             "software": [
                 "chrome",
                 "word",
@@ -19,7 +18,6 @@
         },
         {
             "id": "web-dev",
-            "name": "Web Developer",
             "software": [
                 "vscode",
                 "homebrew",
@@ -37,7 +35,6 @@
         },
         {
             "id": "video-edit",
-            "name": "Video Editor",
             "software": [
                 "finalcutpro",
                 "premiere",
@@ -49,7 +46,6 @@
         },
         {
             "id": "designer",
-            "name": "Designer",
             "software": [
                 "figma",
                 "photoshop",
@@ -64,7 +60,6 @@
         },
         {
             "id": "data-scientist",
-            "name": "Data Scientist",
             "software": [
                 "tableau",
                 "matlab",

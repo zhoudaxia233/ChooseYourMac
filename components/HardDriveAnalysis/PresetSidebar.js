@@ -60,7 +60,9 @@ const PresetSidebar = ({ onPresetSelect, selectedPresetId }) => {
           >
             <div className="space-y-1">
               <div className="flex justify-between items-center">
-                <h4 className="font-medium">{preset.name}</h4>
+                <h4 className="font-medium">
+                  {t(`presets.presets.${preset.id}`)}
+                </h4>
                 <span className="text-sm opacity-80">
                   {formatSize(calculatePresetSize(preset.software))}
                 </span>

@@ -2,44 +2,91 @@
     "aboutSoftwareSizes": "About Software Sizes",
     "add": "Add New Software",
     "available": "Available Software",
-    "feedback": "Send Feedback",
+    "categories": {
+        "all": "All",
+        "design": "Design",
+        "development": "Development",
+        "game": "Game",
+        "operating-system": "Operating System",
+        "others": "Others",
+        "preinstalled-apps": "Pre-installed Apps",
+        "upgrade-space": "Reserved Space for macOS upgrades",
+        "utilities": "Utilities",
+        "video-audio": "Video & Audio"
+    },
+    "feedback": {
+        "error": "An error occurred. Please try again.",
+        "success": "Thanks for your feedback!",
+        "title": "Feedback"
+    },
+    "hardDriveAnalysis": {
+        "dragOrClickToAdd": "Drag software here or click + to add",
+        "reset": "Reset",
+        "storageAvailable": "{{available}} available",
+        "storageUsage": "{{used}} of {{total}} GB used",
+        "totalUsed": "Total Used",
+        "userSoftware": "User Software"
+    },
     "items": "{{count}} items",
+    "memoryAnalysis": {
+        "aboutEstimates": "About Memory Estimates",
+        "estimatesDescription": "The performance estimates are based on Apple's M-series unified memory architecture. These values are subjective approximations, gathered from forums and YouTube analyses, and are not standardized measurements.",
+        "highPressure": "High",
+        "lowPressure": "Low",
+        "mediumPressure": "Medium",
+        "memoryPressure": "Memory Pressure",
+        "performanceOverview": "Memory Performance Overview",
+        "recommendations": {
+            "contents": {
+                "data-128": "Enterprise-level data processing",
+                "data-16": "Perfect for medium datasets",
+                "data-24": "Great for larger datasets",
+                "data-32": "Ideal for data science",
+                "data-48": "Perfect for machine learning",
+                "data-64": "Advanced AI/ML workloads",
+                "data-8": "Sufficient for simple analysis",
+                "gaming-128": "Overkill for gaming alone",
+                "gaming-16": "Upgrade to 24GB for optimal gaming",
+                "gaming-24": "Good for most gaming scenarios",
+                "gaming-32": "Perfect for high-end gaming",
+                "gaming-48": "Excellent for gaming and streaming",
+                "gaming-64": "Future-proof for gaming",
+                "gaming-8": "Upgrade to 16GB for smoother gaming",
+                "video-128": "Studio-level video production",
+                "video-16": "Sufficient for most 4K editing",
+                "video-24": "Great for 4K editing",
+                "video-32": "Perfect for 8K editing",
+                "video-48": "Ideal for complex video projects",
+                "video-64": "Professional-grade video editing",
+                "video-8": "Upgrade to 16GB for 4K editing"
+            },
+            "title": "Recommendation"
+        },
+        "scenarios": {
+            "data": "Data Analysis",
+            "gaming": "Gaming",
+            "video": "Video Editing"
+        },
+        "simultaneousApps": "Simultaneous Apps",
+        "title": "How Much Memory Do You Really Need?"
+    },
     "placeholder": "What could be improved?",
     "presets": {
+        "presets": {
+            "basic": "Basic",
+            "data-scientist": "Data Scientist",
+            "designer": "Designer",
+            "video-edit": "Video Editor",
+            "web-dev": "Web Developer"
+        },
         "quickSetup": "Quick Setup",
         "recommendedPresets": "Recommended Presets"
     },
     "search": "Search software...",
     "selected": "Selected Software",
     "sending": "Sending...",
+    "softwareSizesDescription": "The listed sizes for all software are generally much higher than the initial installation sizes, as they account for smooth operation, caching, and usage-related storage needs. These specific numbers are derived from various sources, including forum discussions and the official system requirements provided by the software developers.",
     "submit": "Send Feedback",
     "thanks": "Thanks for your feedback!",
-    "title": "How Much Storage Do You Really Need?",
-    "softwareSizesDescription": "The listed sizes for all software are generally much higher than the initial installation sizes, as they account for smooth operation, caching, and usage-related storage needs. These specific numbers are derived from various sources, including forum discussions and the official system requirements provided by the software developers.",
-    "memoryAnalysis": {
-        "title": "How Much Memory Do You Really Need?",
-        "aboutEstimates": "About Memory Estimates",
-        "performanceOverview": "Memory Performance Overview",
-        "estimatesDescription": "The performance estimates are based on Apple's M-series unified memory architecture. These values are subjective approximations, gathered from forums and YouTube analyses, and are not standardized measurements."
-    },
-    "categories": {
-        "development": "Development",
-        "design": "Design",
-        "video-audio": "Video & Audio",
-        "utilities": "Utilities",
-        "game": "Game",
-        "others": "Others",
-        "operating-system": "Operating System",
-        "preinstalled-apps": "Pre-installed Apps",
-        "upgrade-space": "Reserved Space for macOS upgrades",
-        "all": "All"
-    },
-    "hardDriveAnalysis": {
-        "userSoftware": "User Software",
-        "totalUsed": "Total Used",
-        "dragOrClickToAdd": "Drag software here or click + to add",
-        "storageUsage": "{{used}} of {{total}} GB used",
-        "storageAvailable": "{{available}} available",
-        "reset": "Reset"
-    }
+    "title": "How Much Storage Do You Really Need?"
 }

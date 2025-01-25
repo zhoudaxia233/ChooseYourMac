@@ -114,7 +114,7 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
                   text-sm font-medium text-gray-600 dark:text-gray-400 
                   transition-colors relative"
               >
-                <span>{currentMemory}GB Total</span>
+                <span>{currentMemory}GB</span>
                 <svg
                   className={`w-4 h-4 transition-transform ${
                     isOpen ? 'rotate-180' : ''
@@ -176,14 +176,14 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
             <div className="flex items-center gap-2">
               <span className="text-xl">{scenario.icon}</span>
               <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                {scenario.name}
+                {t(`memoryAnalysis.scenarios.${scenario.id}`)}
               </h3>
             </div>
 
             {/* Memory Pressure */}
             <div className="space-y-1">
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Memory Pressure:
+                {t('memoryAnalysis.memoryPressure')}:
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex-grow h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
@@ -226,18 +226,17 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
                 )}`}
               >
                 {scenario.pressureByMemory[String(currentMemory)] > 80
-                  ? 'High'
+                  ? t('memoryAnalysis.highPressure')
                   : scenario.pressureByMemory[String(currentMemory)] > 50
-                  ? 'Medium'
-                  : 'Low'}{' '}
-                Pressure
+                  ? t('memoryAnalysis.mediumPressure')
+                  : t('memoryAnalysis.lowPressure')}
               </div>
             </div>
 
             {/* Apps List */}
             <div className="space-y-1">
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Simultaneous Apps:
+                {t('memoryAnalysis.simultaneousApps')}:
               </div>
               <div className="space-y-1">
                 {scenario.apps.map(app => (
@@ -255,7 +254,7 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
             {/* Recommendation */}
             <div className="space-y-1">
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Recommendation:
+                {t('memoryAnalysis.recommendations.title')}:
               </div>
               <p
                 className={`text-sm ${
@@ -264,7 +263,11 @@ const MemoryAnalysis = ({ selectedMemory, onMemoryChange }) => {
                     : 'text-green-600 dark:text-green-400'
                 }`}
               >
-                {scenario.recommendations[String(currentMemory)].text}
+                {t(
+                  `memoryAnalysis.recommendations.contents.${
+                    scenario.recommendations[String(currentMemory)].id
+                  }`
+                )}
               </p>
             </div>
           </div>

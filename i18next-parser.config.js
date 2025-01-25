@@ -1,7 +1,7 @@
 module.exports = {
   contextSeparator: '_',
-  // Key separator used in your translation keys
   keySeparator: '.',
+  namespaceSeparator: ':',
 
   // Supported languages
   locales: ['en', 'zh', 'ja'],
@@ -11,6 +11,8 @@ module.exports = {
 
   // Source files to scan
   input: ['components/**/*.{js,jsx}', 'pages/**/*.{js,jsx}'],
+
+  pluralSeparator: false,
 
   // Keep existing translations
   keepRemoved: true,
@@ -34,8 +36,5 @@ module.exports = {
     js: ['JsxLexer'], // Changed from JavascriptLexer to JsxLexer since we use JSX
     jsx: ['JsxLexer'],
   },
-
-  // Add these options for better compatibility
-  namespaceSeparator: false, // We don't use namespace separators
   defaultNamespace: 'common', // We use 'common' namespace
 }

@@ -2,44 +2,91 @@
     "aboutSoftwareSizes": "关于软件大小",
     "add": "添加新软件",
     "available": "可用软件",
-    "feedback": "发送反馈",
+    "categories": {
+        "all": "全部",
+        "design": "设计",
+        "development": "开发",
+        "game": "游戏",
+        "operating-system": "操作系统",
+        "others": "其他",
+        "preinstalled-apps": "预装应用",
+        "upgrade-space": "macOS升级预留空间",
+        "utilities": "实用工具",
+        "video-audio": "视频和音频"
+    },
+    "feedback": {
+        "error": "发生错误，请重试。",
+        "success": "感谢您的反馈！",
+        "title": "反馈"
+    },
+    "hardDriveAnalysis": {
+        "dragOrClickToAdd": "拖拽软件到此处或点击 + 添加",
+        "reset": "重置",
+        "storageAvailable": "可用空间 {{available}}",
+        "storageUsage": "已使用 {{used}}/{{total}} GB",
+        "totalUsed": "总计使用",
+        "userSoftware": "用户软件"
+    },
     "items": "{{count}}个项目",
+    "memoryAnalysis": {
+        "aboutEstimates": "关于内存估算",
+        "estimatesDescription": "性能估算基于Apple M系列芯片的统一内存架构。这些数值是主观近似值，来自论坛和YouTube分析，并非标准化测量结果。",
+        "highPressure": "高",
+        "lowPressure": "低",
+        "mediumPressure": "中",
+        "memoryPressure": "内存压力",
+        "performanceOverview": "内存性能概览",
+        "recommendations": {
+            "contents": {
+                "data-128": "企业级数据处理能力",
+                "data-16": "完美支持中等数据集",
+                "data-24": "非常适合处理较大数据集",
+                "data-32": "理想选择，适用于数据科学",
+                "data-48": "完美支持机器学习",
+                "data-64": "适合高级AI/ML工作负载",
+                "data-8": "适用于简单的数据分析",
+                "gaming-128": "仅用于游戏略显过剩",
+                "gaming-16": "升级至24GB，获得最佳游戏性能",
+                "gaming-24": "适合大多数游戏场景",
+                "gaming-32": "完美支持高端游戏",
+                "gaming-48": "适合游戏和直播的绝佳选择",
+                "gaming-64": "为未来游戏需求做好准备",
+                "gaming-8": "升级至16GB，享受更流畅的游戏体验",
+                "video-128": "适合影视级工作室视频制作",
+                "video-16": "满足大多数4K视频编辑需求",
+                "video-24": "非常适合4K视频编辑",
+                "video-32": "完美支持8K视频编辑",
+                "video-48": "理想选择，适用于复杂视频项目",
+                "video-64": "专业级视频编辑",
+                "video-8": "升级至16GB，可进行4K视频编辑"
+            },
+            "title": "推荐"
+        },
+        "scenarios": {
+            "data": "数据分析",
+            "gaming": "游戏",
+            "video": "视频编辑"
+        },
+        "simultaneousApps": "可同时运行",
+        "title": "你究竟需要多大的内存？"
+    },
     "placeholder": "有什么可以改进的？",
     "presets": {
+        "presets": {
+            "basic": "基础场景",
+            "data-scientist": "数据科学家",
+            "designer": "设计师",
+            "video-edit": "视频创作者",
+            "web-dev": "Web开发者"
+        },
         "quickSetup": "快速配置",
         "recommendedPresets": "常用模板"
     },
     "search": "搜索软件...",
     "selected": "已选软件",
     "sending": "发送中...",
+    "softwareSizesDescription": "列出的所有软件大小通常比初始安装大小要大得多，因为它们考虑了流畅运行、缓存和使用相关的存储需求。这些具体数据来自于论坛评论区及软件开发商提供的官方系统要求等等。",
     "submit": "发送反馈",
     "thanks": "感谢您的反馈！",
-    "title": "你究竟需要多大的存储空间？",
-    "softwareSizesDescription": "列出的所有软件大小通常比初始安装大小要大得多，因为它们考虑了流畅运行、缓存和使用相关的存储需求。这些具体数据来自于论坛评论区及软件开发商提供的官方系统要求等等。",
-    "memoryAnalysis": {
-        "title": "你究竟需要多大的内存？",
-        "aboutEstimates": "关于内存估算",
-        "performanceOverview": "内存性能概览",
-        "estimatesDescription": "性能估算基于Apple M系列芯片的统一内存架构。这些数值是主观近似值，来自论坛和YouTube分析，并非标准化测量结果。"
-    },
-    "categories": {
-        "development": "开发",
-        "design": "设计",
-        "video-audio": "视频和音频",
-        "utilities": "实用工具",
-        "game": "游戏",
-        "others": "其他",
-        "operating-system": "操作系统",
-        "preinstalled-apps": "预装应用",
-        "upgrade-space": "macOS升级预留空间",
-        "all": "全部"
-    },
-    "hardDriveAnalysis": {
-        "userSoftware": "用户软件",
-        "totalUsed": "总计使用",
-        "dragOrClickToAdd": "拖拽软件到此处或点击 + 添加",
-        "storageUsage": "已使用 {{used}}/{{total}} GB",
-        "storageAvailable": "可用空间 {{available}}",
-        "reset": "重置"
-    }
+    "title": "你究竟需要多大的存储空间？"
 }
